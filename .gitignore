@@ -1,0 +1,7 @@
+*.class
+*.log
+*~
+staging
+classes
+*.swp
+test/reports
