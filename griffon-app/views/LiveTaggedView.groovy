@@ -11,10 +11,13 @@ import ca.odell.glazedlists.*
 import groovy.swing.SwingBuilder
 import tag.*
 def Bos=new BasicEventList()
-Bos.addAll([new TodoTag(name:'a todo'),
-new TodoTag(name:'second todo'),
-new TodoTag(name:'3rd todo'),
-new TodoTag(name:'4th todo')])
+Bos.addAll([
+    new TodoTag(name:'a todo'),
+    new TodoTag(name:'second todo'),
+    new TodoTag(name:'3rd todo'),
+    new TextTagable(name:'text tagable',text:'I am a plain text tagable')
+])
+def aS=AdaptorServiceFactory.getAdaptorService()
 def searchViews=[new SearchView(name:'All',description:'All Bos',condition:{true},sortComparator:{a,b->0})]
 
 application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
@@ -22,28 +25,30 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
     rightComponent:
         splitPane(
         leftComponent:
-        scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_ALWAYS ,constraints:'w 500px::, h 600px::'){
+        scrollPane(id:'briefPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 500px::, h 600px::'){
             panel(layout:new MigLayout()){
-                itemGroup=new SingleSelectedGroup()
+                itemGroup=new SingleSelectedGroup(selectionChanged:{controller.selectBo(itemGroup.selectedValue)})
                 Bos.each{
-                    def w=widget(constraints:'wrap,w :500px:',new DefaultBriefDisplayAdaptor(value:it,group:itemGroup).getComponent())
-                    itemGroup.addItem(w)
+                    def w=widget(constraints:'wrap,w :500px:',aS.getAdaptorClass(it.type,'briefDisplay').newInstance(value:it,group:itemGroup).getComponent())
+                    itemGroup.addItem(w,it)
                     w.mouseClicked={e->itemGroup.select(e.source)}
                 }
             }
         },
         rightComponent:
-            scrollPane(id:'detailPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_ALWAYS,constraints:'w 200px::'){
-                widget(constraints:'w :200px:', new DefaultDetailDisplayAdaptor(value:Bos[1]).getComponent())
+            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w 200px::'){
+                panel(id:'detailPanel'){
+                    widget(constraints:'w :200px:', aS.getAdaptorClass(Bos[1].type,'detailDisplay').newInstance(value:Bos[1]).getComponent())
+                }
             }
         ,resizeWeight:0.5f,oneTouchExpandable:true),
     leftComponent:
-        scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_ALWAYS ,constraints:'w 150px::, h 600px::'){
+        scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 150px::, h 600px::'){
             panel(layout:new MigLayout()){
                 viewGroup=new SingleSelectedGroup()
                 searchViews.each{
-                    def w=widget(constraints:'wrap,w :150px:',new DefaultBriefDisplayAdaptor(value:it,group:viewGroup).getComponent())
-                    viewGroup.addItem(w)
+                    def w=widget(constraints:'wrap,w :150px:',aS.getAdaptorClass(it.type,'briefDisplay').newInstance(value:it,group:viewGroup).getComponent())
+                    viewGroup.addItem(w,it)
                     w.mouseClicked={e->viewGroup.select(e.source)}
                 }
             }
@@ -53,17 +58,24 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
 }
 class SingleSelectedGroup{
     def items=[]
+    def values=[]
     def status=[:]
     def selected=null
-    def addItem(item){
+    def selectedValue=null
+    def selectionChanged={}
+    def addItem(item,value){
         this.items<<item
+        this.values<<value
     }
     def select(item){
+        assert (item in items)
         if(selected){
             selected.onUnselected()
         }
         selected=item
+        selectedValue=values[items.indexOf(item)]
         item.onSelected()
+        this.selectionChanged()
     }
 }
 

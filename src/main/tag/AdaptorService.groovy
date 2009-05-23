@@ -6,6 +6,7 @@ class AdaptorService{
     private MultiKeyMap<String,String,Class> adaptorClasses=new MultiKeyMap<String,String,Class>()
     private Map<String,String> boTypeParents=[:]
     Class getAdaptorClass(String adapteeType, String adaptorType){
+        if (!adaptorType || !adapteeType) return null
         def re=this.adaptorClasses.get(adapteeType,adaptorType)
         return re?:this.getAdaptorClass(this.getBoTypeParent(adapteeType),adaptorType)
     }
