@@ -1,3 +1,4 @@
+package tag
 class TodoTag extends Tag{
     Date deadline
     Boolean done

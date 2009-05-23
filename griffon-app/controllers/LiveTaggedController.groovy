@@ -4,6 +4,9 @@ class LiveTaggedController {
     def view
 
     void mvcGroupInit(Map args) {
+        /*model.searchViews.addAll([
+          new SearchView(condition:{true},sortComparator:{a,b->0})  
+        ])*/
         // this method is called after model and view are injected
     }
 

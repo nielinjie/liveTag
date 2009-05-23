@@ -1,17 +1,16 @@
+package tag
 import groovy.xml.*
 import groovy.util.*
-class Tag extends WithID{
-    String type
+class Tag extends BO{
+    static type='tag'
+}
+class BO extends WithID{
+    //String type
     String name
     static fromString(String string){
-        string.metaClass.asType={
-            clazz->
-            println 'in my mixin'
-            delegate.asType(clazz)
-        }
         if(!string)return null
         def tag=new XmlSlurper().parseText(string)
-        Tag re=TaggingManagerFactory.getTaggingManager().findTagClass(tag.type.text()).newInstance()
+        BO re=AdaptorService.instance.getBOClass(tag.type.text()).newInstance()
         re.id=UUID.fromString(tag.id.text())
         re.type=tag.type.text()
         def allProperties=tag.property
@@ -23,7 +22,7 @@ class Tag extends WithID{
     String asString(){
         def writer=new StringWriter()
         def xml=new MarkupBuilder(writer)
-        xml.tag{
+        xml.BO{
             type(this.type)
             id(this.id)
             this.metaClass.properties.each{
@@ -35,10 +34,11 @@ class Tag extends WithID{
         return writer.toString()
     }
     boolean equals(Object b){
-        if (!b || !(b instanceof Tag))
+        if (!b || !(b instanceof BO))
             return false
         return b.id==this.id && b.name==this.name && b.type==this.type
     }
+
 }
 class WithID{
     private UUID id

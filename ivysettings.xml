@@ -3,10 +3,11 @@
     <resolvers>
         <chain name="public" dual="true">
             <filesystem name="local">
-                <artifact pattern="/home/nielinjie/lib/sun/[module]-[revision].[ext]" />
+                <artifact pattern="/home/nielinjie/lib/[module]-[revision].[ext]" />
             </filesystem>
             <ibiblio name="snapshots.codehaus" m2compatible="true" root="http://snapshots.repository.codehaus.org/"/>
             <ibiblio name="codehaus" m2compatible="true" root="http://repository.codehaus.org/"/>
+            <ibiblio name="restlet" m2compatible="true" root="http://maven.restlet.org/"/>
             <ibiblio name="ibib" m2compatible="true"/>
             <url name="exist.com" m2compatible="true">
                 <ivy pattern="http://repo.exist.com/maven2/[organisation]/[module]/[revision]/[module]-[revision].pom" />

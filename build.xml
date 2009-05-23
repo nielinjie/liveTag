@@ -7,7 +7,7 @@
     <property environment="env" />
     <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpath="${env.GROOVY_HOME}/embeddable/groovy-all.jar" />
     <target name="resolve" description="--> retreive dependencies with ivy">
-        <ivy:retrieve/>
+        <ivy:retrieve type="jar"/>
     </target>    
     <target name="clean-cache">
         <ivy:cleancache/>
@@ -88,6 +88,15 @@
             </classpath>
             <classpath location="classes" />
         </groovyc>
+        <groovyc srcdir="test/integration" destdir="classes" includes="**/*.groovy">
+            <classpath location="lib">
+                <fileset dir="lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+            <classpath location="classes" />
+        </groovyc>
+
         <copy todir="classes">
             <fileset dir="src/main">
                 <include name="**/*.xml" />
@@ -96,7 +105,7 @@
         </copy>
     </target>
     <target name="main.run" depends="main.compile">
-        <java classname="fyFans.Main">
+        <java classname="RestletServer">
             <classpath location="classes" />
             <classpath>
                 <fileset dir="lib">
@@ -116,7 +125,8 @@
             </classpath>
             <classpath location="${env.GROOVY_HOME}/embeddable/groovy-all.jar" />
             <formatter type="plain" usefile="false"/>
-            <test name="BaseTests"/>
+            <test name="LiveTaggedStory"/>
+            <test name="AdaptorTests"/>
             <batchtest>
                 <fileset dir="test/unit">
                     <include name="**/*"/>

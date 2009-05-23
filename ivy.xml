@@ -19,8 +19,12 @@
 <ivy-module version="2.0">
     <info organisation="nielinjie.person" module="fyFans"/>
     <dependencies>
-        <dependency org="org.codehaus.groovy" name="http-builder" rev="0.5.0-SNAPSHOT"/>
-        <dependency org="org.grails" name="grails-gorm" rev="1.1"/>
+        <dependency org="org.gmock" name="gmock" rev="0.8.0" />
+        <dependency org="commons-collections" name="commons-collections" rev="3.2.1" />
+        <dependency org="com.miglayout" name="miglayout" rev="3.7" />
+        <dependency org="net.java.dev.glazedlists" name="glazedlists_java15" rev="1.8.0" />
+        <dependency org="org.restlet" name="org.restlet" rev="1.1.4" />
+        <dependency org="com.noelios.restlet" name="com.noelios.restlet" rev="1.1.4" />
     </dependencies>
     
 </ivy-module>
