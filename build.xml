@@ -116,7 +116,7 @@
         </java>
     </target>
     <target name="main.test" depends="main.compile" >
-        <junit printsummary="yes" haltonfailure="yes">
+        <junit printsummary="yes" haltonfailure="yes" >
             <classpath location="classes" />
             <classpath>
                 <fileset dir="lib">
@@ -127,6 +127,7 @@
             <formatter type="plain" usefile="false"/>
             <test name="LiveTaggedStory"/>
             <test name="AdaptorTests"/>
+            <test name="BaseTests"/>
             <batchtest>
                 <fileset dir="test/unit">
                     <include name="**/*"/>

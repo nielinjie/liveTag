@@ -1,37 +1,26 @@
 package tag
 import groovy.xml.*
 import groovy.util.*
+import com.thoughtworks.xstream.XStream
 class Tag extends BO{
-    static type='tag'
+    String type='tag'
 }
 class BO extends WithID{
     //String type
     String name
     static fromString(String string){
         if(!string)return null
-        def tag=new XmlSlurper().parseText(string)
-        BO re=AdaptorService.instance.getBOClass(tag.type.text()).newInstance()
-        re.id=UUID.fromString(tag.id.text())
-        re.type=tag.type.text()
-        def allProperties=tag.property
-        allProperties.each{
-            re."${it.@name}"=it.@value.asType
-        }
-        return re
+        def XStream xs=new XStream()
+        def type=((string=~/.*<type>(.*)<\/type>.*/)[0][1])
+        def clazz=AdaptorServiceFactory.getAdaptorService().getBoClass(type)
+        xs.alias('tag',clazz)
+        return xs.fromXML(string)
     }
     String asString(){
-        def writer=new StringWriter()
-        def xml=new MarkupBuilder(writer)
-        xml.BO{
-            type(this.type)
-            id(this.id)
-            this.metaClass.properties.each{
-                if (!(it.name in ['class','metaClass','type','id']))
-                    property(name:it.name,value:this."${it.name}")
-            }
-        }
-        println writer.toString()
-        return writer.toString()
+        def XStream xs=new XStream()
+        xs.alias('tag',this.class)
+        def re= xs.toXML(this)
+        return re
     }
     boolean equals(Object b){
         if (!b || !(b instanceof BO))

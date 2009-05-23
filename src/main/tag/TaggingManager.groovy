@@ -3,7 +3,6 @@ package tag
 class TaggingManager{
     private Map<UUID,String> tags=[:]
     private Map<UUID,String> tagables=[:]
-    
     void saveTag(Tag tag){
         this.tags.put(tag.id,tag.asString())
     }

@@ -1,20 +1,26 @@
 import tag.*
-class BaseTests extends GroovyTestCase{
-    void testManager(){
-        tagTest(Tag.class,'base')
+import org.junit.*
+import static org.junit.Assert.*
+import junit.framework.TestCase
+class BaseTests {
+    @BeforeClass public static void ka(){
+        AdaptorServiceFactory.getAdaptorService().registerBo('tag.todo','tag',TodoTag.class)
     }
-    void testTodoTag(){
-        tagTest(TodoTag.class,'base.todo')
+    @Test void testManager(){
+        tagTest(Tag.class,'tag')
+    }
+    @Test void testTodoTag(){
+        tagTest(TodoTag.class,'tag.todo')
         tagTest(new TodoTag(deadline:new Date(),done:false))
     }
     private tagTest(Tag tag){
         TaggingManager tm=TaggingManagerFactory.getTaggingManager()
-        assert (tag.id != null && tag.id instanceof UUID)
+        assertTrue(tag.id != null && tag.id instanceof UUID)
         tag.name='testing'
         def id=tag.id
-        tm.save(tag)
-        def newTag=tm.get(id)
-        assert (tag.equals(newTag)):"${tag.dump()}, ${newTag.dump()}"
+        tm.saveTag(tag)
+        def newTag=tm.getTag(id)
+        assertTrue("${tag.dump()}, ${newTag.dump()}",tag.equals(newTag))
 
     }
     private tagTest(Class tagClass,String type){

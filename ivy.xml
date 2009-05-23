@@ -25,6 +25,7 @@
         <dependency org="net.java.dev.glazedlists" name="glazedlists_java15" rev="1.8.0" />
         <dependency org="org.restlet" name="org.restlet" rev="1.1.4" />
         <dependency org="com.noelios.restlet" name="com.noelios.restlet" rev="1.1.4" />
+        <dependency org="com.thoughtworks.xstream" name="xstream" rev="1.3.1"/>
     </dependencies>
     
 </ivy-module>
