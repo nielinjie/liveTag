@@ -19,8 +19,8 @@
 <ivy-module version="2.0">
     <info organisation="nielinjie.person" module="fyFans"/>
     <dependencies>
-        <dependency org="org.codehaus.groovy" name="http-builder" rev="0.5.0-SNAPSHOT"/>
-        <dependency org="org.grails" name="grails-gorm" rev="1.1"/>
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.8.0"/>
+        <dependency org="com.thoughtworks.xstream" name="xstream" rev="1.3.1"/>
     </dependencies>
     
 </ivy-module>

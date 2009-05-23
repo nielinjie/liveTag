@@ -107,7 +107,7 @@
         </java>
     </target>
     <target name="main.test" depends="main.compile" >
-        <junit printsummary="yes" haltonfailure="yes">
+        <junit printsummary="yes" haltonfailure="yes" >
             <classpath location="classes" />
             <classpath>
                 <fileset dir="lib">
