@@ -11,7 +11,7 @@ class BO extends WithID{
     static fromString(String string){
         if(!string)return null
         def XStream xs=new XStream()
-        def type=((string=~/.*<type>(.*)<\/type>.*/)[0][1])
+        def type=((string=~/.*<type.*?>(.*)<\/type>.*/)[-1][1])
         def clazz=AdaptorServiceFactory.getAdaptorService().getBoClass(type)
         xs.alias('tag',clazz)
         return xs.fromXML(string)
@@ -20,6 +20,7 @@ class BO extends WithID{
         def XStream xs=new XStream()
         xs.alias('tag',this.class)
         def re= xs.toXML(this)
+        println re
         return re
     }
     boolean equals(Object b){

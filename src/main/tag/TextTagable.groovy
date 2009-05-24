@@ -3,9 +3,7 @@ import groovy.swing.*
 import net.miginfocom.swing.MigLayout
 class TextTagable extends Tagable{
     String text
-    TextTagable(){
-        this.type='tagable.text'
-    }
+    String type='tagable.text'
 }
 class TextTagableBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def getPanel(){

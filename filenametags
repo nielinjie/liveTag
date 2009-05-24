@@ -4,8 +4,8 @@ Application.groovy	./griffon-app/conf/Application.groovy	1
 BaseTests.groovy	./test/unit/BaseTests.groovy	1
 Builder.groovy	./griffon-app/conf/Builder.groovy	1
 Config.groovy	./griffon-app/conf/Config.groovy	1
-DefaultBriefDisplayAdaptor.groovy	./griffon-app/views/DefaultBriefDisplayAdaptor.groovy	1
-DefaultDetailDisplayAdaptor.groovy	./griffon-app/views/DefaultDetailDisplayAdaptor.groovy	1
+DefaultBriefDisplayAdaptor.groovy	./src/main/tag/DefaultBriefDisplayAdaptor.groovy	1
+DefaultDetailDisplayAdaptor.groovy	./src/main/tag/DefaultDetailDisplayAdaptor.groovy	1
 Initialize.groovy	./griffon-app/lifecycle/Initialize.groovy	1
 LiveTaggedController.groovy	./griffon-app/controllers/LiveTaggedController.groovy	1
 LiveTaggedModel.groovy	./griffon-app/models/LiveTaggedModel.groovy	1
@@ -21,4 +21,5 @@ Stop.groovy	./griffon-app/lifecycle/Stop.groovy	1
 Tag.groovy	./src/main/tag/Tag.groovy	1
 Tagable.groovy	./src/main/tag/Tagable.groovy	1
 TaggingManager.groovy	./src/main/tag/TaggingManager.groovy	1
+TextTagable.groovy	./src/main/tag/TextTagable.groovy	1
 TodoTag.groovy	./src/main/tag/TodoTag.groovy	1

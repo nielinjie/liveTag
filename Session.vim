@@ -2,69 +2,21 @@ let SessionLoad = 1
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
-map! <S-Insert> <MiddleMouse>
-imap <S-Tab> 
-imap <silent> <expr> <F5> (pumvisible() ? "\<Plug>LookupFileCE" : "")."\\<Plug>LookupFile"
 inoremap <Plug>LookupFileCE 
+imap <silent> <expr> <F5> (pumvisible() ? "\<Plug>LookupFileCE" : "")."\\<Plug>LookupFile"
+imap <S-Tab> 
+map! <S-Insert> <MiddleMouse>
 map Q gq
-vmap [% [%m'gv``
 nmap <silent> \; :call ToggleSemicolonHighlighting()
-nmap <silent> \cv <Plug>VCSVimDiff
-nmap <silent> \cu <Plug>VCSUpdate
-nmap <silent> \cU <Plug>VCSUnlock
-nmap <silent> \cs <Plug>VCSStatus
-nmap <silent> \cr <Plug>VCSReview
-nmap <silent> \cq <Plug>VCSRevert
-nmap <silent> \cn <Plug>VCSAnnotate
-nmap <silent> \cl <Plug>VCSLog
-nmap <silent> \cL <Plug>VCSLock
-nmap <silent> \ci <Plug>VCSInfo
-nmap <silent> \cg <Plug>VCSGotoOriginal
-nmap <silent> \cG <Plug>VCSClearAndGotoOriginal
-nmap <silent> \cd <Plug>VCSDiff
-nmap <silent> \cD <Plug>VCSDelete
-nmap <silent> \cc <Plug>VCSCommit
-nmap <silent> \ca <Plug>VCSAdd
-map \mbt <Plug>TMiniBufExplorer
-map \mbu <Plug>UMiniBufExplorer
-map \mbc <Plug>CMiniBufExplorer
-map \mbe <Plug>MiniBufExplorer
-nmap <silent> \bv :VSBufExplorer
-nmap <silent> \bs :HSBufExplorer
-nmap <silent> \be :BufExplorer
-nmap \ihn :IHN
-nmap \is :IHS:A
-nmap \ih :IHS
-vmap ]% ]%m'gv``
-vmap a% [%v]%
 nmap gx <Plug>NetrwBrowseX
-map <S-Insert> <MiddleMouse>
-nnoremap <silent> <Plug>VCSVimDiff :VCSVimDiff
-nnoremap <silent> <Plug>VCSUpdate :VCSUpdate
-nnoremap <silent> <Plug>VCSUnlock :VCSUnlock
-nnoremap <silent> <Plug>VCSStatus :VCSStatus
-nnoremap <silent> <Plug>VCSReview :VCSReview
-nnoremap <silent> <Plug>VCSRevert :VCSRevert
-nnoremap <silent> <Plug>VCSLog :VCSLog
-nnoremap <silent> <Plug>VCSLock :VCSLock
-nnoremap <silent> <Plug>VCSInfo :VCSInfo
-nnoremap <silent> <Plug>VCSClearAndGotoOriginal :VCSGotoOriginal!
-nnoremap <silent> <Plug>VCSGotoOriginal :VCSGotoOriginal
-nnoremap <silent> <Plug>VCSDiff :VCSDiff
-nnoremap <silent> <Plug>VCSDelete :VCSDelete
-nnoremap <silent> <Plug>VCSCommit :VCSCommit
-nnoremap <silent> <Plug>VCSAnnotate :VCSAnnotate
-nnoremap <silent> <Plug>VCSAdd :VCSAdd
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
 nmap <silent> <F5> <Plug>LookupFile
+nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
+map <S-Insert> <MiddleMouse>
 map <S-F2> :vsplit:find **/
-map <F2>  :wa  :!ant main.test
+map <F2> :find **/
 imap 	 
 inoremap  u
 imap  =CtrlXPP()
-imap \ihn :IHN
-imap \is :IHS:A
-imap \ih :IHS
 let &cpo=s:cpo_save
 unlet s:cpo_save
 set autoindent
@@ -76,7 +28,6 @@ set fileencodings=ucs-bom,utf-8,default,latin1
 set guifont=Luxi\ Mono\ 8
 set helplang=en
 set hlsearch
-set iminsert=0
 set incsearch
 set listchars=tab:>-,trail:-
 set mouse=a
@@ -87,7 +38,6 @@ set smarttab
 set softtabstop=4
 set termencoding=utf-8
 set viminfo=!,'100,<50,s10,h
-set window=38
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
@@ -96,9 +46,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 ~/Projects/LiveTagged/test/integration/LiveTaggedStory.groovy
+badd +1 ./src/main/tag/TaggingManager.groovy
 silent! argdel *
-edit ~/Projects/LiveTagged/test/integration/LiveTaggedStory.groovy
+edit ./src/main/tag/TaggingManager.groovy
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -147,7 +97,7 @@ setlocal formatexpr=
 setlocal formatoptions=tcq
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
-setlocal iminsert=0
+setlocal iminsert=2
 setlocal imsearch=2
 setlocal include=
 setlocal includeexpr=
@@ -201,11 +151,11 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 18) / 37)
+let s:l = 11 - ((10 * winheight(0) + 14) / 29)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
+11
 normal! 04l
 tabnext 1
 if exists('s:wipebuf')

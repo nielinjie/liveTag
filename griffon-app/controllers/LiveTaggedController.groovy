@@ -15,6 +15,7 @@ class LiveTaggedController {
         aS.registerAdaptor('tagable.text','detailDisplay',TextTagableDetailDisplayAdaptor.class)
         aS.registerAdaptor('tagable.text','briefDisplay',TextTagableBriefDisplayAdaptor.class)
         aS.registerAdaptor('searchView','briefDisplay',SearchViewBriefDisplayAdaptor.class)
+		aS.registerAdaptor('importer','briefDisplay',ImporterBriefDisplayAdaptor.class)
         // this method is called after model and view are injected
     }
     void selectBo(bo){

@@ -5,9 +5,7 @@ import java.awt.SystemColor
 class TodoTag extends Tag{
     Date deadline
     Boolean done
-    TodoTag(){
-        this.type='tag.todo'
-    }
+    String type='tag.todo'
 }
 class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def getPanel(){
