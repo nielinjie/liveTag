@@ -1,4 +1,4 @@
-package tag
+package tagging
 //@Singleton
 class TaggingManager{
     private Map<UUID,String> tags=[:]

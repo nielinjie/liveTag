@@ -1,4 +1,4 @@
-package tag
+package tagging
 import groovy.swing.SwingBuilder
 import java.awt.SystemColor
 import net.miginfocom.swing.MigLayout

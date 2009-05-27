@@ -1,4 +1,4 @@
-package tag
+package tagging
 import groovy.swing.*
 class SearchView{
     def name
@@ -17,4 +17,10 @@ class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
             label(text:value.name)
         }
     }
+}
+class SearchViewMeta{
+	def static provideMeta(){
+		def aS=AdaptorServiceFactory.getAdaptorService()
+        aS.registerAdaptor('searchView','briefDisplay',SearchViewBriefDisplayAdaptor.class)
+	}
 }

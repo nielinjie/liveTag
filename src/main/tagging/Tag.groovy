@@ -1,4 +1,4 @@
-package tag
+package tagging
 import groovy.xml.*
 import groovy.util.*
 import com.thoughtworks.xstream.XStream
@@ -12,7 +12,7 @@ class BO extends WithID{
         if(!string)return null
         def XStream xs=new XStream()
         def type=((string=~/.*<type.*?>(.*)<\/type>.*/)[-1][1])
-        def clazz=AdaptorServiceFactory.getAdaptorService().getBoClass(type)
+        def clazz=BoServiceFactory.getBoService().getBoClass(type)
         xs.alias('tag',clazz)
         return xs.fromXML(string)
     }

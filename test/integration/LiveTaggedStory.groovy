@@ -1,5 +1,5 @@
 import org.gmock.WithGMock
-import tag.*
+import tagging.*
 
 @WithGMock
 class LiveTaggedStory extends GroovyTestCase{

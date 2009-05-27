@@ -1,4 +1,4 @@
-package tag
+package tagging
 import groovy.swing.SwingBuilder
 abstract class DefaultDetailDisplayAdaptor{
     def value

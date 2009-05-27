@@ -1,10 +1,13 @@
-import tag.*
+import tagging.*
+import tagging.text.*
+import tagging.todo.*
+import tagging.people.*
 import org.junit.*
 import static org.junit.Assert.*
 import junit.framework.TestCase
 class BaseTests {
     @BeforeClass public static void ka(){
-        AdaptorServiceFactory.getAdaptorService().registerBo('tag.todo','tag',TodoTag.class)
+        BoServiceFactory.getBoService().registerBo('tag.todo','tag',TodoTag.class)
     }
     @Test void testManager(){
         tagTest(Tag.class,'tag')

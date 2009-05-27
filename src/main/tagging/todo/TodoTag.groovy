@@ -1,4 +1,5 @@
-package tag
+package tagging.todo
+import tagging.*
 import groovy.swing.*
 import net.miginfocom.swing.MigLayout
 import java.awt.SystemColor
@@ -20,5 +21,12 @@ class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
         return new SwingBuilder().panel{
             label("${value.name}")
         }
+    }
+}
+class TodoTagMeta{
+	static void provideMeta(){
+		def aS=AdaptorServiceFactory.getAdaptorService()
+        aS.registerAdaptor('tag.todo','briefDisplay',TodoTagBriefDisplayAdaptor.class)
+        aS.registerAdaptor('tag.todo','detailDisplay',TodoTagDetailDisplayAdaptor.class)
     }
 }

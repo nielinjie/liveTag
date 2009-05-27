@@ -10,18 +10,9 @@ import ca.odell.glazedlists.swing.*
 import ca.odell.glazedlists.*
 import groovy.swing.SwingBuilder
 import tag.*
-def Bos=new BasicEventList()
-Bos.addAll([
-    new TodoTag(name:'a todo'),
-    new TodoTag(name:'second todo'),
-    new TodoTag(name:'3rd todo'),
-    new TextTagable(name:'text tagable',text:'I am a plain text tagable')
-])
+def Bos=MockData.bos
 def aS=AdaptorServiceFactory.getAdaptorService()
-def searchViews=[
-		new SearchView(name:'All',description:'All Bos',condition:{true},sortComparator:{a,b->0}),
-		new Importer(name:'A Sample Importer',description:'Sample Importer',condition:{true},sortComparator:{a,b->0},interval:3)
-	]
+def searchViews=MockData.searchViews
 
 application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
     splitPane(

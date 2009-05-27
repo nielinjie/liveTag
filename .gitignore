@@ -5,3 +5,6 @@ staging
 classes
 *.swp
 test/reports
+/cobertura.ser
+test/report
+.*

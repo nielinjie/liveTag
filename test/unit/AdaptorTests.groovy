@@ -1,33 +1,38 @@
-import tag.*
+import tagging.*
+import tagging.text.*
+import tagging.todo.*
+import tagging.people.*
 import org.junit.*
 class AdaptorTests extends GroovyTestCase{
     void testBo(){
         //register
-        def adaptorService=new AdaptorService()
-        adaptorService.registerBo('tag.todo','tag',TodoTag.class)
+        def boService=new BoService()
+        boService.registerBo('tag.todo','tag',TodoTag.class)
         try{
-            adaptorService.registerBo('tag.todo','todo',TodoTag.class)
+            boService.registerBo('tag.todo','todo',TodoTag.class)
             fail('Should throw a IllegalArgumentException')
         }catch(IllegalArgumentException e){
             //fine
         }catch(Exception e){
             fail('Should throw a IllegalArgumentException')
         }
-        def todoClass=adaptorService.getBoClass('tag.todo')
+        def todoClass=boService.getBoClass('tag.todo')
         assertEquals(todoClass,TodoTag.class)
     }
     void testAdaptor(){
         def adaptorService=new AdaptorService()
-        adaptorService.registerBo('tag.todo','tag',TodoTag.class)
+        def boService=new BoService()
+        adaptorService.boService=boService
+        boService.registerBo('tag.todo','tag',TodoTag.class)
         adaptorService.registerAdaptor('tag','detailDisplay',MockDetailDisplayAdaptor.class)
         def todoDetailDisplayAdaptorClass=adaptorService.getAdaptorClass('tag.todo','detailDisplay')
         assertEquals(todoDetailDisplayAdaptorClass,MockDetailDisplayAdaptor.class)
     }
     @Test(expected=IllegalArgumentException.class)
     void duplicateBo(){
-        def adaptorService= new AdaptorService()
-        adaptorService.registerBo('tag.todo','tag',TodoTag.class)
-        adaptorService.registerBo('tag.todo','anything',TodoTag.class)
+        def boService= new BoService()
+        boService.registerBo('tag.todo','tag',TodoTag.class)
+		boadaptorService.registerBo('tag.todo','anything',TodoTag.class)
     }
     @Test(expected=IllegalArgumentException.class)
     void duplicateAdaptor(){
