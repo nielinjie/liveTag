@@ -4,6 +4,7 @@ import groovy.util.*
 import com.thoughtworks.xstream.XStream
 class Tag extends BO{
     String type='tag'
+	Set<UUID> tagables=new HashSet<UUID>()
 }
 class BO extends WithID{
     //String type

@@ -9,7 +9,7 @@ import ca.odell.glazedlists.gui.*
 import ca.odell.glazedlists.swing.*
 import ca.odell.glazedlists.*
 import groovy.swing.SwingBuilder
-import tag.*
+import tagging.*
 def Bos=MockData.bos
 def aS=AdaptorServiceFactory.getAdaptorService()
 def searchViews=MockData.searchViews
@@ -19,9 +19,9 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
     rightComponent:
         splitPane(
         leftComponent:
-        scrollPane(id:'briefPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 500px::, h 600px::'){
-            panel(layout:new MigLayout()){
-                itemGroup=new SingleSelectedGroup(selectionChanged:{controller.selectBo(itemGroup.selectedValue)})
+        scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 500px::, h 600px::'){
+            panel(id:'briefPanel',layout:new MigLayout()){
+                def itemGroup=new SingleSelectedGroup(selectionChanged:{controller.selectBo(itemGroup.selectedValue)})
                 Bos.each{
                     def w=widget(constraints:'wrap,w :500px:',aS.getAdaptorClass(it.type,'briefDisplay').newInstance(value:it,group:itemGroup).getComponent())
                     itemGroup.addItem(w,it)
@@ -39,7 +39,7 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
     leftComponent:
         scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 150px::, h 600px::'){
             panel(layout:new MigLayout()){
-                viewGroup=new SingleSelectedGroup()
+                viewGroup=new SingleSelectedGroup(selectionChanged:{controller.selectSearchView(viewGroup.selectedValue)})
                 searchViews.each{
                     def w=widget(constraints:'wrap,w :150px:',aS.getAdaptorClass(it.type,'briefDisplay').newInstance(value:it,group:viewGroup).getComponent())
                     viewGroup.addItem(w,it)

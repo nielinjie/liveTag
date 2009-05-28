@@ -10,6 +10,7 @@ import tagging.*
  * This kind of tag is the 'tranditional' key word tag
  */
 public class Keyword extends Tag{
+	String type='tag.keyword'
 	String keyword
 }
 

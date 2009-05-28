@@ -13,14 +13,26 @@ class TaggingManager{
         return Tagable.fromString(this.tagables.get(id,null))
     }
     List<Tag> getTagsForTagable(UUID tagableId){
+    	return tags.values.findAll{
+    		tagableId in it.tagables
+    	}
+    }
+    void tagging(Tagable tagable, List<Tag> tags){
+    	tags.each{
+    		it.tagables<<tagable.id
+    	}
     }
     List<Tag> getTagsForTagable(Tagable tagable){
         return this.getTagsForTagable(tagable.id)
     }
     List<Tagable> findTagable(Closure condition){
-        this.tagables.valueSet.findAll(
+        this.tagables.values().findAll(
             condition
         )
+    }
+    void addTagable(Tagable tagable){
+    	println "tagable added, $tagable"
+    	this.tagables[tagable.id]=tagable
     }
 }
 class TaggingManagerFactory{

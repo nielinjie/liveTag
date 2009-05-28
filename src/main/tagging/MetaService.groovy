@@ -18,7 +18,7 @@ public class MetaService{
 	def init(){
 		this.providers.each{
 			if (!(it instanceof Class))
-				it=it as Class
+				if(it instanceof String) it=Class.forName(it)
 			it.getMethod('provideMeta').invoke(it,new Object[0])
 		}
 	}
