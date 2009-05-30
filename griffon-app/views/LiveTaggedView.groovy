@@ -21,7 +21,9 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
         leftComponent:
         scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 500px::, h 600px::'){
             panel(id:'briefPanel',layout:new MigLayout()){
-                def itemGroup=new SingleSelectedGroup(selectionChanged:{controller.selectBo(itemGroup.selectedValue)})
+                def itemGroup=new SingleSelectedGroup(
+                		selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
+                )
                 Bos.each{
                     def w=widget(constraints:'wrap,w :500px:',aS.getAdaptorClass(it.type,'briefDisplay').newInstance(value:it,group:itemGroup).getComponent())
                     itemGroup.addItem(w,it)
@@ -64,12 +66,12 @@ class SingleSelectedGroup{
     def select(item){
         assert (item in items)
         if(selected){
-            selected.onUnselected()
+            //selected.onUnselected()
         }
         selected=item
         selectedValue=values[items.indexOf(item)]
-        item.onSelected()
         this.selectionChanged()
+        //item.slected()
     }
 }
 

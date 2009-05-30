@@ -5,18 +5,20 @@ import net.miginfocom.swing.MigLayout
 abstract class DefaultBriefDisplayAdaptor{
     def value
     def group
-    private def originBackground
-	static SwingBuilder sb=new SwingBuilder()
+    def originBackground
+    def thePanel
+    static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
-        def re=getPanel()
-        re.metaClass.onSelected={
-            re.metaClass.originBack=re.background
-            re.background=SystemColor.activeCaption
-        }
-        re.metaClass.onUnselected={
-            re.background=re.originBack
-        }
-        return re
+    	if (!this.thePanel)
+    		this.thePanel=getPanel()
+        return this.thePanel
+    }
+    def onSelected={
+        this.originBackground=this.thePanel.background
+        this.thePanel.background=SystemColor.activeCaption
+    }
+    def onUnselected={
+        this.thePanel.background=this.originBackground
     }
     def abstract getPanel()
 }
