@@ -10,7 +10,7 @@ class TodoTag extends Tag{
 }
 class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def getPanel(){
-        return new SwingBuilder().panel(layout:new MigLayout(),constraints:'wrap'){
+        return sb.panel(layout:new MigLayout(),constraints:'wrap'){
             etchedBorder(parent:true)
             label(text:value.name)
         }
@@ -18,7 +18,7 @@ class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
 }
 class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
     def getPanel(){
-        return new SwingBuilder().panel{
+        return sb.panel{
             label("${value.name}")
         }
     }

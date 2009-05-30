@@ -8,7 +8,7 @@ class TextTagable extends Tagable{
 }
 class TextTagableBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def getPanel(){
-        return new SwingBuilder().panel(layout:new MigLayout(),constraints:'wrap'){
+        return sb.panel(layout:new MigLayout(),constraints:'wrap'){
             etchedBorder(parent:true)
             label(text:"${value.name} - ${value.text}")
         }
@@ -16,7 +16,7 @@ class TextTagableBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
 }
 class TextTagableDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
     def getPanel(){
-        return new SwingBuilder().panel{
+        return sb.panel{
             label(text:"${value.name} - ${value.text}")
         }
     }

@@ -6,6 +6,7 @@ abstract class DefaultBriefDisplayAdaptor{
     def value
     def group
     private def originBackground
+	static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
         def re=getPanel()
         re.metaClass.onSelected={

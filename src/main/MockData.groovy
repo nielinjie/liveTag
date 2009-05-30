@@ -7,6 +7,7 @@ import tagging.*
 import tagging.todo.*
 import tagging.text.*
 import tagging.twitter.*
+import tagging.people.*
 /**
  * @author nielinjie
  *
@@ -24,11 +25,13 @@ public class MockData{
 	    new SearchView(name:'All',description:'All Bos',condition:{true
 		    },sortComparator:{a,b->0
 		    }),
+		new SearchView(name:'All People',description:'All People',condition:{
+	    		obj->obj instanceof PeopleTagable
+            },sortComparator:{a,b->0
+            }),
 //	    new Importer(name:'A Sample Importer',description:'Sample Importer',condition:{true
 //		    },sortComparator:{a,b->0
 //		    },interval:3),
-	    new tagging.twitter.TwitterImporter(username:'nielinjie',password:'790127',name:'A Sample Twitter Importer',description:'Sample Twitter Importer',condition:{true
-		    },sortComparator:{a,b->0
-		    },interval:300)
+	    new tagging.twitter.TwitterImporter(username:'nielinjie',password:'790127',name:'A Sample Twitter Importer',description:'Sample Twitter Importer',interval:300)
     ]
 }

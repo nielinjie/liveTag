@@ -69,7 +69,7 @@ environments {
 
 griffon {
     memory {
-        //max = '64m'
+        max = '256m'
         //min = '2m'
         //maxPermSize = '64m'
     }
@@ -90,5 +90,8 @@ griffon {
     applet {
         jnlp = 'applet.jnlp'
         html = 'applet.html'
+    }
+    app{
+    	javaOpts = ['-agentlib:yjpagent']
     }
 }

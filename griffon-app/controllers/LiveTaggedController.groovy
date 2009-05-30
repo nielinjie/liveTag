@@ -1,6 +1,7 @@
 import tagging.*
 import groovy.swing.*
 class LiveTaggedController {
+	private def sb=new SwingBuilder()
     // these will be injected by Griffon
     def model
     def view
@@ -20,20 +21,26 @@ class LiveTaggedController {
         view.detailPanel.revalidate()
     }
     void selectSearchView(searchView){
-    	view.briefPanel.removeAll()
-		println view.briefPanel.layout
-		def tagables=tm.findTagable(searchView.condition)
-		println tagables
-		itemGroup=new SingleSelectedGroup(
-				selectionChanged:{this.selectBo(itemGroup.selectedValue)})
-        tagables.each{
-            def w=aS.getAdaptorClass(it.type,'briefDisplay').newInstance(value:it,group:itemGroup).getComponent()
-            itemGroup.addItem(w,it)
-    		view.briefPanel.add(w)
-			view.briefPanel.layout.setComponentConstraints(w,'wrap')
-            w.mouseClicked={e->itemGroup.select(e.source)}
-        }
-    	view.briefPanel.revalidate()
+    	sb.doOutside{
+    		edt{
+    			view.briefPanel.removeAll()
+    		}
+			def tagables=tm.findTagable(searchView.condition)
+			this.itemGroup=new SingleSelectedGroup(
+					selectionChanged:{this.selectBo(this.itemGroup.selectedValue)})
+	        tagables.each{
+				tagable->
+	            def w=aS.getAdaptorClass(tagable.type,'briefDisplay').newInstance(value:tagable,group:itemGroup).getComponent()
+				edt{
+		            itemGroup.addItem(w,tagable)
+		    		view.briefPanel.add(w)
+					view.briefPanel.layout.setComponentConstraints(w,'wrap')
+		            w.mouseClicked={e->itemGroup.select(e.source)}
+			        view.briefPanel.revalidate()
+	            }
+	        }
+    	}
+    	null
 //		view.briefPanel.update()
     }
     /*
