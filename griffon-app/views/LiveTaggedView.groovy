@@ -10,6 +10,7 @@ import ca.odell.glazedlists.swing.*
 import ca.odell.glazedlists.*
 import groovy.swing.SwingBuilder
 import tagging.*
+
 def Bos=MockData.bos
 def aS=AdaptorServiceFactory.getAdaptorService()
 def searchViews=MockData.searchViews
@@ -66,12 +67,19 @@ class SingleSelectedGroup{
     def select(item){
         assert (item in items)
         if(selected){
-            //selected.onUnselected()
+            this.onUnselect(selected)
         }
         selected=item
         selectedValue=values[items.indexOf(item)]
         this.selectionChanged()
-        //item.slected()
+        this.onSelect(item)
+    }
+    def onSelect={obj->
+    	obj.putClientProperty('originBC',obj.background)
+		obj.background=SystemColor.activeCaption
+    }
+    def onUnselect={obj->
+    	obj.background=obj.getClientProperty('originBC')
     }
 }
 

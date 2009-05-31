@@ -13,12 +13,5 @@ abstract class DefaultBriefDisplayAdaptor{
     		this.thePanel=getPanel()
         return this.thePanel
     }
-    def onSelected={
-        this.originBackground=this.thePanel.background
-        this.thePanel.background=SystemColor.activeCaption
-    }
-    def onUnselected={
-        this.thePanel.background=this.originBackground
-    }
     def abstract getPanel()
 }
