@@ -15,6 +15,7 @@ class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         return new SwingBuilder().panel{
             etchedBorder(parent:true)
             label(text:value.name)
+			button(text:'Display',actionPerformed:{ controller?.selectSearchView(value)})
         }
     }
 }

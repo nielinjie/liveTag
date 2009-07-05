@@ -1,0 +1,90 @@
+package tagging.flow
+class FlowBuilder{
+	def build(closure){
+		closure.delegate=this
+		closure()
+	}
+	def flow(closure){
+		def re=new Flow()
+		closure.delegate=re
+		closure()
+		return re
+	}
+}
+class Flow{
+	def acts=[:]
+	def runtimes=[:]
+	def start(att){
+		def re=new StartActivity(name:'start')
+		this.acts['start']=re
+		if(att.to)re.to=att.to
+	}
+	def activity(att,closure){
+		def re=new Activity(closure:closure,name:att.name)
+		this.acts[att.name]=re
+		if(att.to)re.to=att.to
+		if(att.roles)re.roles=att.roles.split(',').collect{new Role(name:it)}
+	}
+	def end(att){
+		this.acts[att.name]=new EndActivity(name:att.name)
+	}
+	def begin(Object obj, session){
+		if(!session.obj)
+			session.obj=obj
+		def re=new FlowRuntime(flow:this,obj:obj,session:session,nextActivity:this.acts.start)
+		this.runtimes[obj]=re
+		//to activity AFTER start
+		re.nextActivity.run(re)
+		return re
+	}
+	def taskList(Role role){
+		this.runtime.values().findAll{
+			it.nextActivity.roles.contains(role)
+		}
+	}
+	def runtime(Object obj){
+		this.runtime[obj]
+	}
+}
+
+class Activity{
+	def name
+	def closure
+	def to
+	def roles=[]
+	def run(FlowRuntime runtime){
+		runtime.session.to=null
+		closure.delegate=runtime.session
+		closure()
+		if(this.to){
+			runtime.nextActivity=runtime.flow.acts[this.to]
+		}
+		if(runtime.session.to){
+			runtime.nextActivity=runtime.flow.acts[runtime.session.to]
+		}
+	}
+}
+class EndActivity extends Activity{}
+class StartActivity extends Activity{
+	@Override def run(FlowRuntime runtime){
+        if(this.to){
+            runtime.nextActivity=runtime.flow.acts[this.to]
+        }
+        if(runtime.session.to){
+            runtime.nextActivity=runtime.flow.acts[runtime.session.to]
+        }
+    }
+}
+
+class Role{
+	def name
+}
+class FlowRuntime{
+	def flow
+	def obj
+	def session
+	def nextActivity=null
+	def run(){
+		this.nextActivity.run(this)
+	}
+}

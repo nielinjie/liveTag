@@ -19,7 +19,7 @@ public class TwitterImporter extends Importer{
     String urlBase='http://twitter.com'
     String username
     String password
-	def condition={obj->obj instanceof TweetTagable}
+	def condition={TaggingManagerFactory.getTaggingManager().findTagable({obj->obj instanceof TweetTagable})}
     def sortComparator={a,b->a.createdAt<=>b.createAt}
     Authenticator authenticator=null
     GPathResult slurpAPIStream(String url) {
@@ -65,49 +65,53 @@ public class TwitterImporter extends Importer{
         //download from twitter
         def tm=TaggingManagerFactory.getTaggingManager()
         tweets.values().each{
-			println it
-            if(tm.findTagable({tagable->tagable.bid==it['id']})){
+			tw->
+            if(tm.findTagable({tagable->tagable.bid==tw['id']})){
                 return
             }
-            def tweet=new TweetTagable(text:it['text'],createdAt:twitterFormat.parse(it.created_at))
+            def tweet=new TweetTagable(text:tw['text'],author:tw['userid'],createdAt:twitterFormat.parse(tw.created_at))
             tm.addTagable(tweet)
             //add keyword tags
             //add person tagable and createdby tag
-			if(!tm.findTagable({obj->obj.type=='tagable.twitter.people' && obj.bid==it['userid']})){
-				def people=new TwitterPeople(bid:it['userid'],
-						userName:it['username'],screenName:it['userScreenName'],
-						imageUrl:it['userImage'])
-				tm.addTagable(people)
-				tm.tagging(tweet,[new CreatedByTag(authorBid:people.bid,authorId:people.id)])
-			}
+			def createdBy=new CreatedByTag(from:tweet,fromPropertyName:'author',toType:'tagable.twitter.people')
+			println createdBy.dump()
+            createdBy.link({
+                new TwitterPeople(bid:tw['userid'],
+                        userName:tw['username'],screenName:tw['userScreenName'],
+                        imageUrl:tw['userImage'])
+                        })
             //add system tags
             //updated
-            //createby
             //unread
         }  
     }
     
 }
 class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
-    
-    @Override
-    def getPanel(){
-        return new SwingBuilder().panel(super.getPanel()){ button('Update Now') }
-    }
 }
 class TweetTagable extends Tagable{
     def type='tagable.twitter.tweet'
 	def text
+	def author
 	Date createdAt
 }
 class DMTagable extends Tagable{
     def type='tagable.twitter.DM'
+	
 }
 class TwitterPeople extends PeopleTagable{
     def type='tagable.twitter.people'
 	def userName
 	def screenName
 	def imageUrl
+	@Lazy def searchView={
+//    		def name
+//		    def description
+//		    def condition
+//		    def sortComparator
+    	new SearchView(name:'Tweeted',description:'Tweeted by this people',condition:{CreatedByTag.findCreate(this)},sortComparator:{a,b->0
+        })
+    }()
 }
 class TwitterMeta{
     def static provideMeta(){
@@ -117,5 +121,6 @@ class TwitterMeta{
 		aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
 		aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
         aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
+		aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
     }
 }

@@ -11,6 +11,4 @@ import tagging.*
  */
 public class PeopleTagable extends Tagable{
 	String type='tagable.people'
-	
-	
 }

@@ -5,7 +5,7 @@ class LiveTaggedController {
     // these will be injected by Griffon
     def model
     def view
-    def aS=AdaptorServiceFactory.getAdaptorService()
+    def aS=AdaptorServiceFactory.getAdaptorService(this)
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
     void mvcGroupInit(Map args) {
@@ -17,7 +17,7 @@ class LiveTaggedController {
     }
     void selectBo(bo){
         view.detailPanel.removeAll()
-        view.detailPanel.add(aS.getAdaptorClass(bo.type,'detailDisplay').newInstance(value:bo).getComponent())
+        view.detailPanel.add(aS.getAdaptor(bo,'detailDisplay').getComponent())
         view.detailPanel.revalidate()
     }
     void selectSearchView(searchView){
@@ -25,7 +25,7 @@ class LiveTaggedController {
             edt{
                 view.briefPanel.removeAll()
             }
-            def tagables=tm.findTagable(searchView.condition)
+            def tagables=searchView.condition()
             this.itemGroup=new SingleSelectedGroup(
                     selectionChanged:{
                         this.selectBo(this.itemGroup.selectedValue)
@@ -33,7 +33,9 @@ class LiveTaggedController {
                     
                     )
             tagables.each{ tagable->
-                def w=aS.getAdaptorClass(tagable.type,'briefDisplay').newInstance(value:tagable,group:itemGroup).getComponent()
+                def w=aS.getAdaptor(tagable,'briefDisplay')
+				w.group=itemGroup
+				w=w.getComponent()
                 edt{
                     itemGroup.addItem(w,tagable)
                     view.briefPanel.add(w)

@@ -28,6 +28,7 @@ class ImporterBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
 		return new SwingBuilder().panel{
 			label(text:value.name)
 			label(text:bind{value.stop})
+			button(text:'Update Now')
 		}
 	}
 }

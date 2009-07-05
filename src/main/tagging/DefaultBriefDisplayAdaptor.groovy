@@ -7,6 +7,7 @@ abstract class DefaultBriefDisplayAdaptor{
     def group
     def originBackground
     def thePanel
+	def controller
     static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
     	if (!this.thePanel)

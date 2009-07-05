@@ -139,7 +139,7 @@
 			<formatter type="plain" usefile="false" />
 			<batchtest>
 				<fileset dir="classes">
-					<include name="**/*Tests.class" />
+					<include name="**/LinkTagTests.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -165,13 +165,13 @@
 			</classpath>
 			<classpath location="${groovyjar}" />
 			<formatter type="plain" usefile="false" />
-			<test name="LiveTaggedStory" />
+			<!--test name="LiveTaggedStory" />
 			<test name="AdaptorTests" />
-			<test name="BaseTests" />
+			<test name="BaseTests" /-->
 			<batchtest>
 				<fileset dir="test/unit">
-					<include name="**/*" />
-					<include name="*" />
+					<include name="**/*Tests.*" />
+					<!--include name="*" /-->
 				</fileset>
 			</batchtest>
 		</junit>

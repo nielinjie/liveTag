@@ -91,7 +91,8 @@ griffon {
         jnlp = 'applet.jnlp'
         html = 'applet.html'
     }
-    app{
-    	javaOpts = ['-agentlib:yjpagent']
-    }
+    //for yjp profiler
+//    app{
+//    	javaOpts = ['-agentlib:yjpagent']
+//    }
 }

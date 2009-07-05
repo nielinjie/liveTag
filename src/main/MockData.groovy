@@ -26,7 +26,7 @@ public class MockData{
 		    },sortComparator:{a,b->0
 		    }),
 		new SearchView(name:'All People',description:'All People',condition:{
-	    		obj->obj instanceof PeopleTagable
+	    		TaggingManagerFactory.getTaggingManager().findTagable{obj->obj instanceof PeopleTagable}
             },sortComparator:{a,b->0
             }),
 //	    new Importer(name:'A Sample Importer',description:'Sample Importer',condition:{true
