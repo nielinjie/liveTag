@@ -139,7 +139,7 @@
 			<formatter type="plain" usefile="false" />
 			<batchtest>
 				<fileset dir="classes">
-					<include name="**/LinkTagTests.class" />
+					<include name="**/ViewFrameTests.class" />
 				</fileset>
 			</batchtest>
 		</junit>

@@ -15,6 +15,13 @@ def Bos=MockData.bos
 def aS=AdaptorServiceFactory.getAdaptorService()
 def searchViews=MockData.searchViews
 
+
+def icons=[:].putAll(
+['back','forward','more'].collect{
+    new MapEntry(it,new ImageIcon(getClass().getResource("/icons/${it.toLowerCase()}.png")))
+}
+)
+println icons
 application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
     splitPane(constraints:'h 700px::, w 1200px::',
     leftComponent:
@@ -33,9 +40,20 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
             rightComponent:
             splitPane(
                     leftComponent:
-                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 400px::, h 600px::'){
+                    	panel(layout:new MigLayout(),constraints:'w 400px::, h 600px::'){
+            				panel(layout:new MigLayout(),constraints:'growx ,wrap'){
+            					etchedBorder(parent:true)
+            					button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
+								button(icon:icons['forward'],id:'viewFrameForward',text:'forward',actionPerformed:{model.currentViewFrame=model.history.forward();controller.renderViewFrame(model.currentViewFrame)})
+            					label(id:'viewFrameDescription',text:'view frame description here',constraints:'growx')
+								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasBack()},target:viewFrameBack,targetProperty:'enabled')
+								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasForward()},target:viewFrameForward,targetProperty:'enabled')
+								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
+            				}
+            				
+                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :100%:, wrap'){
                                 panel(id:'briefPanel',layout:new MigLayout()){
-                                    def itemGroup=new SingleSelectedGroup(
+                                    itemGroup=new SingleSelectedGroup(
                                     selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
                                     )
                                     Bos.each{
@@ -46,6 +64,11 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
                                         w.mouseClicked={e->itemGroup.select(e.source)}
                                     }
                                 }
+                            }
+                            panel(){
+                            	button(id:'moreButton',icon:icons['more'],text:'More',enabled:false,actionPerformed:controller.&expandViewFrame)
+								//bind(source:model.currentViewFrame,sourceEvent:'statusChanged',sourceValue:{model.currentViewFrame.hasMore()},target:moreButton,targetProperty:'enabled')
+                            }
                             },
                             rightComponent:
                             scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){

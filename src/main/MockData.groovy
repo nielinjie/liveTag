@@ -19,10 +19,10 @@ public class MockData{
 	    new TodoTag(name:'a todo'),
 	    new TodoTag(name:'second todo'),
 	    new TodoTag(name:'3rd todo'),
-	    new TextTagable(name:'text tagable',text:'I am a plain text tagable')
+	    new TextTagable(name:'text tagable',text:'I am a plain text tagable'),
     ]
     static def searchViews=[
-	    new SearchView(name:'All',description:'All Bos',condition:{true
+	    new SearchView(name:'All',description:'All Bos',condition:{TaggingManagerFactory.getTaggingManager().findTagable({true})
 		    },sortComparator:{a,b->0
 		    }),
 		new SearchView(name:'All People',description:'All People',condition:{
@@ -34,4 +34,7 @@ public class MockData{
 //		    },interval:3),
 	    new tagging.twitter.TwitterImporter(username:'nielinjie',password:'790127',name:'A Sample Twitter Importer',description:'Sample Twitter Importer',interval:300)
     ]
+	static def mockTagables=
+		(1..50).collect{new TextTagable(name:'mock text tagable',text:"I am mock text tagable - No. ${it}")}
+	
 }
