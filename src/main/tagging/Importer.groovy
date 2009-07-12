@@ -14,6 +14,9 @@ public  class Importer extends SearchView{
 	String type='importer'
 	@Bindable boolean stop=false
 	Importer(){
+		this([:])
+	}
+	Importer(Map att){
 		new Thread({
 			while(!stop){
                 onTimer()

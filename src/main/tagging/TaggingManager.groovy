@@ -34,6 +34,7 @@ class TaggingManager{
     			this.saveTag(it)
     		}
     		it.tagables<<tagable.id
+			it.onTagging(tagable)
     	}
     	
     }

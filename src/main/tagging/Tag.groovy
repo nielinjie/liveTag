@@ -5,6 +5,8 @@ import com.thoughtworks.xstream.XStream
 class Tag extends BO{
     String type='tag'
 	Set<UUID> tagables=new HashSet<UUID>()
+	def onTagging(Tagable tagable){
+    }
 }
 class BO extends WithID{
     //String type

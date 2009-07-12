@@ -1,4 +1,6 @@
 import org.junit.*
+import tagging.*
+import tagging.text.*
 import tagging.flow.*
 import static org.junit.Assert.*
 import static org.hamcrest.CoreMatchers.*
@@ -28,7 +30,7 @@ class FlowTests{
 	}
 	@Test void runFlow(){
 		def codeReviewRequest=new CodeReviewRequest()
-		def runtime=this.flow.begin(codeReviewRequest,new Expando(review:{pass=true;println 'reviewing'},update:{println 'updateing'}))
+		def runtime=this.flow.begin(codeReviewRequest,new Session(review:{pass=true;println 'reviewing'},update:{println 'updateing'}))
 		assertNotNull(runtime)
 		def ac=runtime.nextActivity
 		assertNotNull(ac)
@@ -42,7 +44,7 @@ class FlowTests{
 	}
 	@Test void runNotPassedFlow(){
         def codeReviewRequest=new CodeReviewRequest()
-        def runtime=this.flow.begin(codeReviewRequest,new Expando(updated:false,review:{pass=updated;println 'reviewing, not pass'},update:{updated=true;println 'updateing'}))
+        def runtime=this.flow.begin(codeReviewRequest,new Session(updated:false,review:{pass=updated;println 'reviewing, not pass'},update:{updated=true;println 'updateing'}))
         assertNotNull(runtime)
         def ac=runtime.nextActivity
         assertNotNull(ac)
@@ -56,6 +58,37 @@ class FlowTests{
 		runtime.run()
 		assertThat runtime.nextActivity.name, is('review')
     }
+	@Test void withTM(){
+		def tm=TaggingManagerFactory.getTaggingManager()
+		tm.clear()
+		def ta=new TextTagable(text:'I am a flow object')
+		tm.addTagable(ta)
+		def dsl="""
+			flow{
+                start(to:'create')
+                activity(name:'create',role:'coder',to:'review'){
+                   println 'I am created'
+                }
+                activity(name:'review',role:'reviewer'){
+                    println 'reviewer'
+					pass=true
+                    if(pass){to='end'}
+                    else{to='update'}
+                }
+                activity(name:'update',role:'coder',to:'review'){
+                    println 'update'
+                }
+                end(name:'end')
+            }
+		"""
+		def flowD=new FlowDefinition(dsl:dsl)
+		def flowTag=new FlowTag(definition:flowD)
+		tm.tagging(ta,[flowTag])
+		//def runtime=flowTag.runtime
+		def flowImporter=new FlowServerImporter(stop:true)
+		flowImporter.onTime()
+		
+	}
 }
 class CodeReviewRequest{
 	def create(){
