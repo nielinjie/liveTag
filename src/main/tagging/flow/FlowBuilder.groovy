@@ -11,9 +11,14 @@ class FlowBuilder{
         return re
     }
 }
-class Session extends Expando{
+class Session extends Expando implements Cloneable{
     Session(Map atts){
     	super(atts)
+    }
+    void mergeFrom(Session sessionb){
+    	sessionb.getProperties().each{
+    		this.setProperty(it.key,it.value)
+    	}
     }
 }
 class Flow{
@@ -76,6 +81,7 @@ class FlowRuntime{
     def flow
     def obj
     def session
+	def stepId=0
     def nextActivity=null
     def run(){
         this.nextActivity.run(this.session)
@@ -85,5 +91,7 @@ class FlowRuntime{
         if(session.to){
             this.nextActivity=flow.acts[session.to]
         }
+        this.stepId++
+		this.session.stepId=this.stepId
     }
 }

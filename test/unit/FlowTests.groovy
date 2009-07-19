@@ -1,9 +1,10 @@
 import org.junit.*
+import static org.junit.Assert.*
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.Assert.assertThat as at
 import tagging.*
 import tagging.text.*
 import tagging.flow.*
-import static org.junit.Assert.*
-import static org.hamcrest.CoreMatchers.*
 class FlowTests{
 	private Flow flow=null
 	@Before void createFlow(){
@@ -87,7 +88,38 @@ class FlowTests{
 		//def runtime=flowTag.runtime
 		def flowImporter=new FlowServerImporter(stop:true)
 		flowImporter.onTime()
+		def tasks=tm.findTagable(){
+			it.type=='tagable.flow.task'
+		}
+		at tasks.size, is(1)
+		def task=tasks[0]
+		at task.flowTagId, is(flowTag.id)
+		at task.activityName, is('create')
+		at task.commited, is(false)
+		at task.runned, is(false)
+		def taskSearch=new FlowTaskSearchView()
+		def findTasks=taskSearch.condition()
+		at findTasks.size, is(1)
+		def findTask=findTasks[0]
+		at findTask.id, is(task.id)
+		at findTask.session.stepId, is(1)
+		findTask.commited=true
+		flowImporter.onTime()
+		flowImporter.onTime()
+		at findTask.runned, is(true)
+		//find the new task
+		findTasks=taskSearch.condition()
+		at findTasks.size, is(1)
+		findTask=findTasks[0]
+		at findTask.id, is(not(task.id))
+		at findTask.session.stepId, is(2)
+		at findTask.activityName,is('review')
+		at findTask.commited ,is(false)
+		at findTask.runned,is(false)
 		
+		//history
+		def historyFinder=new FlowTaskHistorySearchView(flowTagId:flowTag.id)
+		at historyFinder.condition().size,is(2)
 	}
 }
 class CodeReviewRequest{

@@ -15,9 +15,11 @@ class FlowDefinition{
 class FlowTag extends Tag{
 	def type='tag.flow'
 	def definition
+	def needCreateTask=false
 	def runtime
 	@Override def onTagging(Tagable tagable){
 		runtime=definition.begin(tagable,new Session())
+		this.needCreateTask=true
 	}
 	def getFinished(){
 		runtime.getNextActivity() instanceof EndActivity
@@ -31,4 +33,7 @@ class FlowTaskTagable extends Tagable{
 	Boolean runned=false
 	Boolean commited=false
 	Session session=null
+	String getBid(){
+		return "$flowTagId-$activityName-${session.stepId}"
+	}
 }
