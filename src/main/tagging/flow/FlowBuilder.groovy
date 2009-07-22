@@ -11,15 +11,24 @@ class FlowBuilder{
         return re
     }
 }
-class Session extends Expando implements Cloneable{
+class Session extends Expando {
     Session(Map atts){
-    	super(atts)
+        super(atts)
     }
-    void mergeFrom(Session sessionb){
-    	sessionb.getProperties().each{
-    		this.setProperty(it.key,it.value)
-    	}
+    void merge(Session sessionb){
+        sessionb.getProperties().each{
+            this."${it.key}"=it.value
+        }
     }
+    void merge(Map map){
+    	merge(new Session(map))
+    }
+    Session copy(){
+        def s=new Session()
+        s.merge(this)
+        return s
+    }
+    
 }
 class Flow{
     def acts=[:]
@@ -39,8 +48,6 @@ class Flow{
         this.acts[att.name]=new EndActivity(name:att.name)
     }
     def begin(Object obj, session){
-        if(!session.obj)
-            session.obj=obj
         def re=new FlowRuntime(flow:this,obj:obj,session:session,nextActivity:this.acts.start)
         this.runtimes[obj]=re
         //to activity AFTER start
@@ -62,15 +69,16 @@ class Activity{
     def closure
     def to
     def roles=[]
-    def run( session){
+    def run( session,obj){
         session.to=null
+		session.merge([obj:obj])
         closure.delegate=session
         closure()
     }
 }
 class EndActivity extends Activity{}
 class StartActivity extends Activity{
-    @Override def run( session){
+    @Override def run( session,obj){
     }
 }
 
@@ -81,10 +89,10 @@ class FlowRuntime{
     def flow
     def obj
     def session
-	def stepId=0
+    def stepId=0
     def nextActivity=null
     def run(){
-        this.nextActivity.run(this.session)
+        this.nextActivity.run(this.session,this.obj)
         if(this.nextActivity.to){
             this.nextActivity=flow.acts[this.nextActivity.to]
         }else
@@ -92,6 +100,6 @@ class FlowRuntime{
             this.nextActivity=flow.acts[session.to]
         }
         this.stepId++
-		this.session.stepId=this.stepId
+        this.session.stepId=this.stepId
     }
 }

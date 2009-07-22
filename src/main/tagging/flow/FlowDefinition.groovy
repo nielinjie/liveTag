@@ -6,9 +6,7 @@ class FlowDefinition{
 	def begin(obj,session){
 		def shell=new GroovyShell(this.getClass().getClassLoader())
 		def string="import tagging.flow.*\nnew FlowBuilder().build{\n${dsl}\n}"
-		println string
 		this.flow=shell.run(string,'FLowDSL',[])
-		println this.flow
 		this.flow.begin(obj,session)
 	}
 }
@@ -29,6 +27,7 @@ class FlowTag extends Tag{
 class FlowTaskTagable extends Tagable{
 	def type='tagable.flow.task'
 	def flowTagId
+	def objId
 	def activityName
 	Boolean runned=false
 	Boolean commited=false

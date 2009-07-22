@@ -1,12 +1,7 @@
 package tagging.flow
 import tagging.*
 
-//class FlowTaskImporter extends Importer{
-//	void onTimer(){
-//		def tm=TaggingManagerFactory.getTaggingManager()
-//		
-//	}
-//}
+
 //run on 'server' side, to create task. and also, it accept commited task to run.
 class FlowServerImporter extends Importer{
     void onTime(){
@@ -18,7 +13,11 @@ class FlowServerImporter extends Importer{
         flows.each{
             def activity =it.runtime.getNextActivity()
             println "I will creat task for actvity - ${activity.dump()}"
-            def flowTaskTagable=new FlowTaskTagable(flowTagId:it.id,session:it.runtime.session.clone(),activityName:activity.name)
+            println "session - ${it.runtime.session.dump()}"
+			//copy session and trim obj from it
+			def clientSession=it.runtime.session.copy()
+			clientSession.merge([obj:null])
+            def flowTaskTagable=new FlowTaskTagable(flowTagId:it.id,session:clientSession,activityName:activity.name,objId:it.runtime.obj.id)
             tm.addTagable(flowTaskTagable)
             it.needCreateTask=false
         }
@@ -35,7 +34,7 @@ class FlowServerImporter extends Importer{
             def flowTag=flowTags[0]
             def runtime=flowTag.runtime
             assert runtime.nextActivity.name==task.activityName
-            runtime.session.mergeFrom(task.session)
+            runtime.session.merge(task.session)
             runtime.run()
             task.runned=true
             flowTag.needCreateTask=true
@@ -46,9 +45,14 @@ class FlowServerImporter extends Importer{
 class FlowTaskSearchView extends SearchView{
     def type='searchView.flow.task'
     def condition={
-        TaggingManagerFactory.getTaggingManager().findTagable{
+        def tasks=TaggingManagerFactory.getTaggingManager().findTagable{
             it.type=='tagable.flow.task' && it.commited==false 
         }
+        tasks.each{
+			def objId=it.objId
+			it.session.obj=TaggingManagerFactory.getTaggingManager().getTagable(objId)
+        }
+        tasks
     }
 }
 class FlowTaskHistorySearchView extends SearchView{

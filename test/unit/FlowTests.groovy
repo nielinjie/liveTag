@@ -85,6 +85,7 @@ class FlowTests{
 		def flowD=new FlowDefinition(dsl:dsl)
 		def flowTag=new FlowTag(definition:flowD)
 		tm.tagging(ta,[flowTag])
+		flowTag.runtime.session.arg1='argOld'
 		//def runtime=flowTag.runtime
 		def flowImporter=new FlowServerImporter(stop:true)
 		flowImporter.onTime()
@@ -98,21 +99,32 @@ class FlowTests{
 		at task.commited, is(false)
 		at task.runned, is(false)
 		def taskSearch=new FlowTaskSearchView()
+		at task.session.obj,is(null)
 		def findTasks=taskSearch.condition()
 		at findTasks.size, is(1)
+		//found task on 'client' side
 		def findTask=findTasks[0]
 		at findTask.id, is(task.id)
 		at findTask.session.stepId, is(1)
+		at findTask.session.arg1, is('argOld')
+		at findTask.session.obj, is(not(null))
+		//do some input
+		findTask.session.arg1='argNew'
 		findTask.commited=true
+		//run commited task
 		flowImporter.onTime()
+		at flowTag.runtime.session.arg1,is('argNew')
+		//create next task, for delivering to 'client'
 		flowImporter.onTime()
 		at findTask.runned, is(true)
 		//find the new task
 		findTasks=taskSearch.condition()
 		at findTasks.size, is(1)
 		findTask=findTasks[0]
+		at findTask.session.arg1, is('argNew')
 		at findTask.id, is(not(task.id))
 		at findTask.session.stepId, is(2)
+		at findTask.session.obj, is(not(null))
 		at findTask.activityName,is('review')
 		at findTask.commited ,is(false)
 		at findTask.runned,is(false)
