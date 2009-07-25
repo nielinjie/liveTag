@@ -117,7 +117,7 @@
 		</copy>
 	</target>
 	<target name="main.run" depends="main.compile">
-		<java classname="RestletServer">
+		<java classname="${mainClass}">
 			<classpath location="classes" />
 			<classpath>
 				<fileset dir="lib">
@@ -127,6 +127,7 @@
 			<classpath location="${groovyjar}" />
 		</java>
 	</target>
+	
 	<target name="main.test" depends="main.compile">
 		<junit printsummary="yes" haltonfailure="yes">
 			<classpath location="classes" />

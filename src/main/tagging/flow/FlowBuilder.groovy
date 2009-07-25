@@ -63,7 +63,6 @@ class Flow{
         this.runtime[obj]
     }
 }
-
 class Activity{
     def name
     def closure
