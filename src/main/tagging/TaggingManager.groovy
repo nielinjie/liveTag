@@ -50,6 +50,9 @@ class TaggingManager{
     	println "tagable added, ${tagable.dump()}"
     	this.tagables[tagable.id]=tagable
     }
+    void fromOther(List<String> bos){
+    	
+    }
 }
 class TaggingManagerFactory{
     private static taggingManager=new TaggingManager()
