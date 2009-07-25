@@ -28,7 +28,9 @@ class TaggingManager{
     	return tags.values().findAll(filter)
     }
     void tagging(Tagable tagable, List<Tag> tags){
-    	
+    	if(!tagable.id in this.tagables.keySet()){
+    		this.addTagable(tagable)
+    	}
     	tags.each{
     		if(!(it.id in this.tags.keySet())){
     			this.saveTag(it)

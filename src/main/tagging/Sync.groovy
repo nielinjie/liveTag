@@ -15,6 +15,7 @@ class Sync{
 		r.addAll(this.tm.findTag{
 			hint.filter(it)
 		})
+		return r
 	}
 }
 interface Hint{
@@ -23,6 +24,6 @@ interface Hint{
 class NewerThanHint implements Hint{
 	Date date
 	def filter(BO bo){
-		return bo.version.newser(date)
+		return bo.version.newer(date)
 	}
 }
