@@ -72,7 +72,7 @@
 
 	<target name="main.compile">
 		<mkdir dir="classes" />
-		<javac srcdir="src/main" destdir="classes" includes="**/*.java" debug="on">
+		<javac srcdir="src/main" destdir="classes" includes="**/*.java" debug="true">
 			<classpath location="lib">
 				<fileset dir="lib">
 					<include name="**/*.jar" />
@@ -140,7 +140,7 @@
 			<formatter type="plain" usefile="false" />
 			<batchtest>
 				<fileset dir="classes">
-					<include name="**/FlowTests.class" />
+					<include name="**/SyncTests.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -170,8 +170,8 @@
 			<test name="AdaptorTests" />
 			<test name="BaseTests" /-->
 			<batchtest>
-				<fileset dir="test/unit">
-					<include name="**/*Tests.*" />
+				<fileset dir="classes">
+					<include name="**/*Tests.class" />
 					<!--include name="*" /-->
 				</fileset>
 			</batchtest>

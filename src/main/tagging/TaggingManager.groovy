@@ -28,7 +28,7 @@ class TaggingManager{
     	return tags.values().findAll(filter)
     }
     void tagging(Tagable tagable, List<Tag> tags){
-    	if(!tagable.id in this.tagables.keySet()){
+    	if(!(tagable.id in this.tagables.keySet())){
     		this.addTagable(tagable)
     	}
     	tags.each{
@@ -52,8 +52,12 @@ class TaggingManager{
     	println "tagable added, ${tagable.dump()}"
     	this.tagables[tagable.id]=tagable
     }
-    void fromOther(List<String> bos){
-    	
+    void fromOther(List<BO> bos){
+    	bos.each{
+    		if(it instanceof Tagable){
+    			this.addTagable(it)
+    		}
+    	}
     }
 }
 class TaggingManagerFactory{
