@@ -1,8 +1,16 @@
 package tagging
+import tagging.contact.*
 //@Singleton
 class TaggingManager{
     private Map<UUID,Tag> tags=[:]
     private Map<UUID,Tagable> tagables=[:]
+    @Lazy def sync={
+        new Sync(tm:this).with{
+        	//taggingManager is used as singleten, so contactManager not.
+            cm=ContactManagerFactory.getNewContactManager()
+			it
+        }
+    }()
     void clear(){
     	this.tags.clear()
 		this.tagables.clear()

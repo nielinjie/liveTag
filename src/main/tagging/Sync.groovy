@@ -1,8 +1,14 @@
 package tagging
+import groovy.net.xmlrpc.*
+import java.net.ServerSocket
+import tagging.contact.*
+import tagging.util.*
+import tagging.text.*
 class Sync{
 	TaggingManager tm
 	private List<SyncPort> syncPorts
 	ContactManager cm
+	Map<String,SyncPort> ports=[:]
 	List getBOs(Hint hint){
 		def r=[]
 		r.addAll(this.tm.findTagable{
@@ -29,7 +35,7 @@ class Sync{
 		//call contacts' push
 	}
 	List<BO> onRequest(Hint hint){
-		return []
+		return [new TextTagable(text:'on request')]
 	}
 	void onPush(List<BO> bos){
         tm.fromOther(bos)
@@ -37,9 +43,31 @@ class Sync{
 }
 //listening to contacts
 abstract class SyncPort{
+	
 	def sync
 	 def start(){}
 	 def stop(){}
+}
+class XMLRPCSyncPort extends SyncPort{
+	int port=7927
+	def server
+	def start(){
+		this. server = new XMLRPCServer()
+		server.request={
+			String hint->
+			this.sync.onRequest(XML.fromXML(hint)).collect{
+				it.asString()
+			}
+		}
+		server.push={
+			List<String> bos->
+			this.sync.onPush(bos.collect{BO.fromString(it)})
+		}
+		def serverSocket = new ServerSocket(port)   
+		Thread.start{
+			server.startServer(serverSocket)   
+		}
+	}
 }
 class MemorySyncPort extends SyncPort{
 	List<BO> request(Hint hint){

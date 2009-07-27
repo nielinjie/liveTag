@@ -3,6 +3,7 @@ import static org.junit.Assert.*
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.assertThat as at
 import tagging.*
+import tagging.contact.*
 import tagging.text.*
 import tagging.keyword.*
 class SyncTests{
@@ -28,7 +29,9 @@ class SyncTests{
     	def tm=TaggingManagerFactory.getTaggingManager()
 		tm.clear()
 		Contact contact=new MockContact()
-    	def sync=new Sync(tm:tm,cm:new ContactManager(contacts:[contact]))
+    	def sync=tm.sync
+		println sync
+		sync.cm=new ContactManager(contacts:[contact])
     	def list=sync.request(new NewerThanHint(date:new Date()))
 		at list.size, is(1)
 		at list[0].text,is('requested')
@@ -38,6 +41,35 @@ class SyncTests{
     	}
     	at list.size, is(1)
 		at list[0].text,is('pushed')
+    }
+    @Test void xmlrpc(){
+    	def bs=BoServiceFactory.getBoService()
+        bs.registerBo('tagable.text','tagable',TextTagable.class)
+    	def tm1=TaggingManagerFactory.getTaggingManager()
+        tm1.clear()
+		def tm2=TaggingManagerFactory.getNewTaggingManager()
+		tm2.clear()
+        Contact contact=new LanContact().with{
+    		it.ip='localhost'
+			it.port=7927
+			it
+    	}
+        def sync1=tm1.sync
+		sync1.cm=new ContactManager(contacts:[contact])
+    	def sync2=tm2.sync
+    	sync2.ports=['rpc':new XMLRPCSyncPort(sync:sync2)]
+        sync2.ports.each{
+        	it.value.start()
+        }
+        def list=sync1.request(new NewerThanHint(date:new Date()))
+        at list.size, is(1)
+        at list[0].text,is('on request')
+        sync1.push([new TextTagable(text:'pushed')])
+        list=tm2.findTagable{
+            true
+        }
+        at list.size, is(1)
+        at list[0].text,is('pushed')
     }
 }
 class MockContact extends MemoryContact{
