@@ -33,5 +33,8 @@
 	<classpathentry kind="lib" path="lib/smackx-debug.jar"/>
 	<classpathentry kind="lib" path="lib/smackx-jingle.jar"/>
 	<classpathentry kind="lib" path="lib/smackx.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/jpf-boot.jar"/>
+	<classpathentry kind="lib" path="lib/jpf.jar"/>
 	<classpathentry kind="output" path="staging/classes"/>
 </classpath>

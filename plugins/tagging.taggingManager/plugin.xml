@@ -7,10 +7,8 @@
 			<export prefix="*" />
 		</library>
 	</runtime>
-<!--	<extension-point id="Tool">-->
-<!--		<parameter-def id="class" />-->
-<!--		<parameter-def id="name" />-->
-<!--		<parameter-def id="description" multiplicity="none-or-one" />-->
-<!--		<parameter-def id="icon" multiplicity="none-or-one" />-->
-<!--	</extension-point>-->
+	<extension-point id="Meta">
+		<parameter-def id="class" multiplicity="any"/>
+		<parameter-def id="description" multiplicity="none-or-one" />
+	</extension-point>
 </plugin>

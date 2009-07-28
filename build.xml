@@ -140,7 +140,7 @@
 			<formatter type="plain" usefile="false" />
 			<batchtest>
 				<fileset dir="classes">
-					<include name="**/SyncTests.class" />
+					<include name="**/PluginTests.class" />
 				</fileset>
 			</batchtest>
 		</junit>
