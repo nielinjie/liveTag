@@ -16,7 +16,7 @@ public class TwitterImporter extends Importer{
 	static final DateFormat twitterFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss Z yyyy")
     XmlSlurper slurper = new XmlSlurper()
     String type='importer.twitter'
-    String urlBase='http://twitter.com'
+    String urlBase='https://twitter.com'
     String username
     String password
 	def condition={TaggingManagerFactory.getTaggingManager().findTagable({obj->obj instanceof TweetTagable})}
