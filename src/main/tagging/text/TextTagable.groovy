@@ -27,6 +27,6 @@ class TextTagableMeta{
         aS.registerAdaptor('tagable.text','detailDisplay',TextTagableDetailDisplayAdaptor.class)
         aS.registerAdaptor('tagable.text','briefDisplay',TextTagableBriefDisplayAdaptor.class)
 		def bs=BoServiceFactory.getBoService()
-		bs.registerBo('tagable.text',null,TextTagable.class)
+		bs.registerBo('tagable.text','tagable',TextTagable.class)
 	}
 }

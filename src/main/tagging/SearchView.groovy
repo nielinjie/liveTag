@@ -10,10 +10,16 @@ class SearchView{
     def type='searchView'
 }
 class SearchService{
-    List<SearchView> searchView=[]
+    List<SearchView> searchViews=[]
+}
+class SearchServiceFactory{
+    static def service=new SearchService()
+    static def getSearchService(){
+        return service
+    }
 }
 class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
-	def iconNames=['search']
+    def iconNames=['search']
     def getPanel(){
         return new SwingBuilder().panel{
             etchedBorder(parent:true)
@@ -34,38 +40,38 @@ class ViewFrameManager{
 class ViewFrame extends StatusObservable{
     def deltaSize=20
     private int currentMaxIndex=0
-	def description='a common view frame'
+    def description='a common view frame'
     def allContent=[]
     def getDelta(){
-    	if(allContent.size==0)return[]
+        if(allContent.size==0)return[]
         def re= allContent[currentMaxIndex..([currentMaxIndex+deltaSize-1,allContent.size-1].min())]
-    	currentMaxIndex=([currentMaxIndex+deltaSize,allContent.size].min())
-		statusChange()
-		return re
+        currentMaxIndex=([currentMaxIndex+deltaSize,allContent.size].min())
+        statusChange()
+        return re
     }
     def getRequested(){
-    	if(allContent.size==0)return[]
+        if(allContent.size==0)return[]
         return allContent[0..currentMaxIndex-1]
     }
     def hasMore(){
-    	return allContent.size!=0 && currentMaxIndex<allContent.size
+        return allContent.size!=0 && currentMaxIndex<allContent.size
     }
     def reset(){
         this.currentMaxIndex=0
-		statusChange()
+        statusChange()
     }
 }
 class History extends StatusObservable{
     private int currentIndex=0
     def queue=[]
     def getCurrent(){
-    	return this.queue[this.currentIndex]
+        return this.queue[this.currentIndex]
     }
     def to(int index){
-    	assert index>=0
-    	this.currentIndex=index
+        assert index>=0
+        this.currentIndex=index
         def current=queue[index]
-    	statusChange()
+        statusChange()
         return current
     }
     def back(){
@@ -75,23 +81,23 @@ class History extends StatusObservable{
         return queue[currentIndex]
     }
     def forward(){
-    	this.currentIndex+=1
-		if (this.currentIndex>this.queue.size-1)this.currentIndex=this.queue.size-1
-		statusChange()
-    	return queue[currentIndex]
+        this.currentIndex+=1
+        if (this.currentIndex>this.queue.size-1)this.currentIndex=this.queue.size-1
+        statusChange()
+        return queue[currentIndex]
     }
     def hasBack(){
-    	return this.currentIndex>0
+        return this.currentIndex>0
     }
     def hasForward(){
-    	return this.currentIndex<this.queue.size-1
+        return this.currentIndex<this.queue.size-1
     }
     def add(item){
         while(queue.size>this.currentIndex+1)
             queue.remove(queue.size-1)
         queue<<item
         currentIndex=queue.size-1
-		statusChange()
+        statusChange()
     }
 }
 

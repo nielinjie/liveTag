@@ -17,37 +17,49 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
      */
     public static final String PLUGIN_ID = "tagging.taggingManager";
     
- 
-  
+    
+    
     /**
      * @see org.java.plugin.Plugin#doStart()
      */
     @Override
     protected void doStart() throws Exception {
-        // no-op
-		println 'doStart'
+        def metaService=MetaServiceFactory.getMetaService()
+        def extensions =
+            this.manager.registry.getExtensionPoint(
+                'tagging.taggingManager', 'Meta').connectedExtensions
+        extensions.each{
+            def classNames=it.getParameters('class')
+			classNames.each{
+            	def className=it.valueAsString()
+				println className
+	            def clazz=Class.forName(className)
+	            metaService.providers<<clazz
+            }
+	            metaService.init()
+        }
     }
-
+    
     /**
      * @see org.java.plugin.Plugin#doStop()
      */
     @Override
     protected void doStop() throws Exception {
         // no-op
-		println 'doStop'
+        println 'doStop'
     }
-
+    
     /**
      * @see org.java.plugin.boot.ApplicationPlugin#initApplication(
      *      ExtendedProperties, String[])
      */
     @Override
     protected Application initApplication(final ExtendedProperties config,
-            final String[] args) throws Exception {
-    	println 'initApplication'
+    final String[] args) throws Exception {
+        println 'initApplication'
         return this;
     }
-
+    
     /**
      * @see org.java.plugin.boot.Application#startApplication()
      */
@@ -55,5 +67,5 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
         println 'startApplication'
     }
     
-  
+    
 }
