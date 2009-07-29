@@ -26,12 +26,11 @@ class AdaptorService{
   
 }
 class AdaptorServiceFactory{
-    private static adaptorService=new AdaptorService()
     static AdaptorService getAdaptorService(){
-    	return getAdaptorService(null)
+    	return ServiceFactory.getService(AdaptorService.class)
     }
     static AdaptorService getAdaptorService(def controller){
-        def re= adaptorService
+        def re= getAdaptorService()
 		if(controller)
 			if(!re.controller)re.controller=controller
 		return re

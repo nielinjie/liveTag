@@ -9,15 +9,34 @@ import tagging.*
  * @author nielinjie
  *
  */
+
 public class SystemTag extends Tag{
 
 }
+class SystemTagService{
+	
+}
+class SingletonSystemTag extends SystemTag{
+	static def getInstance(){
+		def tm=TaggingManagerFactory.getTaggingManager()
+		def find=tm.findTag{
+			it.type==theType
+		}
+		if(!(find.empty)){
+			
+		}
+	}
+}
 class UpdatedTag extends SystemTag{
-	String type='tag.system.updated'
+	static theType='tag.system.updated'
+	String type=theType
 	Date updatedTime
 }
 class UnreadTag extends SystemTag{
 	String type='tag.system.unread'
+	static def getInstance(){
+		
+	}
 }
 class ImporterByTag extends SystemTag{
 	String type='tag.system.importedBy'

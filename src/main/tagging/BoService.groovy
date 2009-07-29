@@ -28,8 +28,10 @@ public class BoService{
     }
 }
 class BoServiceFactory{
-    static def boService=new BoService()
-    static def getBoService(){
-        return boService
+    static BoService getNewBoService(){
+        return ServiceFactory.getNewService(BoService.class)
+    }
+    static BoService getBoService(){
+        return ServiceFactory.getService(BoService.class)
     }
 }

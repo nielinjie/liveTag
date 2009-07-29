@@ -38,6 +38,15 @@ class TaggingManager{
     	}
     	
     }
+    void unTagging(Tagable tagable, Tag tag){
+    	tag.tagables.remove(tagable.id)
+		if(tag.tagables.empty){
+			this.removeTag(tag)
+		}
+    }
+    void removeTag(Tag tag){
+    	this.tags.remove(tag.id)
+    }
     List<Tag> getTagsForTagable(Tagable tagable){
         return this.getTagsForTagable(tagable.id)
     }
@@ -52,12 +61,11 @@ class TaggingManager{
     }
 }
 class TaggingManagerFactory{
-    private static taggingManager=new TaggingManager()
-    static getNewTaggingManager(){
-    	return new TaggingManager()
+    static TaggingManager getNewTaggingManager(){
+    	return ServiceFactory.getNewService(TaggingManager.class)
     }
-    static getTaggingManager(){
-        return taggingManager
+    static TaggingManager getTaggingManager(){
+        return ServiceFactory.getService(TaggingManager.class)
     }
 }
 

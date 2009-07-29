@@ -12,6 +12,7 @@ class SearchView{
 class SearchService{
     List<SearchView> searchView=[]
 }
+
 class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
 	def iconNames=['search']
     def getPanel(){
