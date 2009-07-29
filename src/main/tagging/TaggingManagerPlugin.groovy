@@ -32,7 +32,6 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
             def classNames=it.getParameters('class')
 			classNames.each{
             	def className=it.valueAsString()
-				println className
 	            def clazz=Class.forName(className)
 	            metaService.providers<<clazz
             }
@@ -46,7 +45,6 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
     @Override
     protected void doStop() throws Exception {
         // no-op
-        println 'doStop'
     }
     
     /**
@@ -56,7 +54,6 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
     @Override
     protected Application initApplication(final ExtendedProperties config,
     final String[] args) throws Exception {
-        println 'initApplication'
         return this;
     }
     
@@ -64,7 +61,6 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
      * @see org.java.plugin.boot.Application#startApplication()
      */
     public void startApplication() {
-        println 'startApplication'
     }
     
     

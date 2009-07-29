@@ -28,8 +28,6 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
                 panel(layout:new MigLayout()){
                     viewGroup=new SingleSelectedGroup(selectionChanged:{controller.selectSearchView(viewGroup.selectedValue)})
                     searchViews.each{
-                    	println  aS.adaptorClasses.dump()
-						println it.type
                     	def a=aS.getAdaptor(it,'briefDisplay')
 						a.group=viewGroup
                         def w=widget(constraints:'wrap,w :150px:',a.getComponent())
