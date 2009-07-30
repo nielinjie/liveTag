@@ -1,4 +1,4 @@
-package tagging.twitter;
+package tagging.ui;
 import javax.swing.*;
 import java.net.URL;
 public class FixedSizeImageIcon extends ImageIcon {

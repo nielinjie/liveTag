@@ -87,8 +87,7 @@ public class TwitterImporter extends Importer{
     }
     
 }
-class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
-}
+
 class TweetTagable extends Tagable{
     def type='tagable.twitter.tweet'
 	def text
@@ -113,14 +112,4 @@ class TwitterPeople extends PeopleTagable{
         })
     }()
 }
-class TwitterMeta{
-    def static provideMeta(){
-        def aS=AdaptorServiceFactory.getAdaptorService()
-        aS.registerAdaptor('importer.twitter','briefDisplay',TwitterImporterBriefDisplay.class)
-		aS.registerAdaptor('tagable.twitter.tweet','briefDisplay',TweetBriefDisplay.class)
-		aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
-		aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
-        aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
-		aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
-    }
-}
+

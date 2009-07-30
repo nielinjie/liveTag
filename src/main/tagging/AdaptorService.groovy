@@ -11,6 +11,14 @@ class AdaptorService{
         def re=this.adaptorClasses.get(adapteeType,adaptorType)
         return re?:this.getAdaptorClass(boService.getBoTypeParent(adapteeType),adaptorType)
     }
+    def getAdaptor(String adapteeType,Object adaptee,String adaptorType){
+        def clas=getAdaptorClass(adapteeType,adaptorType)
+        if(clas){
+            def r= clas.newInstance(value:adaptee,controller:this.controller)
+            return r
+        }
+        return null
+    }
     def getAdaptor(Object adaptee,String adaptorType){
     	def clas=getAdaptorClass(adaptee.type,adaptorType)
 		if(clas){

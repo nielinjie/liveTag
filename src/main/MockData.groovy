@@ -4,17 +4,23 @@
 
 
 import tagging.*
+import tagging.todo.ui.*
 import tagging.todo.*
 import tagging.text.*
 import tagging.twitter.*
 import tagging.people.*
+import tagging.system.*
+import tagging.text.ui.*
+import tagging.twitter.ui.*
+import tagging.system.ui.*
+import tagging.ui.*
 /**
  * @author nielinjie
  *
  */
 
 public class MockData{
-	static def metas=['tagging.twitter.TwitterMeta',TodoTagMeta.class,TextTagableMeta.class,ImporterMeta.class,SearchViewMeta.class]
+	static def metas=['tagging.twitter.ui.TwitterMeta',TodoTagMeta.class,TextTagableMeta.class,ImporterMeta.class,SearchViewMeta.class,SystemTagMeta.class]
     static def bos=[
 	    new TodoTag(name:'a todo'),
 	    new TodoTag(name:'second todo'),

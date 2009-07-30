@@ -16,6 +16,12 @@ class TaggingManager{
     Tagable getTagable(UUID id){
         return this.tagables.get(id,null)
     }
+    //TODO opnizaion
+    boolean hasTagOnTagable(Tagable tagable,String tagType){
+    	this.getTagsForTagable(tagable.id).any{
+    		it.type==tagType
+    	}
+    }
     List<Tagable> getTagableForTag(Tag tag){
     	return tag.tagables.collect{this.getTagable(it)}
     }
@@ -24,6 +30,7 @@ class TaggingManager{
     		tagableId in it.tagables
     	}
     }
+    
     List<Tag> findTag(Closure filter){
     	return tags.values().findAll(filter)
     }

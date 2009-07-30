@@ -1,4 +1,4 @@
-package tagging
+package tagging.ui
 import groovy.swing.SwingBuilder
 import java.awt.SystemColor
 import javax.swing.*

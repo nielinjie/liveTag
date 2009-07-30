@@ -1,4 +1,5 @@
 package tagging
+
 import groovy.swing.*
 import javax.swing.*
 import java.beans.*
@@ -13,22 +14,8 @@ class SearchService{
     List<SearchView> searchView=[]
 }
 
-class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
-	def iconNames=['search']
-    def getPanel(){
-        return new SwingBuilder().panel{
-            etchedBorder(parent:true)
-            label(text:value.name)
-            button(icon:this.icons['search'],text:'Search',actionPerformed:{ controller?.selectSearchView(value)})
-        }
-    }
-}
-class SearchViewMeta{
-    def static provideMeta(){
-        def aS=AdaptorServiceFactory.getAdaptorService()
-        aS.registerAdaptor('searchView','briefDisplay',SearchViewBriefDisplayAdaptor.class)
-    }
-}
+
+
 class ViewFrameManager{
     
 }

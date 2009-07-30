@@ -1,10 +1,11 @@
 /**
  * 
  */
-package tagging.twitter
+package tagging.twitter.ui
 
 
 import tagging.*
+import tagging.ui.*
 import groovy.swing.*
 import tagging.people.*
 import net.miginfocom.swing.MigLayout
@@ -66,5 +67,18 @@ class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
         return new SwingBuilder().panel{
             label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)))
         }
+    }
+}
+class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
+}
+class TwitterMeta{
+    def static provideMeta(){
+        def aS=AdaptorServiceFactory.getAdaptorService()
+        aS.registerAdaptor('importer.twitter','briefDisplay',TwitterImporterBriefDisplay.class)
+        aS.registerAdaptor('tagable.twitter.tweet','briefDisplay',TweetBriefDisplay.class)
+        aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
+        aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
+        aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
+        aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
     }
 }

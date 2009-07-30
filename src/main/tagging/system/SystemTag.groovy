@@ -5,6 +5,8 @@ package tagging.system
 
 import tagging.*
 
+
+
 /**
  * @author nielinjie
  *
@@ -102,3 +104,4 @@ abstract class LinkTag extends Tag{
         return re
     }
 }
+
