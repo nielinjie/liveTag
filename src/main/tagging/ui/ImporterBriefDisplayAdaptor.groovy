@@ -8,10 +8,10 @@ class ImporterBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def iconNames=['download']
     def getPanel(){
         return sb.panel(layout:new MigLayout()){
-        	etchedBorder(parent:true)
+            etchedBorder(parent:true)
             label(text:value.name)
-//            label(text:bind{value.stop})
-            button(constraints:'w ::24px, h ::24px',icon:this.icons['download'],)
+            //label(text:bind{value.stop})
+            label(/*constraints:'w ::24px, h ::24px',*/icon:this.icons['download'])
         }
     }
 }

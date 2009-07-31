@@ -25,6 +25,15 @@ def icons=[:].putAll(
 
 println icons
 application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
+	panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
+		toolBar(constraints:'w 60%::'){
+			textField(id:'magicText',columns:50)
+			button(text:'mockbutton')
+		}
+		toolBar(constraints:'wrap'){
+			button(text:'new')
+		}
+	}
     splitPane(constraints:'h 700px::, w 1200px::',
     leftComponent:
             scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 200px::, h 600px::'){
