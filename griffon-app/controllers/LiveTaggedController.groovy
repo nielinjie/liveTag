@@ -22,6 +22,7 @@ class LiveTaggedController {
     }
     void selectBo(bo){
         view.detailPanel.removeAll()
+		view.detailPanel.revalidate()
         view.detailPanel.add(aS.getAdaptor(bo,'detailDisplay').getComponent())
         view.detailPanel.revalidate()
     }
@@ -75,6 +76,7 @@ class LiveTaggedController {
     void renderViewFrame(viewFrame){
         edt{
             view.briefPanel.removeAll()
+			view.briefPanel.repaint()
         }
         def bos=viewFrame.getRequested()
         this.itemGroup=new SingleSelectedGroup(

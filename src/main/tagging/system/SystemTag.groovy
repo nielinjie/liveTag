@@ -45,20 +45,20 @@ class UpdatedTag extends SystemTag{
     Date updatedTime
 }
 class UnreadTag extends SystemTag{
-	static taggle(Tagable tagable){
-		def tm=TaggingManagerFactory.getTaggingManager()
-		def sts=ServiceFactory.getService(SystemTagService.class)
-		def tag=sts.getSingletonSystemTag('tag.system.unread')
-		if(!tm.hasTagOnTagable(tagable,'tag.system.unread')){
-			tm.tagging(tagable,[tag])
-		}else{
-			tm.unTagging(tagable,tag)
-		}
-	}
+    static taggle(Tagable tagable){
+        def tm=TaggingManagerFactory.getTaggingManager()
+        def sts=ServiceFactory.getService(SystemTagService.class)
+        def tag=sts.getSingletonSystemTag('tag.system.unread')
+        if(!tm.hasTagOnTagable(tagable,'tag.system.unread')){
+            tm.tagging(tagable,[tag])
+        }else{
+            tm.unTagging(tagable,tag)
+        }
+    }
     String type='tag.system.unread'
 }
 class StarTag extends SystemTag{
-	static taggle(Tagable tagable){
+    static taggle(Tagable tagable){
         def tm=TaggingManagerFactory.getTaggingManager()
         def sts=ServiceFactory.getService(SystemTagService.class)
         def tag=sts.getSingletonSystemTag('tag.system.star')
@@ -73,6 +73,32 @@ class StarTag extends SystemTag{
 class ImporterByTag extends SystemTag{
     String type='tag.system.importedBy'
     String importId//the id of importer
+}
+class UnreadSearchView extends SearchView{
+    def name='Unread'
+    def description='All unread tagable'
+    def condition={
+        def tm =TaggingManagerFactory.getTaggingManager()
+		tm .findTagable{
+        	tm.hasTagOnTagable(it,'tag.system.unread')
+        }
+    }
+    def sortComparator={
+        a,b->a.version>b.version
+    }
+}
+class StarSearchView extends SearchView{
+    def name='Star'
+    def description='All stared tagable'
+    def condition={
+        def tm =TaggingManagerFactory.getTaggingManager()
+        tm .findTagable{
+            tm.hasTagOnTagable(it,'tag.system.star')
+        }
+    }
+    def sortComparator={
+        a,b->a.version>b.version
+    }
 }
 abstract class LinkTag extends Tag{
     UUID toId

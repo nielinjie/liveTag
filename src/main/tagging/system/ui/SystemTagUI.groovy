@@ -17,7 +17,7 @@ class SystemTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         sb.panel(layout:new MigLayout()){
             sts.singletonSystemTags.each{
                 tagEntry->
-                button(icon:IconManager.getIcon(SystemTagUI.systemTagIcons."${tagEntry.key}.${tm.hasTagOnTagable(value,tagEntry.key)}"),actionPerformed:{
+                label(icon:IconManager.getIcon(SystemTagUI.systemTagIcons."${tagEntry.key}.${tm.hasTagOnTagable(value,tagEntry.key)}"),mouseClicked:{
                     event->
                     def tagClass=ServiceFactory.getService(SystemTagService).singletonSystemTags[tagEntry.key]
                     tagClass.getMethod('taggle',Tagable.class).invoke(tagClass,value)
