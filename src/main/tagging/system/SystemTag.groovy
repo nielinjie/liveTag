@@ -38,26 +38,36 @@ class SystemTagService{
         }
     }
 }
-class SingletonSystemTag extends SystemTag{
-    static def getInstance(){
-        def tm=TaggingManagerFactory.getTaggingManager()
-        def find=tm.findTag{
-            it.type==theType
-        }
-        if(!(find.empty)){
-            
-        }
-    }
-}
+
 class UpdatedTag extends SystemTag{
     static theType='tag.system.updated'
     String type=theType
     Date updatedTime
 }
 class UnreadTag extends SystemTag{
+	static taggle(Tagable tagable){
+		def tm=TaggingManagerFactory.getTaggingManager()
+		def sts=ServiceFactory.getService(SystemTagService.class)
+		def tag=sts.getSingletonSystemTag('tag.system.unread')
+		if(!tm.hasTagOnTagable(tagable,'tag.system.unread')){
+			tm.tagging(tagable,[tag])
+		}else{
+			tm.unTagging(tagable,tag)
+		}
+	}
     String type='tag.system.unread'
 }
 class StarTag extends SystemTag{
+	static taggle(Tagable tagable){
+        def tm=TaggingManagerFactory.getTaggingManager()
+        def sts=ServiceFactory.getService(SystemTagService.class)
+        def tag=sts.getSingletonSystemTag('tag.system.star')
+        if(!tm.hasTagOnTagable(tagable,'tag.system.star')){
+            tm.tagging(tagable,[tag])
+        }else{
+            tm.unTagging(tagable,tag)
+        }
+    }
     String type='tag.system.star'
 }
 class ImporterByTag extends SystemTag{

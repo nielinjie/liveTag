@@ -10,6 +10,7 @@ import ca.odell.glazedlists.swing.*
 import ca.odell.glazedlists.*
 import groovy.swing.SwingBuilder
 import tagging.*
+import tagging.ui.*
 
 def Bos=MockData.bos
 def aS=AdaptorServiceFactory.getAdaptorService()
@@ -18,9 +19,10 @@ def searchViews=MockData.searchViews
 
 def icons=[:].putAll(
 ['back','forward','more'].collect{
-    new MapEntry(it,new ImageIcon(getClass().getResource("/icons/${it.toLowerCase()}.png")))
+    new MapEntry(it, IconManager.getIcon(it))
 }
 )
+
 println icons
 application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
     splitPane(constraints:'h 700px::, w 1200px::',
