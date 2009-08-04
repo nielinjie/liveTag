@@ -8,8 +8,8 @@ class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout()){
             etchedBorder(parent:true)
-            label(text:value.name)
             label(/*constraints:'w ::24px, h ::24px',*/icon:this.icons['search'],mouseClicked:{ controller?.selectSearchView(value)})
+            label(text:value.name)
         }
     }
 }

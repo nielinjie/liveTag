@@ -28,13 +28,17 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
 	panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
 		toolBar(constraints:'w 60%::'){
 			textField(id:'magicText',columns:50)
-			button(text:'mockbutton')
+			def mr=ServiceFactory.getService(MagicTextRegistor.class)
+			mr.entries.each{
+				me->
+				button(text:me.key,icon:IconManager.getIcon(me.value.icon),actionPerformed:{println magicText.text;me.value.activity(magicText.text)})
+			}
 		}
 		toolBar(constraints:'wrap'){
 			button(text:'new')
 		}
 	}
-    splitPane(constraints:'h 700px::, w 1200px::',
+    splitPane(constraints:'h 600px::, w 1200px::',
     leftComponent:
             scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 200px::, h 600px::'){
                 panel(layout:new MigLayout()){
@@ -51,7 +55,7 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
             rightComponent:
             splitPane(
                     leftComponent:
-                    	panel(layout:new MigLayout(),constraints:'w 400px::, h 600px::'){
+                    	panel(layout:new MigLayout(),constraints:'w :500px:, h 600px::'){
             				panel(layout:new MigLayout(),constraints:'growx ,wrap'){
             					etchedBorder(parent:true)
             					button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
@@ -62,7 +66,7 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
 								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
             				}
             				
-                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :100%:, wrap'){
+                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
                                 panel(id:'briefPanel',layout:new MigLayout()){
                                     itemGroup=new SingleSelectedGroup(
                                     selectionChanged:{controller.selectBo(itemGroup.selectedValue)}

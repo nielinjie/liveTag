@@ -40,7 +40,9 @@ public class MockData{
 //		    },interval:3),
 	    new tagging.twitter.TwitterImporter(username:'nielinjie',password:'790127',name:'A Sample Twitter Importer',description:'Sample Twitter Importer',interval:300),
 	    new UnreadSearchView(),
-	    new StarSearchView()
+	    new StarSearchView(),
+		new TodoSearchView(),
+		new NotFinishedTodoSearchView()
     ]
 	static def mockTagables=
 		(1..50).collect{new TextTagable(name:'mock text tagable',text:"I am mock text tagable - No. ${it}")}

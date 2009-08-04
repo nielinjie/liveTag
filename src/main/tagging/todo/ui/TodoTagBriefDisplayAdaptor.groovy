@@ -26,5 +26,11 @@ class TodoTagMeta{
         def aS=AdaptorServiceFactory.getAdaptorService()
         aS.registerAdaptor('tag.todo','briefDisplay',TodoTagBriefDisplayAdaptor.class)
         aS.registerAdaptor('tag.todo','detailDisplay',TodoTagDetailDisplayAdaptor.class)
+		
+		def mr=ServiceFactory.getService(MagicTextRegistor.class)
+		mr.registor('todo',new MagicTextEntry(icon:'newTodo',enableFilter:{true},activity:{text->
+			TodoTag.newTodoTag(text)
+		}))
+		
     }
 }
