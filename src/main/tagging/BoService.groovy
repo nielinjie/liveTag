@@ -16,6 +16,7 @@ public class BoService{
         return this.boClasses.get(boType,null)
     }
     void registerBo(String boType,String parentType,Class boClass){
+    
         if (this.boClasses.containsKey(boType))
             throw new IllegalArgumentException("duplicate type - ${boType}")
         if (!(parentType in this.boClasses.keySet()))

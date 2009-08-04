@@ -1,8 +1,16 @@
 package tagging
+import tagging.contact.*
 //@Singleton
 class TaggingManager{
     private Map<UUID,Tag> tags=[:]
     private Map<UUID,Tagable> tagables=[:]
+    @Lazy def sync={
+        new Sync(tm:this).with{
+        	//taggingManager is used as singleten, so contactManager not.
+            cm=ContactManagerFactory.getNewContactManager()
+			it
+        }
+    }()
     void clear(){
     	this.tags.clear()
 		this.tagables.clear()
@@ -28,7 +36,9 @@ class TaggingManager{
     	return tags.values().findAll(filter)
     }
     void tagging(Tagable tagable, List<Tag> tags){
-    	
+    	if(!(tagable.id in this.tagables.keySet())){
+    		this.addTagable(tagable)
+    	}
     	tags.each{
     		if(!(it.id in this.tags.keySet())){
     			this.saveTag(it)
@@ -58,6 +68,13 @@ class TaggingManager{
     void addTagable(Tagable tagable){
     	println "tagable added, ${tagable.dump()}"
     	this.tagables[tagable.id]=tagable
+    }
+    void fromOther(List<BO> bos){
+    	bos.each{
+    		if(it instanceof Tagable){
+    			this.addTagable(it)
+    		}
+    	}
     }
 }
 class TaggingManagerFactory{

@@ -72,7 +72,7 @@
 
 	<target name="main.compile">
 		<mkdir dir="classes" />
-		<javac srcdir="src/main" destdir="classes" includes="**/*.java" debug="on">
+		<javac srcdir="src/main" destdir="classes" includes="**/*.java" debug="true">
 			<classpath location="lib">
 				<fileset dir="lib">
 					<include name="**/*.jar" />
@@ -117,7 +117,7 @@
 		</copy>
 	</target>
 	<target name="main.run" depends="main.compile">
-		<java classname="RestletServer">
+		<java classname="${mainClass}">
 			<classpath location="classes" />
 			<classpath>
 				<fileset dir="lib">
@@ -127,6 +127,7 @@
 			<classpath location="${groovyjar}" />
 		</java>
 	</target>
+	
 	<target name="main.test" depends="main.compile">
 		<junit printsummary="yes" haltonfailure="yes">
 			<classpath location="classes" />
@@ -140,6 +141,7 @@
 			<batchtest>
 				<fileset dir="classes">
 					<include name="**/SystemTagTests.class" />
+					<include name="**/PluginTests.class" />
 				</fileset>
 			</batchtest>
 		</junit>
@@ -186,8 +188,8 @@
 			<test name="AdaptorTests" />
 			<test name="BaseTests" /-->
 			<batchtest>
-				<fileset dir="test/unit">
-					<include name="**/*Tests.*" />
+				<fileset dir="classes">
+					<include name="**/*Tests.class" />
 					<!--include name="*" /-->
 				</fileset>
 			</batchtest>

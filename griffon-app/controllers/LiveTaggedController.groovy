@@ -1,5 +1,8 @@
 import tagging.*
 import groovy.swing.*
+import org.java.plugin.*
+import org.java.plugin.boot.*
+import org.java.plugin.util.*
 class LiveTaggedController {
     private def sb=new SwingBuilder()
     // these will be injected by Griffon
@@ -9,16 +12,12 @@ class LiveTaggedController {
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
     void mvcGroupInit(Map args) {
-        def metaService=MetaServiceFactory.getMetaService()
-        //manager meta data by metaService it self.
-        
-        metaService.providers.addAll(MockData.metas)
-        metaService.init()
-        //add mock tagable
-        //for now, it is for test ui
-        MockData.mockTagables.each{
-            TaggingManagerFactory.getTaggingManager().addTagable(it)
-        }
+        String[] arg={}
+        def prop=new ExtendedProperties()
+        prop.put('applicationRoot',new File('..').canonicalPath)
+        prop.put('org.java.plugin.boot.pluginsRepositories',new File('../plugins').canonicalPath)
+        prop.put('org.java.plugin.boot.applicationPlugin','tagging.taggingManager')
+        def app=Boot.boot( prop,false,Boot.BOOT_MODE_SHELL ,new BootErrorHandlerConsole(),arg)
     }
     void selectBo(bo){
         view.detailPanel.removeAll()
@@ -95,9 +94,9 @@ class LiveTaggedController {
             }
         }
         if(bos.isEmpty()){
-        	edt{
-        		view.briefPanel.revalidate()
-        	}
+            edt{
+                view.briefPanel.revalidate()
+            }
         }
         setMoreButtonEnable()
     }
