@@ -5,4 +5,3 @@ class TextTagable extends Tagable{
     String text
     String type='tagable.text'
 }
-

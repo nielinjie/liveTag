@@ -12,10 +12,9 @@ import groovy.swing.SwingBuilder
 import tagging.*
 import tagging.ui.*
 
-def Bos=MockData.bos
 def aS=AdaptorServiceFactory.getAdaptorService()
-def searchViews=MockData.searchViews
-
+def searchViews=SearchServiceFactory.getSearchService().searchViews
+def Bos=[]
 
 def icons=[:].putAll(
 ['back','forward','more'].collect{
@@ -88,7 +87,7 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
                             rightComponent:
                             scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){
                                 panel(id:'detailPanel',constraints:'w ::'){
-                                    widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
+                                    //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
                                 }
                             }
                             ,/*resizeWeight:0.5f,*/oneTouchExpandable:true)

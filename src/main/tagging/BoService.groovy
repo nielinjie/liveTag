@@ -16,6 +16,7 @@ public class BoService{
         return this.boClasses.get(boType,null)
     }
     void registerBo(String boType,String parentType,Class boClass){
+    
         if (this.boClasses.containsKey(boType))
             throw new IllegalArgumentException("duplicate type - ${boType}")
         if (!(parentType in this.boClasses.keySet()))
@@ -25,6 +26,10 @@ public class BoService{
     }
     private getBoTypeParent(String boType){
         this.boTypeParents.get(boType,null)
+    }
+    void clear(){
+    	this.boClasses=['tag':Tag.class,'tagable':Tagable.class]
+    	this.boTypeParents=[:]
     }
 }
 class BoServiceFactory{
