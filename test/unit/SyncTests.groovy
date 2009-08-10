@@ -44,6 +44,7 @@ class SyncTests{
     }
     @Test void xmlrpc(){
     	def bs=BoServiceFactory.getBoService()
+		bs.clear()
         bs.registerBo('tagable.text','tagable',TextTagable.class)
     	def tm1=TaggingManagerFactory.getTaggingManager()
         tm1.clear()

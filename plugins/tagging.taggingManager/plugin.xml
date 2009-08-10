@@ -2,6 +2,7 @@
 <!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
 <plugin id="tagging.taggingManager" version="0.0.1"
 	class="tagging.TaggingManagerPlugin">
+	
 	<runtime>
 		<library id="core" path="../../classes/" type="code">
 			<export prefix="*" />
@@ -10,5 +11,8 @@
 	<extension-point id="Meta">
 		<parameter-def id="class" multiplicity="any"/>
 		<parameter-def id="description" multiplicity="none-or-one" />
+	</extension-point>
+	<extension-point id="ObjectKeeper">
+	   <parameter-def id="class" multiplicity="one"></parameter-def>
 	</extension-point>
 </plugin>

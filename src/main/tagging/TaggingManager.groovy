@@ -2,8 +2,8 @@ package tagging
 import tagging.contact.*
 //@Singleton
 class TaggingManager{
-    private Map<UUID,Tag> tags=[:]
-    private Map<UUID,Tagable> tagables=[:]
+	ObjectKeeper ok
+	static Class objectKeeperClass
     @Lazy def sync={
         new Sync(tm:this).with{
         	//taggingManager is used as singleten, so contactManager not.
@@ -12,20 +12,23 @@ class TaggingManager{
         }
     }()
     void clear(){
-    	this.tags.clear()
-		this.tagables.clear()
+    	this.ok.clear()
     }
     void saveTag(Tag tag){
-        this.tags.put(tag.id,tag)
+        this.ok.put(tag)
     }
     Tag getTag(UUID id){
-        return this.tags.get(id,null)
+        def re= this.ok.get(id)
+		assert re==null || re instanceof Tag
+		return re
     }
     Tagable getTagable(UUID id){
-        return this.tagables.get(id,null)
+        def re= this.ok.get(id)
+		assert re==null || re instanceof Tagable
+		return re
     }
     List<Tagable> getTagableForTag(Tag tag){
-    	return tag.tagables.collect{this.getTagable(it)}
+    	return tag.tagables.collect{this.ok.get(it)}
     }
     List<Tag> getTagsForTagable(UUID tagableId){
     	return this.findTag{
@@ -33,14 +36,16 @@ class TaggingManager{
     	}
     }
     List<Tag> findTag(Closure filter){
-    	return tags.values().findAll(filter)
+    	return this.ok.search{
+    		it instanceof Tag && filter(it)
+    	}
     }
     void tagging(Tagable tagable, List<Tag> tags){
-    	if(!(tagable.id in this.tagables.keySet())){
+    	if(!(this.getTagable(tagable.id)) ){
     		this.addTagable(tagable)
     	}
     	tags.each{
-    		if(!(it.id in this.tags.keySet())){
+    		if(!(this.getTag(it.id))){
     			this.saveTag(it)
     		}
     		it.tagables<<tagable.id
@@ -55,19 +60,19 @@ class TaggingManager{
 		}
     }
     void removeTag(Tag tag){
-    	this.tags.remove(tag.id)
+    	this.ok.remove(tag.id)
     }
     List<Tag> getTagsForTagable(Tagable tagable){
         return this.getTagsForTagable(tagable.id)
     }
     List<Tagable> findTagable(Closure condition){
-        this.tagables.values().findAll(
-            condition
-        )
+        return this.ok.search{
+            (it instanceof Tagable) && condition(it)
+        }
     }
     void addTagable(Tagable tagable){
     	println "tagable added, ${tagable.dump()}"
-    	this.tagables[tagable.id]=tagable
+    	this.ok.put(tagable)
     }
     void fromOther(List<BO> bos){
     	bos.each{
@@ -75,6 +80,14 @@ class TaggingManager{
     			this.addTagable(it)
     		}
     	}
+    }
+    void onInit(){
+    	 if(this.ok==null){
+    		 if(this.objectKeeperClass==null)
+    			 this.ok=new StupidOK()//this is for test only
+    		 else
+    			 this.ok=this.objectKeeperClass.newInstance()
+         }
     }
 }
 class TaggingManagerFactory{
@@ -85,4 +98,21 @@ class TaggingManagerFactory{
         return ServiceFactory.getService(TaggingManager.class)
     }
 }
-
+class StupidOK implements ObjectKeeper{
+	def objs=[:]
+	Object get(def id){
+		return objs[id]
+	}
+    List search(def filter){
+    	return objs.values().findAll(filter)
+    }
+    void clear(){
+    	this.objs.clear()
+    }
+    void put(Object obj){
+    	this.objs[obj.id]=obj
+    }
+    void remove(def id){
+    	this.objs.remove(id)
+    }
+}

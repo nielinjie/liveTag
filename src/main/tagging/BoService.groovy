@@ -27,6 +27,10 @@ public class BoService{
     private getBoTypeParent(String boType){
         this.boTypeParents.get(boType,null)
     }
+    void clear(){
+    	this.boClasses=['tag':Tag.class,'tagable':Tagable.class]
+    	this.boTypeParents=[:]
+    }
 }
 class BoServiceFactory{
     static BoService getNewBoService(){

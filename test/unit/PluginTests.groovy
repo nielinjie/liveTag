@@ -21,10 +21,10 @@ class PluginTests{
             app.manager.registry.getExtensionPoint(
                 'tagging.taggingManager', 'Meta').connectedExtensions
 		at extensions.size(),is(1)
-		extensions.each{
-        	def className=it.getParameter('class').valueAsString()
-        	at className,is(not(null))
-        }
+//		extensions.each{
+//        	def className=it.getParameter('class').valueAsString()
+//        	at className,is(not(null))
+//        }
         
 		
     }

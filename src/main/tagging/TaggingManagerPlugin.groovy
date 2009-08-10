@@ -37,6 +37,20 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
             }
 	            metaService.init()
         }
+        extensions =
+            this.manager.registry.getExtensionPoint(
+                'tagging.taggingManager', 'ObjectKeeper').connectedExtensions
+		assert extensions.size() ==1
+        extensions.each{
+            def classNames=it.getParameters('class')
+            classNames.each{
+                def className=it.valueAsString()
+                def clazz=Class.forName(className)
+                println clazz
+				TaggingManager.objectKeeperClass=clazz
+            }
+               
+        }
     }
     
     /**
