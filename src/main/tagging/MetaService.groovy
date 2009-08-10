@@ -20,6 +20,7 @@ public class MetaService{
             if (!(it instanceof Class))
                 if(it instanceof String) it=Class.forName(it)
             it.getMethod('provideMeta').invoke(it,new Object[0])
+			println "runned provider - $it"
         }
     }
 }

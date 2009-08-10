@@ -3,6 +3,7 @@ import tagging.*
 import tagging.todo.*
 import tagging.text.*
 import tagging.people.*
+import tagging.system.*
 
 class Meta{
     static void provideMeta(){
@@ -17,15 +18,19 @@ class Meta{
                 TaggingManagerFactory.getTaggingManager().findTagable{obj->obj instanceof PeopleTagable}
             },sortComparator:{a,b->0
             }),
-            new tagging.twitter.TwitterImporter(username:'nielinjie',password:'790127',name:'A Sample Twitter Importer',description:'Sample Twitter Importer',interval:300)
+            new tagging.twitter.TwitterImporter(username:'nielinjie',password:'790127',name:'A Sample Twitter Importer',description:'Sample Twitter Importer',interval:300),
+            new UnreadSearchView(),
+			new StarSearchView(),
+			new TodoSearchView(),
+			new NotFinishedTodoSearchView()
             ]
     	searchViews.each{
     		sm.searchViews<<it
     	}
-        def mockTagables=
-            (1..50).collect{new TextTagable(name:'mock text tagable',text:"I am mock text tagable - No. ${it}")}
-        mockTagables.each{
-        	tm.addTagable(it)
-        }
+//        def mockTagables=
+//            (1..10).collect{new TextTagable(name:'mock text tagable',text:"I am mock text tagable - No. ${it}")}
+//        mockTagables.each{
+//        	tm.addTagable(it)
+//        }
     }
 }

@@ -132,14 +132,17 @@ class StupidOK implements ObjectKeeper{
     }
     void close(){
     	def s=XML.toXML(this.objs)
-		println s
 		File f=new File(this.file)
     	f.text=s
     }
     void start(){
-    	File f=new File(this.file)
-    	def s=f.text
-		this.objs=XML.fromXML(s)
-		println this.objs
+    	def s=null
+		try{
+	    	File f=new File(this.file)
+	    	s=f.text
+		}catch(Exception e){}
+		if(s){
+			this.objs=XML.fromXML(s)
+		}
     }
 }

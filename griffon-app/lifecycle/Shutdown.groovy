@@ -17,7 +17,7 @@
  * - SwingUtilities.invokeLater { // your code }
  */
  import tagging.*
- SwingBuilder.doOutside {
-	 println 'i am shutting down'
+ import groovy.swing.SwingBuilder
+// Thread.start {
 	 TaggingManagerFactory.getTaggingManager().close()
- }
+// }

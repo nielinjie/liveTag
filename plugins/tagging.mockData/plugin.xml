@@ -12,10 +12,11 @@
 	<extension plugin-id="tagging.taggingManager" point-id="Meta"
 		id="mockDataMeta">
 		<parameter id="class" value="tagging.mockData.Meta" />
-		<parameter id="class" value="tagging.todo.TodoTagMeta" />
-		<parameter id="class" value="tagging.text.TextTagableMeta" />
-		<parameter id="class" value="tagging.ImporterMeta" />
-		<parameter id="class" value="tagging.SearchViewMeta" />
-		<parameter id="class" value="tagging.twitter.TwitterMeta" />
+		<parameter id="class" value="tagging.todo.ui.TodoTagMeta" />
+		<parameter id="class" value="tagging.text.ui.TextTagableMeta" />
+		<parameter id="class" value="tagging.ui.ImporterMeta" />
+		<parameter id="class" value="tagging.system.ui.SystemTagMeta" />
+		<parameter id="class" value="tagging.ui.SearchViewMeta" />
+		<parameter id="class" value="tagging.twitter.ui.TwitterMeta" />
 	</extension>
 </plugin>
