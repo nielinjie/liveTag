@@ -16,3 +16,8 @@
  * - SwingBuilder.edt { // your code }
  * - SwingUtilities.invokeLater { // your code }
  */
+ import tagging.*
+ SwingBuilder.doOutside {
+	 println 'i am shutting down'
+	 TaggingManagerFactory.getTaggingManager().close()
+ }

@@ -1,5 +1,6 @@
 package tagging
 import tagging.contact.*
+import tagging.util.*
 //@Singleton
 class TaggingManager{
 	ObjectKeeper ok
@@ -88,6 +89,10 @@ class TaggingManager{
     		 else
     			 this.ok=this.objectKeeperClass.newInstance()
          }
+    	 this.ok.start()
+    }
+    void close(){
+    	this.ok.close()
     }
 }
 class TaggingManagerFactory{
@@ -99,6 +104,7 @@ class TaggingManagerFactory{
     }
 }
 class StupidOK implements ObjectKeeper{
+	def file='./savedObjs'
 	def objs=[:]
 	Object get(def id){
 		return objs[id]
@@ -114,5 +120,17 @@ class StupidOK implements ObjectKeeper{
     }
     void remove(def id){
     	this.objs.remove(id)
+    }
+    void close(){
+    	def s=XML.toXML(this.objs)
+		println s
+		File f=new File(this.file)
+    	f.text=s
+    }
+    void start(){
+    	File f=new File(this.file)
+    	def s=f.text
+		this.objs=XML.fromXML(s)
+		println this.objs
     }
 }
