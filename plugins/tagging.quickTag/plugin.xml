@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
+<plugin id="tagging.quickTag" version="0.0.1">
+	<requires>
+		<import plugin-id="tagging.taggingManager" />
+	</requires>
+	<extension plugin-id="tagging.taggingManager" point-id="Meta"
+		id="quickTagMeta">
+		<parameter id="class" value="tagging.system.ui.QuickTagMeta" />
+	</extension>
+</plugin>

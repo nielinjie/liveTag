@@ -18,25 +18,7 @@ public class SystemTag extends Tag{
 class SystemTagService{
     private cache=[:]
     def singletonSystemTags=[:]//['tag.system.unread':UnreadTag.class,'tag.system.star':StarTag.class]
-    SystemTag getSingletonSystemTag(type){
-        if(cache[type])return cache[type]
-        Class clazz=singletonSystemTags[type]
-        if(clazz==null)
-            throw new RuntimeException()
-        else{
-            def findTag=TaggingManagerFactory.getTaggingManager().findTag{
-                it.type==type
-            }
-            if(!findTag){
-                def tag=clazz.newInstance()
-                TaggingManagerFactory.getTaggingManager().saveTag(tag)
-                cache[type]=tag
-            }else{
-                cache[type]=findTag[0]
-            }
-            return cache[type]	
-        }
-    }
+    
 }
 
 class UpdatedTag extends SystemTag{
@@ -45,10 +27,9 @@ class UpdatedTag extends SystemTag{
     Date updatedTime
 }
 class UnreadTag extends SystemTag{
-    static taggle(Tagable tagable){
+    static toggle(Tagable tagable){
         def tm=TaggingManagerFactory.getTaggingManager()
-        def sts=ServiceFactory.getService(SystemTagService.class)
-        def tag=sts.getSingletonSystemTag('tag.system.unread')
+        def tag=tm.getSingletonTag('tag.system.unread')
         if(!tm.hasTagOnTagable(tagable,'tag.system.unread')){
             tm.tagging(tagable,[tag])
         }else{
@@ -58,10 +39,9 @@ class UnreadTag extends SystemTag{
     String type='tag.system.unread'
 }
 class StarTag extends SystemTag{
-    static taggle(Tagable tagable){
+    static toggle(Tagable tagable){
         def tm=TaggingManagerFactory.getTaggingManager()
-        def sts=ServiceFactory.getService(SystemTagService.class)
-        def tag=sts.getSingletonSystemTag('tag.system.star')
+        def tag=tm.getSingletonTag('tag.system.star')
         if(!tm.hasTagOnTagable(tagable,'tag.system.star')){
             tm.tagging(tagable,[tag])
         }else{

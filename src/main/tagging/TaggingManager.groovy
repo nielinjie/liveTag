@@ -4,6 +4,7 @@ import tagging.util.*
 //@Singleton
 class TaggingManager{
 	ObjectKeeper ok
+	private singletonTagCache=[:]
 	static Class objectKeeperClass
     @Lazy def sync={
         new Sync(tm:this).with{
@@ -102,6 +103,26 @@ class TaggingManager{
     }
     void close(){
     	this.ok.close()
+    }
+    Tag getSingletonTag(type){
+        if(this.singletonTagCache[type])
+        	return this.singletonTagCache[type]
+        else{
+            def findTag=TaggingManagerFactory.getTaggingManager().findTag{
+                it.type==type
+            }
+            if(!findTag){
+            	Class clazz=BoServiceFactory.getBoService().getBoClass(type)
+			    if(clazz==null)
+			    	throw new RuntimeException()
+                def tag=clazz.newInstance()
+                TaggingManagerFactory.getTaggingManager().saveTag(tag)
+                this.singletonTagCache[type]=tag
+            }else{
+            	this.singletonTagCache[type]=findTag[0]
+            }
+            return this.singletonTagCache[type]  
+        }
     }
 }
 class TaggingManagerFactory{

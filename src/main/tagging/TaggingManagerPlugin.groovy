@@ -29,14 +29,16 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
             this.manager.registry.getExtensionPoint(
                 'tagging.taggingManager', 'Meta').connectedExtensions
         extensions.each{
+        	println it.dump()
             def classNames=it.getParameters('class')
+			println classNames
 			classNames.each{
             	def className=it.valueAsString()
 	            def clazz=Class.forName(className)
 	            metaService.providers<<clazz
             }
-	            metaService.init()
         }
+	    metaService.init()
         extensions =
             this.manager.registry.getExtensionPoint(
                 'tagging.taggingManager', 'ObjectKeeper').connectedExtensions
