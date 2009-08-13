@@ -12,6 +12,10 @@ class SystemTagMeta{
     static void provideMeta(){
 //        def aS=AdaptorServiceFactory.getAdaptorService()
 //        aS.registerAdaptor('systemTag','briefDisplay',SystemTagBriefDisplayAdaptor.class)
+		AdaptorServiceFactory.getAdaptorService().with{
+			it.registerAdaptor('searchView.unread','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unread'))
+			it.registerAdaptor('searchView.star','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'star'))
+		}
 		BoServiceFactory.getBoService().with{
         	it.registerBo('tag.system.unread','tag',UnreadTag.class)
 			it.registerBo('tag.system.star','tag',StarTag.class)

@@ -21,16 +21,23 @@ class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
         }
     }
 }
+
 class TodoTagMeta{
     static void provideMeta(){
         def aS=AdaptorServiceFactory.getAdaptorService()
         aS.registerAdaptor('tag.todo','briefDisplay',TodoTagBriefDisplayAdaptor.class)
         aS.registerAdaptor('tag.todo','detailDisplay',TodoTagDetailDisplayAdaptor.class)
+		aS.registerAdaptor('searchView.todo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'todo'))
+		aS.registerAdaptor('searchView.unfinishedTodo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unfinishedtodo'))
 		
-		def mr=ServiceFactory.getService(MagicTextRegistor.class)
-		mr.registor('todo',new MagicTextEntry(icon:'newTodo',enableFilter:{true},activity:{text->
-			TodoTag.newTodoTag(text)
-		}))
-		
+		def mr=ServiceFactory.getService(UIMediator.class)
+		mr.registorMagicTextProvide('todo',new MagicTextAction(
+			getAppear:{text->
+				return new ActionAppear(icon:'newTodo',enable:true)
+			},
+			action:{text->
+				TodoTag.newTodoTag(text)
+			}
+		))
     }
 }

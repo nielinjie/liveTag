@@ -25,7 +25,7 @@ class AdaptorTests extends GroovyTestCase{
         adaptorService.boService=boService
         boService.registerBo('tag.todo','tag',TodoTag.class)
         adaptorService.registerAdaptor('tag','detailDisplay',MockDetailDisplayAdaptor.class)
-        def todoDetailDisplayAdaptorClass=adaptorService.getAdaptorClass('tag.todo','detailDisplay')
+        def todoDetailDisplayAdaptorClass=adaptorService.getAdaptor(new TodoTag(),'detailDisplay').class
         assertEquals(todoDetailDisplayAdaptorClass,MockDetailDisplayAdaptor.class)
     }
     @Test(expected=IllegalArgumentException.class)
@@ -46,4 +46,7 @@ class AdaptorTests extends GroovyTestCase{
         adaptorService.registerAdaptor('tag','detailDisplay',MockDetailDisplayAdaptor.class)
     }
 }
-class MockDetailDisplayAdaptor{}
+class MockDetailDisplayAdaptor{
+	def value
+	def controller
+}

@@ -27,10 +27,13 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
 	panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
 		toolBar(constraints:'w 60%::'){
 			textField(id:'magicText',columns:50)
-			def mr=ServiceFactory.getService(MagicTextRegistor.class)
-			mr.entries.each{
+			def mr=ServiceFactory.getService(UIMediator.class)
+			mr.getMagicTextProvides().each{
 				me->
-				button(text:me.key,icon:IconManager.getIcon(me.value.icon),actionPerformed:{println magicText.text;me.value.activity(magicText.text)})
+				def appear=me.value.getAppear(magicText.text)
+				button(text:appear.text,icon:IconManager.getIcon(appear.icon),actionPerformed:{
+					me.value.action(magicText.text)
+				})
 			}
 		}
 		toolBar(constraints:'wrap'){

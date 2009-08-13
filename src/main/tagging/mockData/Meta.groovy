@@ -28,7 +28,7 @@ class Meta{
     		sm.searchViews<<it
     	}
 //        def mockTagables=
-//            (1..10).collect{new TextTagable(name:'mock text tagable',text:"I am mock text tagable - No. ${it}")}
+//            (1..50).collect{new TextTagable(name:'mock text tagable',text:"I am mock text tagable - No. ${it}")}
 //        mockTagables.each{
 //        	tm.addTagable(it)
 //        }

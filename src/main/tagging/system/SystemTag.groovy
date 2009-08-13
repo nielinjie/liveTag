@@ -55,6 +55,7 @@ class ImporterByTag extends SystemTag{
     String importId//the id of importer
 }
 class UnreadSearchView extends SearchView{
+	def type='searchView.unread'
     def name='Unread'
     def description='All unread tagable'
     def condition={
@@ -68,6 +69,7 @@ class UnreadSearchView extends SearchView{
     }
 }
 class StarSearchView extends SearchView{
+	def type='searchView.star'
     def name='Star'
     def description='All stared tagable'
     def condition={

@@ -36,11 +36,13 @@ class LiveTaggedController {
     }
     private void expandViewFrame(event){
         def bos=model.currentViewFrame.getDelta()
-        this.itemGroup=new SingleSelectedGroup(
-            selectionChanged:{
-                this.selectBo(this.itemGroup.selectedValue)
-            }
-            )
+		assert this.itemGroup!=null
+//		if (this.itemGroup==null)
+//        this.itemGroup=new SingleSelectedGroup(
+//            selectionChanged:{
+//                this.selectBo(this.itemGroup.selectedValue)
+//            }
+//            )
         bos.each{ bo->
             def w=aS.getAdaptor(bo,'briefDisplay')
             w.group=itemGroup

@@ -12,6 +12,7 @@ class TodoTag extends Tag{
     }
 }
 class TodoSearchView extends SearchView{
+	def type='searchView.todo'
 	def name='Todo'
 	def description='All todos'
 	def condition={
@@ -27,6 +28,7 @@ class TodoSearchView extends SearchView{
 	}
 }
 class NotFinishedTodoSearchView extends SearchView{
+	def type='searchView.unfinishedTodo'
 	def name='Not done Todo'
 	def description='All todos not done'
 		def condition={

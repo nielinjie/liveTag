@@ -29,9 +29,7 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
             this.manager.registry.getExtensionPoint(
                 'tagging.taggingManager', 'Meta').connectedExtensions
         extensions.each{
-        	println it.dump()
             def classNames=it.getParameters('class')
-			println classNames
 			classNames.each{
             	def className=it.valueAsString()
 	            def clazz=Class.forName(className)
@@ -48,7 +46,6 @@ public  class TaggingManagerPlugin extends ApplicationPlugin implements Applicat
             classNames.each{
                 def className=it.valueAsString()
                 def clazz=Class.forName(className)
-                println clazz
 				TaggingManager.objectKeeperClass=clazz
             }
                

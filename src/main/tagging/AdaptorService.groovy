@@ -4,32 +4,30 @@ import org.apache.commons.collections.map.MultiKeyMap
 class AdaptorService{
     def boService=BoServiceFactory.getBoService()
 	def controller
-    private MultiKeyMap<String,String,Class> adaptorClasses=new MultiKeyMap<String,String,Class>()
+    private MultiKeyMap<String,String,Object> adaptorClasses=new MultiKeyMap<String,String,Object>()
 
-    private Class getAdaptorClass(String adapteeType, String adaptorType){
+    Object getAdaptor(String adapteeType, Object adaptee,String adaptorType){
         if (!adaptorType || !adapteeType) return null
         def re=this.adaptorClasses.get(adapteeType,adaptorType)
-        return re?:this.getAdaptorClass(boService.getBoTypeParent(adapteeType),adaptorType)
-    }
-    def getAdaptor(String adapteeType,Object adaptee,String adaptorType){
-        def clas=getAdaptorClass(adapteeType,adaptorType)
-        if(clas){
-            def r= clas.newInstance(value:adaptee,controller:this.controller)
-            return r
+        def classOrPropertype= re?:this.getAdaptor(boService.getBoTypeParent(adapteeType),adaptee,adaptorType)
+        if (!classOrPropertype) return null
+        if (!(classOrPropertype instanceof Class)){
+        	return classOrPropertype.with{
+        		it.value=adaptee
+				it.controller=this.controller
+				it// return when register as a propertype
+        	}
+        }else{
+        	return classOrPropertype.newInstance(value:adaptee,controller:this.controller)
         }
-        return null
     }
+    
     def getAdaptor(Object adaptee,String adaptorType){
-    	def clas=getAdaptorClass(adaptee.type,adaptorType)
-		if(clas){
-			def r= clas.newInstance(value:adaptee,controller:this.controller)
-			return r
-		}
-    	return null
+    	return this.getAdaptor(adaptee.type,adaptee,adaptorType)
     }
-    void registerAdaptor(String adapteeType,String adaptorType,Class adaptorClass){
+    void registerAdaptor(String adapteeType,String adaptorType,Object adaptorClassOrPropertype){
         if (this.adaptorClasses.containsKey(adapteeType,adapteeType)) throw new IllegalArgumentException("duplicate adapteeType&adaptorType - ${adapteeType}&${adaptorType}")
-        this.adaptorClasses.put(adapteeType,adaptorType,adaptorClass)
+        this.adaptorClasses.put(adapteeType,adaptorType,adaptorClassOrPropertype)
     }
   
 }

@@ -20,7 +20,7 @@ class PluginTests{
 		def extensions =
             app.manager.registry.getExtensionPoint(
                 'tagging.taggingManager', 'Meta').connectedExtensions
-		at extensions.size(),is(1)
+		at extensions.size(),is(2)
 //		extensions.each{
 //        	def className=it.getParameter('class').valueAsString()
 //        	at className,is(not(null))
