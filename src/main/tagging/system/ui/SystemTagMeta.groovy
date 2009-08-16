@@ -10,8 +10,6 @@ import tagging.*
 
 class SystemTagMeta{
     static void provideMeta(){
-//        def aS=AdaptorServiceFactory.getAdaptorService()
-//        aS.registerAdaptor('systemTag','briefDisplay',SystemTagBriefDisplayAdaptor.class)
 		AdaptorServiceFactory.getAdaptorService().with{
 			it.registerAdaptor('searchView.unread','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unread'))
 			it.registerAdaptor('searchView.star','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'star'))
@@ -30,6 +28,16 @@ class SystemTagMeta{
         			getAppear:{new QuickTagActionAppear(icon:tm.hasTagOnTagable(it,'tag.system.star')?'star':'nostar')},
                     action:{StarTag.toggle(it)}
         	)
+        	it.registorSearchView(new SearchViewItem(order:100,group:'System',searchView:
+        		new SearchView(name:'All',description:'All Bos',condition:{
+        			TaggingManagerFactory.getTaggingManager().findTagable({true})
+              	},sortComparator:{
+              		a,b->0
+              	})))
+			it.registorSearchView(new SearchViewItem(order:100,group:'Default',searchView:new  UnreadSearchView()
+                ))
+			it.registorSearchView(new SearchViewItem(order:101,group:'Default',searchView:new  StarSearchView()
+                ))
         }
     }
 }

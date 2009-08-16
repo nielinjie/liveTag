@@ -37,5 +37,6 @@
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/jpf-boot.jar"/>
 	<classpathentry kind="lib" path="lib/jpf.jar"/>
+	<classpathentry kind="lib" path="lib/sandbox.jar"/>
 	<classpathentry kind="output" path="staging/classes"/>
 </classpath>

@@ -5,6 +5,9 @@ import javax.swing.*
 import java.awt.SystemColor
 import java.awt.Color
 import javax.swing.table.*
+
+import com.l2fprod.common.swing.JOutlookBar;
+
 import ca.odell.glazedlists.gui.*
 import ca.odell.glazedlists.swing.*
 import ca.odell.glazedlists.*
@@ -13,7 +16,6 @@ import tagging.*
 import tagging.ui.*
 
 def aS=AdaptorServiceFactory.getAdaptorService()
-def searchViews=SearchServiceFactory.getSearchService().searchViews
 def Bos=[]
 
 def icons=[:].putAll(
@@ -23,11 +25,11 @@ def icons=[:].putAll(
 )
 
 println icons
+def mr=ServiceFactory.getService(UIMediator.class)
 application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
 	panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
 		toolBar(constraints:'w 60%::'){
 			textField(id:'magicText',columns:50)
-			def mr=ServiceFactory.getService(UIMediator.class)
 			mr.getMagicTextProvides().each{
 				me->
 				def appear=me.value.getAppear(magicText.text)
@@ -40,20 +42,31 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
 			button(text:'new')
 		}
 	}
+	JOutlookBar outlook = new JOutlookBar();
+    outlook.setTabPlacement(JTabbedPane.LEFT);
+    	viewGroup=new SingleSelectedGroup(selectionChanged:{controller.selectSearchView(viewGroup.selectedValue)})
+    def searchViewGroups=mr.getSearchViewGroups()
+	searchViewGroups.each{
+    	def searchViews=mr.getSearchViews(it)
+	    def outlookPanel=panel(layout:new MigLayout()){
+	    	searchViews.each{
+	    		def a=aS.getAdaptor(it,'briefDisplay')
+				a.group=viewGroup
+				def w=widget(constraints:'wrap,w :150px:',a.getComponent())
+				viewGroup.addItem(w,it)
+				w.mouseClicked={e->viewGroup.select(e.source)}
+	    	}
+	    }
+    outlook.addTab(it, outlook.makeScrollPane(outlookPanel));
+    }
     splitPane(constraints:'h 600px::, w 1200px::',
     leftComponent:
-            scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 200px::, h 600px::'){
-                panel(layout:new MigLayout()){
-                    viewGroup=new SingleSelectedGroup(selectionChanged:{controller.selectSearchView(viewGroup.selectedValue)})
-                    searchViews.each{
-                    	def a=aS.getAdaptor(it,'briefDisplay')
-						a.group=viewGroup
-                        def w=widget(constraints:'wrap,w :150px:',a.getComponent())
-                        viewGroup.addItem(w,it)
-                        w.mouseClicked={e->viewGroup.select(e.source)}
-                    }
-                }
-            },
+//            scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 200px::, h 600px::'){
+//                
+//            }
+    	
+    	widget(outlook)
+    		,
             rightComponent:
             splitPane(
                     leftComponent:

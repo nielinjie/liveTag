@@ -39,5 +39,10 @@ class TodoTagMeta{
 				TodoTag.newTodoTag(text)
 			}
 		))
+		mr.registorSearchView(new SearchViewItem(order:10,group:'Default',searchView:new  NotFinishedTodoSearchView()
+                ))
+		mr.registorSearchView(new SearchViewItem(order:100,group:'Category',searchView:new  TodoSearchView()
+                ))
+				
     }
 }
