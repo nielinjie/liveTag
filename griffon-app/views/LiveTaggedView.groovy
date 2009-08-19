@@ -26,7 +26,8 @@ def icons=[:].putAll(
 
 println icons
 def mr=ServiceFactory.getService(UIMediator.class)
-application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
+application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
+	
 	panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
 		toolBar(constraints:'w 60%::'){
 			textField(id:'magicText',columns:50)
@@ -38,9 +39,7 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
 				})
 			}
 		}
-		toolBar(constraints:'wrap'){
-			button(text:'new')
-		}
+		label(icon:IconManager.getIcon('banner'),constraints:'wrap')
 	}
 	JOutlookBar outlook = new JOutlookBar();
     outlook.setTabPlacement(JTabbedPane.LEFT);
@@ -73,15 +72,17 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
                     	panel(layout:new MigLayout(),constraints:'w :500px:, h 600px::'){
             				panel(layout:new MigLayout(),constraints:'growx ,wrap'){
             					etchedBorder(parent:true)
-            					button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
-								button(icon:icons['forward'],id:'viewFrameForward',text:'forward',actionPerformed:{model.currentViewFrame=model.history.forward();controller.renderViewFrame(model.currentViewFrame)})
             					label(id:'viewFrameDescription',text:'view frame description here',constraints:'growx')
+								panel(layout:new MigLayout('insets 0'),constraints:'x 1al'){
+	            					button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
+									button(icon:icons['forward'],id:'viewFrameForward',text:'forward',actionPerformed:{model.currentViewFrame=model.history.forward();controller.renderViewFrame(model.currentViewFrame)})
+            					}
 								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasBack()},target:viewFrameBack,targetProperty:'enabled')
 								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasForward()},target:viewFrameForward,targetProperty:'enabled')
 								bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
             				}
             				
-                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
+                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
                                 panel(id:'briefPanel',layout:new MigLayout()){
                                     itemGroup=new SingleSelectedGroup(
                                     selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
@@ -101,11 +102,16 @@ application(title:'LiveTagged',  size:[320,480], location:[50,50], pack:true, lo
                             }
                             },
                             rightComponent:
-                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){
-                                panel(id:'detailPanel',constraints:'w ::'){
-                                    //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
-                                }
-                            }
+                            	//panel{
+//                            		panel(id:'navigate',layout:new MigLayout(),constraints:'wrap'){
+//                            			
+//                            		}
+		                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){
+		                                panel(id:'detailPanel',constraints:'w :100%:, h :100%:',layout:new MigLayout()){
+		                                    //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
+		                                }
+		                            }
+                            	//}
                             ,/*resizeWeight:0.5f,*/oneTouchExpandable:true)
                     ,/*resizeWeight:0.25f,*/oneTouchExpandable:true)
     

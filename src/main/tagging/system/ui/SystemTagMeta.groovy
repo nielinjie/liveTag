@@ -13,6 +13,8 @@ class SystemTagMeta{
 		AdaptorServiceFactory.getAdaptorService().with{
 			it.registerAdaptor('searchView.unread','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unread'))
 			it.registerAdaptor('searchView.star','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'star'))
+			it.registerAdaptor('tag.system.unread','detailDisplay',UnreadTagDetailDisplayAdaptor.class)
+			it.registerAdaptor('tag.system.star','detailDisplay',StarTagDetailDisplayAdaptor.class)
 		}
 		BoServiceFactory.getBoService().with{
         	it.registerBo('tag.system.unread','tag',UnreadTag.class)
@@ -38,6 +40,20 @@ class SystemTagMeta{
                 ))
 			it.registorSearchView(new SearchViewItem(order:101,group:'Default',searchView:new  StarSearchView()
                 ))
+        }
+    }
+}
+class UnreadTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
+    def getPanel(){
+        return sb.panel{
+            label("I am a unread tag")
+        }
+    }
+}
+class StarTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
+    def getPanel(){
+        return sb.panel{
+            label("I am a star tag")
         }
     }
 }

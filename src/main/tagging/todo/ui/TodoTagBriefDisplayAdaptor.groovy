@@ -17,7 +17,7 @@ class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
 class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
     def getPanel(){
         return sb.panel{
-            label("${value.name}")
+            label("I am a todo tag - ${value.name}")
         }
     }
 }

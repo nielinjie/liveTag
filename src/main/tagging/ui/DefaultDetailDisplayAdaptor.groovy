@@ -17,6 +17,11 @@ abstract class DefaultDetailDisplayAdaptor{
         return getPanel()
     }
     def abstract getPanel()
+    def getUnknownPanel(){
+    	sb.panel(){
+    		label(text:'Unknown')
+    	}
+    }
 }
 abstract class DefaultIconDisplayAdaptor{
     def iconNames=[]

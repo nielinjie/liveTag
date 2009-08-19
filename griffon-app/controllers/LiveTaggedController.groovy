@@ -11,6 +11,7 @@ class LiveTaggedController {
     def aS=AdaptorServiceFactory.getAdaptorService(this)
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
+    def briefItemLayoutConstraints='wrap, w 400px::'
     void mvcGroupInit(Map args) {
         String[] arg={}
         def prop=new ExtendedProperties()
@@ -24,6 +25,7 @@ class LiveTaggedController {
 		view.detailPanel.revalidate()
         view.detailPanel.add(aS.getAdaptor(bo,'detailDisplay').getComponent())
         view.detailPanel.revalidate()
+		view.detailPanel.repaint()
     }
     void selectSearchView(searchView){
         sb.doOutside{
@@ -50,7 +52,7 @@ class LiveTaggedController {
             edt{
                 itemGroup.addItem(w,bo)
                 view.briefPanel.add(w)
-                view.briefPanel.layout.setComponentConstraints(w,'wrap')
+                view.briefPanel.layout.setComponentConstraints(w,briefItemLayoutConstraints)
                 w.mouseClicked={e->itemGroup.select(e.source)}
                 view.briefPanel.revalidate()
                 
@@ -92,7 +94,7 @@ class LiveTaggedController {
             edt{
                 itemGroup.addItem(w,bo)
                 view.briefPanel.add(w)
-                view.briefPanel.layout.setComponentConstraints(w,'wrap')
+                view.briefPanel.layout.setComponentConstraints(w,briefItemLayoutConstraints)
                 w.mouseClicked={e->itemGroup.select(e.source)}
                 view.briefPanel.revalidate()
             }

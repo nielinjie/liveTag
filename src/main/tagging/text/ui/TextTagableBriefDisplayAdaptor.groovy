@@ -11,12 +11,12 @@ class TextTagableBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
             etchedBorder(parent:true)
             label(text:"${value.text}")
             def aS=AdaptorServiceFactory.getAdaptorService()
-            widget(aS.getAdaptor('quickTag',value,'briefDisplay').component)
+            widget(aS.getAdaptor('quickTag',value,'briefDisplay').component,constraints:'x 1al')
         }
     }
 }
-class TextTagableDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
-    def getPanel(){
+class TextTagableDetailDisplayAdaptor extends DefaultTagableDetailDisplayAdaptor{
+    @Override def getPanel(){
         return sb.panel{
             label(text:"${value.name} - ${value.text}")
         }
