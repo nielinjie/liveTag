@@ -106,11 +106,11 @@ application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], loc
 //                            		panel(id:'navigate',layout:new MigLayout(),constraints:'wrap'){
 //                            			
 //                            		}
-		                            scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){
+		                            //scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){
 		                                panel(id:'detailPanel',constraints:'w :100%:, h :100%:',layout:new MigLayout()){
 		                                    //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
 		                                }
-		                            }
+		                            //}
                             	//}
                             ,/*resizeWeight:0.5f,*/oneTouchExpandable:true)
                     ,/*resizeWeight:0.25f,*/oneTouchExpandable:true)

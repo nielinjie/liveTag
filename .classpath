@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="lib/jpf-boot.jar"/>
 	<classpathentry kind="lib" path="lib/jpf.jar"/>
 	<classpathentry kind="lib" path="lib/sandbox.jar"/>
+	<classpathentry kind="lib" path="lib/datetimepicker2.8.6.jar"/>
 	<classpathentry kind="output" path="staging/classes"/>
 </classpath>

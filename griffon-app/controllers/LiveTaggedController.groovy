@@ -5,13 +5,13 @@ import org.java.plugin.boot.*
 import org.java.plugin.util.*
 class LiveTaggedController {
     private def sb=new SwingBuilder()
-    // these will be injected by Griffon
     def model
     def view
     def aS=AdaptorServiceFactory.getAdaptorService(this)
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
     def briefItemLayoutConstraints='wrap, w 400px::'
+    def	detailItemLayoutConstraints='w :100%:, h :100%:'
     void mvcGroupInit(Map args) {
         String[] arg={}
         def prop=new ExtendedProperties()
@@ -23,7 +23,9 @@ class LiveTaggedController {
     void selectBo(bo){
         view.detailPanel.removeAll()
 		view.detailPanel.revalidate()
-        view.detailPanel.add(aS.getAdaptor(bo,'detailDisplay').getComponent())
+		def w=aS.getAdaptor(bo,'detailDisplay').getComponent()
+        view.detailPanel.add(w)
+		view.detailPanel.layout.setComponentConstraints(w,detailItemLayoutConstraints)
         view.detailPanel.revalidate()
 		view.detailPanel.repaint()
     }
@@ -34,17 +36,10 @@ class LiveTaggedController {
             this.renderViewFrame(model.currentViewFrame)
         }
         null
-        //		view.briefPanel.update()
     }
     private void expandViewFrame(event){
         def bos=model.currentViewFrame.getDelta()
 		assert this.itemGroup!=null
-//		if (this.itemGroup==null)
-//        this.itemGroup=new SingleSelectedGroup(
-//            selectionChanged:{
-//                this.selectBo(this.itemGroup.selectedValue)
-//            }
-//            )
         bos.each{ bo->
             def w=aS.getAdaptor(bo,'briefDisplay')
             w.group=itemGroup
@@ -86,7 +81,7 @@ class LiveTaggedController {
             selectionChanged:{
                 this.selectBo(this.itemGroup.selectedValue)
             }
-            )
+        )
         bos.each{ bo->
             def w=aS.getAdaptor(bo,'briefDisplay')
             w.group=itemGroup
@@ -106,8 +101,4 @@ class LiveTaggedController {
         }
         setMoreButtonEnable()
     }
-    /*
-     def action = { evt = null ->
-     }
-     */
 }

@@ -11,13 +11,13 @@ abstract class DefaultTagableDetailDisplayAdaptor extends DefaultDetailDisplayAd
 			etchedBorder(parent:true)
         	widget(this.panel)
 		},bottomComponent:
-			sb.panel{
+			sb.panel(layout:new MigLayout()){
         		etchedBorder(parent:true)
-        		TaggingManagerFactory.getTaggingManager().getTagsForTagable(value.id).each{
-        			widget(aS.getAdaptor(it.type,value,'detailDisplay')?.component?:this.unknowPanel)
+        		TaggingManagerFactory.getTaggingManager().getTagsForTagable(value.id).sort{a,b->a.type.compareTo(b.type)}.each{
+        			widget(aS.getAdaptor(it.type,it,'detailDisplay')?.component?:this.unknowPanel,constraints:'wrap')
         		}
         	}
-        ,oneTouchExpandable:true)
+		,resizeWeight:0.6,continuousLayout:true,oneTouchExpandable:true)
     }
 	def unknowPanel=sb.panel{
 		label('I am a placeholder for unknow tag')

@@ -5,6 +5,7 @@ import tagging.ui.*
 import tagging.todo.*
 import net.miginfocom.swing.MigLayout
 import java.awt.SystemColor
+import com.lavantech.gui.comp.*;
 
 class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
     def getPanel(){
@@ -16,8 +17,29 @@ class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
 }
 class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
     def getPanel(){
-        return sb.panel{
-            label("I am a todo tag - ${value.name}")
+        return sb.panel(layout:new MigLayout()){
+            label(icon:IconManager.getIcon('todo'),'Todo - ')
+			checkBox(id:'doneCheckBox',selected:value.done,text:'Done',mouseClicked:{value.done=doneCheckBox.selected})
+			checkBox(id:'deadLineCheckBox',selected:(value.deadline!=null),text:'DeadLine',mouseClicked:{
+            	if(deadLineCheckBox.selected){
+            		picker1.enabled=true
+            	}else{
+            		picker1.enabled=false
+            		value.deadline=null
+            	}
+            })
+			def cal= new GregorianCalendar()
+            if(value.deadline!=null){
+            	cal.time=value.deadline
+            }
+			def picker1 = new DateTimePicker(cal, "dd-MMM-yyyy HH:mm:ss z")
+            picker1.actionPerformed={
+            	event->
+            	if(deadLineCheckBox.selected) 
+            		value.deadline=event.source.calendar.time
+            }
+			picker1.enabled=deadLineCheckBox.selected
+            widget(picker1,id:'picker1')
         }
     }
 }
