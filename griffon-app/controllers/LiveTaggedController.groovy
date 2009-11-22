@@ -12,6 +12,7 @@ class LiveTaggedController {
     def itemGroup
     def briefItemLayoutConstraints='wrap, w 400px::'
     def	detailItemLayoutConstraints='w :100%:, h :100%:'
+    private processingViewFrame
     void mvcGroupInit(Map args) {
         String[] arg={}
         def prop=new ExtendedProperties()
@@ -22,12 +23,12 @@ class LiveTaggedController {
     }
     void selectBo(bo){
         view.detailPanel.removeAll()
-		view.detailPanel.revalidate()
-		def w=aS.getAdaptor(bo,'detailDisplay').getComponent()
-        view.detailPanel.add(w)
-		view.detailPanel.layout.setComponentConstraints(w,detailItemLayoutConstraints)
         view.detailPanel.revalidate()
-		view.detailPanel.repaint()
+        def w=aS.getAdaptor(bo,'detailDisplay').getComponent()
+        view.detailPanel.add(w)
+        view.detailPanel.layout.setComponentConstraints(w,detailItemLayoutConstraints)
+        view.detailPanel.revalidate()
+        view.detailPanel.repaint()
     }
     void selectSearchView(searchView){
         sb.doOutside{
@@ -39,7 +40,7 @@ class LiveTaggedController {
     }
     private void expandViewFrame(event){
         def bos=model.currentViewFrame.getDelta()
-		assert this.itemGroup!=null
+        assert this.itemGroup!=null
         bos.each{ bo->
             def w=aS.getAdaptor(bo,'briefDisplay')
             w.group=itemGroup
@@ -72,9 +73,10 @@ class LiveTaggedController {
         }
     }
     void renderViewFrame(viewFrame){
+        this.processingViewFrame=viewFrame
         edt{
             view.briefPanel.removeAll()
-			view.briefPanel.repaint()
+            view.briefPanel.repaint()
         }
         def bos=viewFrame.getRequested()
         this.itemGroup=new SingleSelectedGroup(
@@ -88,10 +90,12 @@ class LiveTaggedController {
             w=w.getComponent()
             edt{
                 itemGroup.addItem(w,bo)
-                view.briefPanel.add(w)
-                view.briefPanel.layout.setComponentConstraints(w,briefItemLayoutConstraints)
-                w.mouseClicked={e->itemGroup.select(e.source)}
-                view.briefPanel.revalidate()
+                if(viewFrame==this.processingViewFrame){
+                    view.briefPanel.add(w)
+                    view.briefPanel.layout.setComponentConstraints(w,briefItemLayoutConstraints)
+                    w.mouseClicked={e->itemGroup.select(e.source)}
+                    view.briefPanel.revalidate()
+                }
             }
         }
         if(bos.isEmpty()){
@@ -100,5 +104,6 @@ class LiveTaggedController {
             }
         }
         setMoreButtonEnable()
+        this.processingViewFrame=null
     }
 }
