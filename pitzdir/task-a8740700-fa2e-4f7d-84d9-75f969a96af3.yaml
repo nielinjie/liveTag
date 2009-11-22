@@ -1,0 +1,22 @@
+components: []
+created_time: 2009-11-22 21:37:17.101363
+description: 'rt
+
+  searching all tagables which are has system tags is very slow, should be improved.
+
+  see StarSearchView and UnreadSearchView'
+estimate: !!python/object:uuid.UUID
+  int: 305115291370662711647575721856667623051
+milestone: !!python/object:uuid.UUID
+  int: 211961769246455148039943274776473539160
+modified_time: 2009-11-22 21:37:33.994816
+owner: !!python/object:uuid.UUID
+  int: 214069775491885917014752369404705432394
+pscore: 0
+status: !!python/object:uuid.UUID
+  int: 148508936027421968993418629651492863409
+title: finding unread and stared tags is slow
+type: task
+uuid: !!python/object:uuid.UUID
+  int: 223912751781750370639848599567976721139
+yaml_file_saved: 2009-11-22 21:37:33.995163
