@@ -89,7 +89,8 @@ abstract class LinkTag extends Tag{
     String toType
     def link(Closure newToTagable){
         def tm=TaggingManagerFactory.getTaggingManager()
-        def toTagable=tm.findTagable({obj->obj.type==toType && obj.bid==from."${this.fromPropertyName}"})
+        def toTagable=tm.findTagable({obj->
+                obj.type==toType && obj.bid==from."${this.fromPropertyName}"})
         if(!toTagable){
             toTagable=newToTagable(from)
             if(toTagable.bid==null)

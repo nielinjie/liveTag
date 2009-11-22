@@ -6,6 +6,7 @@ package tagging.twitter.ui
 
 import tagging.*
 import tagging.ui.*
+import tagging.twitter.*
 import groovy.swing.*
 import tagging.people.*
 import net.miginfocom.swing.MigLayout
@@ -20,15 +21,14 @@ class TweetBriefDisplay extends DefaultBriefDisplayAdaptor{
             etchedBorder(parent:true)
             def aS=AdaptorServiceFactory.getAdaptorService()
             def people=CreatedByTag.findCreatedBy(value)
-            println people.dump()
             if(people){
                 widget(aS.getAdaptor(people,'iconDisplay').getComponent())
             }
             editorPane(text:this.value.text,constraints:'w 300px::,h 48px::',editable:false,opaque: false,mouseClicked:{
-                event->
-                event.source=event.source.parent
-                event.source.dispatchEvent((event))
-            })
+                    event->
+                    event.source=event.source.parent
+                    event.source.dispatchEvent((event))
+                })
         }
     }
 }
@@ -44,27 +44,29 @@ class TweetDetailDisplay extends DefaultDetailDisplayAdaptor{
 }
 class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
     def getPanel(){
-        return sb.panel{
-            label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)),mouseClicked:{
-                event->
-                event.source=event.source.parent
-                event.source.dispatchEvent((event))
-            })
+        def aS=AdaptorServiceFactory.getAdaptorService()
+        return sb.panel(layout:new MigLayout(),constraints:'wrap'){
+                widget(aS.getAdaptor(value,'iconDisplay').getComponent())
+            editorPane(text:"${this.value.screenName} - ${this.value.userName}@twitter",constraints:'w 300px::,h 48px::',editable:false,opaque: false,mouseClicked:{
+                    event->
+                    event.source=event.source.parent
+                    event.source.dispatchEvent((event))
+                })
         }
     }
 }
 class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
     def getPanel(){
-        return new SwingBuilder().panel(layout:new MigLayout()){
+        return sb.panel(layout:new MigLayout()){
             label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
-			def aS=AdaptorServiceFactory.getAdaptorService()
-			widget(aS.getAdaptor(value.searchView,'briefDisplay').getComponent())
+            def aS=AdaptorServiceFactory.getAdaptorService()
+            widget(aS.getAdaptor(value.searchView,'briefDisplay').getComponent())
         }
     }
 }
 class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
     def getPanel(){
-        return new SwingBuilder().panel{
+        return sb.panel{
             label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)))
         }
     }
@@ -80,5 +82,16 @@ class TwitterMeta{
         aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
         aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
         aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
+        def mr=ServiceFactory.getService(UIMediator.class)
+        mr.registorSearchView(new SearchViewItem(
+                order:10,group:'Category',
+                searchView:new TwitterImporter(
+                    username:'nielinjie',password:'790127',
+                    name:'Twitter Importer',
+                    description:'Sample Twitter Importer',interval:300
+                )
+            )
+        )
     }
 }
+

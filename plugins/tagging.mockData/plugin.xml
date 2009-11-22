@@ -13,6 +13,7 @@
 		id="mockDataMeta">
 		<parameter id="class" value="tagging.mockData.Meta" />
 		<parameter id="class" value="tagging.todo.ui.TodoTagMeta" />
+		<parameter id="class" value="tagging.people.ui.PeopleMeta" />
 		<parameter id="class" value="tagging.text.ui.TextTagableMeta" />
 		<parameter id="class" value="tagging.ui.ImporterMeta" />
 		<parameter id="class" value="tagging.system.ui.SystemTagMeta" />

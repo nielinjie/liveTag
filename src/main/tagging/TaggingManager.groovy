@@ -93,6 +93,7 @@ class TaggingManager{
     	}
     }
     void onInit(){
+    	println 'I am on init'
     	 if(this.ok==null){
     		 if(this.objectKeeperClass==null)
     			 this.ok=new StupidOK()//this is for test only
@@ -161,7 +162,9 @@ class StupidOK implements ObjectKeeper{
 		try{
 	    	File f=new File(this.file)
 	    	s=f.text
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace()
+		}
 		if(s){
 			this.objs=XML.fromXML(s)
 		}

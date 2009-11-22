@@ -5,7 +5,7 @@
 	</condition>
 	<property name="griffon" value="griffon" />
 	<property environment="env" />
-	<property name="groovyjar" value="${env.GROOVY_HOME}/embeddable/groovy-all-1.6.3.jar"/>
+	<property name="groovyjar" value="${env.GROOVY_HOME}/embeddable/groovy-all-1.6.3.jar" />
 	<taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpath="${groovyjar}" />
 	<taskdef resource="tasks.properties">
 		<classpath>
@@ -127,7 +127,7 @@
 			<classpath location="${groovyjar}" />
 		</java>
 	</target>
-	
+
 	<target name="main.test" depends="main.compile">
 		<junit printsummary="yes" haltonfailure="yes">
 			<classpath location="classes" />
@@ -147,22 +147,22 @@
 		</junit>
 	</target>
 	<target name="main.testAll" depends="main.compile">
-	        <junit printsummary="yes" haltonfailure="yes">
-	            <classpath location="classes" />
-	            <classpath>
-	                <fileset dir="lib">
-	                    <include name="**/*.jar" />
-	                </fileset>
-	            </classpath>
-	            <classpath location="${groovyjar}" />
-	            <formatter type="plain" usefile="false" />
-	            <batchtest>
-	                <fileset dir="classes">
-	                    <include name="**/*Tests.class" />
-	                </fileset>
-	            </batchtest>
-	        </junit>
-	    </target>
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath location="classes" />
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<classpath location="${groovyjar}" />
+			<formatter type="plain" usefile="false" />
+			<batchtest>
+				<fileset dir="classes">
+					<include name="**/*Tests.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
 	<target name="main.test.coverage" depends="main.compile">
 		<cobertura-instrument todir="test/instrumented-classes">
 			<fileset dir="classes">
@@ -196,6 +196,13 @@
 		</junit>
 		<cobertura-report srcdir="src/main" destdir="test/report" />
 	</target>
+	<target name="main.jar" depends="main.compile">
+		<jar destfile="tag.jar" basedir="classes"/>
+	</target>
+	<target name="main.export" depends="main.jar">
+		<move todir="../tagFace/lib" file="tag.jar" />
+	</target>
+
 
 
 </project>
