@@ -9,3 +9,7 @@ test/reports
 test/report
 .*
 nbproject
+/LiveTagged.iml
+/LiveTagged.ipr
+/LiveTagged.iws
+/nb-build.xml
