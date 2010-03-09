@@ -16,6 +16,7 @@ class PeopleSearchView extends SearchView{
     def type='searchView.people'
     def name='People'
     def description='All known people'
+    def sortComparator={a,b->a.userName<=>b.userName}
     def condition={
         def tm=TaggingManagerFactory.getTaggingManager()
         tm.findTagable{

@@ -33,7 +33,7 @@ class LiveTaggedController {
     void selectSearchView(searchView){
         sb.doOutside{
             
-            this.createViewFrame(searchView.condition(),searchView.description)
+            this.createViewFrame(searchView.condition().sort(searchView.sortComparator),searchView.description)
             this.renderViewFrame(model.currentViewFrame)
         }
         null

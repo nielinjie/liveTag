@@ -19,5 +19,6 @@
 		<parameter id="class" value="tagging.system.ui.SystemTagMeta" />
 		<parameter id="class" value="tagging.ui.SearchViewMeta" />
 		<parameter id="class" value="tagging.twitter.ui.TwitterMeta" />
+		<parameter id="class" value="tagging.timeStream.ui.TimeStreamMeta" />
 	</extension>
 </plugin>

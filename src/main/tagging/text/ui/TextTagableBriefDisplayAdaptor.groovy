@@ -10,8 +10,7 @@ class TextTagableBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
             etchedBorder(parent:true)
             label(text:"${value.text}")
-            def aS=AdaptorServiceFactory.getAdaptorService()
-            widget(aS.getAdaptor('quickTag',value,'briefDisplay').component,constraints:'x 1al')
+            
         }
     }
 }
@@ -27,8 +26,8 @@ class TextTagableMeta{
         def aS=AdaptorServiceFactory.getAdaptorService()
         aS.registerAdaptor('tagable.text','detailDisplay',TextTagableDetailDisplayAdaptor.class)
         aS.registerAdaptor('tagable.text','briefDisplay',TextTagableBriefDisplayAdaptor.class)
-		ServiceFactory.getService(UIMediator.class).with{
-        	it.quickTagRequests['tagable.text']=['tag.system.unread','tag.system.star']
+        ServiceFactory.getService(UIMediator.class).with{
+            it.quickTagRequests['tagable.text']=['tag.system.unread','tag.system.star']
         }
     }
 }

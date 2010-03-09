@@ -18,11 +18,11 @@ class TweetBriefDisplay extends DefaultBriefDisplayAdaptor{
     
     def getPanel(){
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            etchedBorder(parent:true)
             def aS=AdaptorServiceFactory.getAdaptorService()
             def people=CreatedByTag.findCreatedBy(value)
+
             if(people){
-                widget(aS.getAdaptor(people,'iconDisplay').getComponent())
+                widget(aS.getAdaptor(people,'iconDisplay').getComponent(),constraints:'aligny top')
             }
             editorPane(text:this.value.text,constraints:'w 300px::,h 48px::',editable:false,opaque: false,mouseClicked:{
                     event->
@@ -30,6 +30,8 @@ class TweetBriefDisplay extends DefaultBriefDisplayAdaptor{
                     event.source.dispatchEvent((event))
                 })
         }
+       
+
     }
 }
 
@@ -42,11 +44,18 @@ class TweetDetailDisplay extends DefaultDetailDisplayAdaptor{
     }
     
 }
+class TweetTypeIconDisplay extends DefaultIconDisplayAdaptor{
+    def getPanel(){
+        return sb.panel(layout:new MigLayout('ins 0')){
+            label(icon:IconManager.getIcon('twitter'))
+        }
+    }
+}
 class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         def aS=AdaptorServiceFactory.getAdaptorService()
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-                widget(aS.getAdaptor(value,'iconDisplay').getComponent())
+            widget(aS.getAdaptor(value,'iconDisplay').getComponent())
             editorPane(text:"${this.value.screenName} - ${this.value.userName}@twitter",constraints:'w 300px::,h 48px::',editable:false,opaque: false,mouseClicked:{
                     event->
                     event.source=event.source.parent
@@ -66,11 +75,12 @@ class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
 }
 class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
     def getPanel(){
-        return sb.panel{
+        return sb.panel(layout:new MigLayout('ins 0')){
             label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)))
         }
     }
 }
+
 class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
 }
 class TwitterMeta{
@@ -79,6 +89,8 @@ class TwitterMeta{
         aS.registerAdaptor('importer.twitter','briefDisplay',TwitterImporterBriefDisplay.class)
         aS.registerAdaptor('tagable.twitter.tweet','briefDisplay',TweetBriefDisplay.class)
         aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
+        aS.registerAdaptor('tagable.twitter.tweet','typeIconDisplay',TweetTypeIconDisplay.class)
+
         aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
         aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
         aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)

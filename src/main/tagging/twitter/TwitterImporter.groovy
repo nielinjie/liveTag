@@ -24,7 +24,7 @@ public class TwitterImporter extends Importer{
     int proxyPort=9050
     Proxy proxy=new Proxy(Proxy.Type.SOCKS ,new InetSocketAddress(proxyHostName,proxyPort))
     def condition={TaggingManagerFactory.getTaggingManager().findTagable({obj->obj instanceof TweetTagable})}
-    def sortComparator={a,b->a.createdAt<=>b.createAt}
+    def sortComparator={a,b->-a.createdAt.time<=>-b.createdAt.time}
     Authenticator authenticator=null
     GPathResult slurpAPIStream(String url) {
         def text = ""
@@ -68,7 +68,7 @@ public class TwitterImporter extends Importer{
             if(tm.findTagable({tagable->tagable.bid==tw['id']})){
                 return
             }
-            def tweet=new TweetTagable(text:tw['text'],author:tw['userid'],createdAt:twitterFormat.parse(tw.created_at))
+            def tweet=new TweetTagable(text:tw['text'],author:tw['userid'],createdAt:twitterFormat.parse(tw.created_at),bid:tw['id'])
             tm.addTagable(tweet)
             //add keyword tags
             //add person tagable and createdby tag

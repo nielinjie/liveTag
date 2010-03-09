@@ -3,7 +3,7 @@ import org.apache.commons.collections.map.MultiKeyMap
 //@Singleton
 class AdaptorService{
     def boService=BoServiceFactory.getBoService()
-	def controller
+    def controller
     private MultiKeyMap<String,String,Object> adaptorClasses=new MultiKeyMap<String,String,Object>()
 
     Object getAdaptor(String adapteeType, Object adaptee,String adaptorType){
@@ -12,13 +12,13 @@ class AdaptorService{
         def classOrPropertype= re?:this.getAdaptor(boService.getBoTypeParent(adapteeType),adaptee,adaptorType)
         if (!classOrPropertype) return null
         if (!(classOrPropertype instanceof Class)){
-        	return classOrPropertype.with{
-        		it.value=adaptee
-				it.controller=this.controller
-				it// return when register as a propertype
-        	}
+            return classOrPropertype.with{
+                it.value=adaptee
+                it.controller=this.controller
+                it// return when register as a propertype
+            }
         }else{
-        	return classOrPropertype.newInstance(value:adaptee,controller:this.controller)
+            return classOrPropertype.newInstance(value:adaptee,controller:this.controller)
         }
     }
     
@@ -37,8 +37,8 @@ class AdaptorServiceFactory{
     }
     static AdaptorService getAdaptorService(def controller){
         def re= getAdaptorService()
-		if(controller)
-			if(!re.controller)re.controller=controller
-		return re
+        if(controller)
+        if(!re.controller)re.controller=controller
+        return re
     }
 }
