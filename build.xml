@@ -140,8 +140,7 @@
 			<formatter type="plain" usefile="false" />
 			<batchtest>
 				<fileset dir="classes">
-					<include name="**/SystemTagTests.class" />
-					<include name="**/PluginTests.class" />
+					<include name="**/${testClass}Tests.class" />
 				</fileset>
 			</batchtest>
 		</junit>
