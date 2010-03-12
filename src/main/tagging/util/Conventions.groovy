@@ -5,7 +5,7 @@ package tagging.util
  * @author nielinjie
  */
 class Conventions {
-    private List<Candidate> candidates=[]
+    List<Candidate> candidates=[]
     void registerCandidate(Candidate candidate){
         candidates<<candidate
     }
@@ -51,9 +51,10 @@ class ClassCandidate extends CountableCandidate{
     }
 }
 class FindByClassNameCandidate extends Candidate{
+    String basePackage=''
     private boolean match(String className,String[] keys){
         List<String> nameParts=fromCamelCase(className)
-        if (nameParts!=keys.size()) return false
+        if (nameParts.size()!=keys.size()) return false
         def re=true
         nameParts.eachWithIndex{
             p,i->
@@ -73,18 +74,19 @@ class FindByClassNameCandidate extends Candidate{
         re<<( camelCase[index..-1])
         return re.collect{
             it.toLowerCase()
-        }
+        }[1..-1]
     }
-    def Iterator<String> classNameScaner=[]
+    @Lazy List<ClassName> classNameScaner={new ClasspathScanner().getResources(basePackage).toList()}()
     def List<Object> getObjects(String... keys){
-        der re=[]
+        def re=[]
         try{
             classNameScaner.each{
-                if(match(it,keys))
-                re<< Class.forName(it).newInstance()
+                if(match(it.className,keys)){
+                    re<< Class.forName(it.fullClassName).newInstance()
+                }
             }
         }catch(Exception e){
-
+            e.printStackTrace()
         }
         return re
     }

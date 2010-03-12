@@ -14,13 +14,15 @@ class ClassScannerTests {
         ClasspathScanner cs=new ClasspathScanner()
         def re=cs.getResources('tagging')
         println re
-
+        at(re.size(), is(not(0)))
         re=cs.getResources('tagging.system')
         println re
+        at(re.size(), is(not(0)))
         re=cs.getResources('org.jdom')
-        println re
+        at(re.size(), is(not(0)))
         re=cs.getResources('org.jdom.adapters')
         println re
+        at(re.size(), is(not(0)))
     }
 }
 

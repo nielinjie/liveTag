@@ -22,7 +22,6 @@ class ClasspathScanner {
     Set<ClassName> getResources(String basePackage) {
         try {
             Set<URL> rootDirectories = getRootDirectories(ClassUtils.convertClassNameToResourcePath(basePackage));
-            println rootDirectories
             Set<ClassName> resources = new HashSet<ClassName>();
 
             for (URL rootDirectory : rootDirectories) {
@@ -114,6 +113,7 @@ class ClasspathScanner {
         }
     }
     Set<URL> findFileResources(URL rootDirectory,String basePackage) {
+        println basePackage
         try {
             File file = ResourceUtils.getFile(rootDirectory).getAbsoluteFile();
             if (file.isDirectory()) {
@@ -162,9 +162,14 @@ class ClasspathScanner {
 }
 class ClassName{
     String resourcePath
-    @Lazy String className={ClassUtils.convertResourcePathToClassName(resourcePath)-'.class'}()
+    String getFullClassName(){
+        ClassUtils.convertResourcePathToClassName(resourcePath)-'.class'
+    }
+    String getClassName(){
+        this.fullClassName.split(/\./)[-1]
+    }
     @Override String toString(){
-        "className: - $className".toString()
+        "className: - $className, fullclassName - $fullClassName".toString()
     }
 }
 

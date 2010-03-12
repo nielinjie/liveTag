@@ -48,5 +48,12 @@ class ConventionTests {
         at(re[0],is(a))
         at(re[1],is(b))
     }
+    @Test void classpathScannded(){
+        Conventions cons=new Conventions()
+        cons.registerCandidate(new FindByClassNameCandidate(basePackage:'tagging'))
+        def re=cons.getObjects('tweet','brief','display')
+        at(re,is(not(null)))
+        at(re.size(),is(1))
+    }
 }
 
