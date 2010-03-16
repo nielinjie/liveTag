@@ -10,9 +10,10 @@ class Conventions {
         candidates<<candidate
     }
     List<Object> getObjects(String... keys){
-        candidates.collect{
+        def re=candidates.collect{
             it.getObjects(keys)
-        }.flatten()
+        }
+        re.flatten()
     }
     
     
@@ -50,32 +51,43 @@ class ClassCandidate extends CountableCandidate{
         return []
     }
 }
-class FindByClassNameCandidate extends Candidate{
+class FindByClassNameCandidate extends AbstractClassNameCandidate{
+    static String toFirstCapital(String word){
+        if(word.size()<=1)return word.toUpperCase()
+        return word[0].toUpperCase()+word[1..-1]
+    }
+    @Override boolean match(String className,String[] keys){
+        className==~keys.collect{
+            toFirstCapital(it)
+        }.join('')
+    }
+}
+abstract class AbstractClassNameCandidate extends Candidate{
     String basePackage=''
-    private boolean match(String className,String[] keys){
-        List<String> nameParts=fromCamelCase(className)
-        if (nameParts.size()!=keys.size()) return false
-        def re=true
-        nameParts.eachWithIndex{
-            p,i->
-            re=re && p==~keys[i]
-        }
-        return re
-    }
-    static private List<String> fromCamelCase(String camelCase){
-        def re=[]
-        def index=0
-        def matcher=(camelCase=~/[A-Z]/)
-        while(matcher.find()){
-            def offset= matcher.start()
-            re<<(camelCase[index..<offset])
-            index=offset
-        }
-        re<<( camelCase[index..-1])
-        return re.collect{
-            it.toLowerCase()
-        }[1..-1]
-    }
+//    boolean match(String className,String[] keys){
+//        List<String> nameParts=fromCamelCase(className)
+//        if (nameParts.size()!=keys.size()) return false
+//        def re=true
+//        nameParts.eachWithIndex{
+//            p,i->
+//            re=re && p==~keys[i]
+//        }
+//        return re
+//    }
+//    static private List<String> fromCamelCase(String camelCase){
+//        def re=[]
+//        def index=0
+//        def matcher=(camelCase=~/[A-Z]/)
+//        while(matcher.find()){
+//            def offset= matcher.start()
+//            re<<(camelCase[index..<offset])
+//            index=offset
+//        }
+//        re<<( camelCase[index..-1])
+//        return re.collect{
+//            it.toLowerCase()
+//        }[1..-1]
+//    }
     @Lazy List<ClassName> classNameScaner={new ClasspathScanner().getResources(basePackage).toList()}()
     def List<Object> getObjects(String... keys){
         def re=[]

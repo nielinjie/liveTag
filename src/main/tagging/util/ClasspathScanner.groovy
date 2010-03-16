@@ -113,7 +113,7 @@ class ClasspathScanner {
         }
     }
     Set<URL> findFileResources(URL rootDirectory,String basePackage) {
-        println basePackage
+        //println basePackage
         try {
             File file = ResourceUtils.getFile(rootDirectory).getAbsoluteFile();
             if (file.isDirectory()) {
