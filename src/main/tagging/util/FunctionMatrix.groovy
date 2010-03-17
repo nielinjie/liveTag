@@ -7,14 +7,14 @@ package tagging.util
 class FunctionMatrix {
     private Conventions conventions=new Conventions().with{
         it.registerCandidate(new FindByClassNameCandidate(basePackage:'tagging'))
-//        it.registerCandidate(new RegExpClassNameCandidate(basePackage:'tagging'))
+        //        it.registerCandidate(new RegExpClassNameCandidate(basePackage:'tagging'))
         it
     }
     void registerFuctionStub(FunctionStub function){
         def sc=new SingletonCandidate(
-                acceptedKeys:[['_stub'],*(function.keys).collect{[it]}],
-                obj:function
-            )
+            acceptedKeys:[['_stub'],*(function.keys).collect{[it]}],
+            obj:function
+        )
         conventions.registerCandidate(sc)
     }
     List<FunctionStub> getAllFunctionStubs(){
@@ -35,7 +35,7 @@ class FunctionMatrix {
     Object getAllFunctions(String... functionKeys){
         def re=conventions.getObjects('.*',*functionKeys)
         re=re.findAll{
-           !(it instanceof FunctionStub)
+            !(it instanceof FunctionStub)
         }
         def stub=getFunctionStub(functionKeys)
         if(!stub)  throw new IllegalArgumentException("no such function stub - $functionKeys")
@@ -58,12 +58,17 @@ class AutoFunctionMatrix extends FunctionMatrix{
         super()
         this.registerFuctionStub(new FunctionStub(
                 keys:['functionStubProvider'],
-                guard:{Object o-> o.respondsTo('getFunctionStub')},
+                guard:{Object o-> (o.respondsTo('getFunctionStub')|| o.respondsTo('getFunctionStubs'))},
                 memo:'auto set functionStubs to function matrix'
             ))
         def funs=this.getAllFunctions('functionStubProvider')
         funs.each{
-            this.registerFuctionStub(it.getFunctionStub())
+            def funStubs=
+            it.respondsTo('getFunctionStub')?[it.getFunctionStub()]:it.getFunctionStubs()
+            funStubs.each{
+                this.registerFuctionStub(it)
+                println "function stub registered - $it"
+            }
         }
     }
 }

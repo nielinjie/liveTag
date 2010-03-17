@@ -1,5 +1,6 @@
 import tagging.*
 import groovy.swing.*
+import tagging.util.*
 import org.java.plugin.*
 import org.java.plugin.boot.*
 import org.java.plugin.util.*
@@ -7,6 +8,7 @@ class LiveTaggedController {
     private def sb=new SwingBuilder()
     def model
     def view
+    FunctionMatrix functionMatrix=new AutoFunctionMatrix()
     def aS=AdaptorServiceFactory.getAdaptorService(this)
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
@@ -24,7 +26,9 @@ class LiveTaggedController {
     void selectBo(bo){
         view.detailPanel.removeAll()
         view.detailPanel.revalidate()
-        def w=aS.getAdaptor(bo,'detailDisplay').getComponent()
+        def w=functionMatrix.getFunction(bo.class.simpleName,'detailDisplay')
+        w.value=bo
+        w=w.component
         view.detailPanel.add(w)
         view.detailPanel.layout.setComponentConstraints(w,detailItemLayoutConstraints)
         view.detailPanel.revalidate()
@@ -42,9 +46,10 @@ class LiveTaggedController {
         def bos=model.currentViewFrame.getDelta()
         assert this.itemGroup!=null
         bos.each{ bo->
-            def w=aS.getAdaptor(bo,'briefDisplay')
+            def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
+            w.value=bo
             w.group=itemGroup
-            w=w.getComponent()
+            w=w.component
             edt{
                 itemGroup.addItem(w,bo)
                 view.briefPanel.add(w)
@@ -85,9 +90,13 @@ class LiveTaggedController {
             }
         )
         bos.each{ bo->
-            def w=aS.getAdaptor(bo,'briefDisplay')
+            //            def w=aS.getAdaptor(bo,'briefDisplay')
+            //            w.group=itemGroup
+            //            w=w.getComponent()
+            def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
+            w.value=bo
             w.group=itemGroup
-            w=w.getComponent()
+            w=w.component
             edt{
                 itemGroup.addItem(w,bo)
                 if(viewFrame==this.processingViewFrame){
