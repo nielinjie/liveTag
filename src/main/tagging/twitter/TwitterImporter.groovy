@@ -21,8 +21,8 @@ public class TwitterImporter extends Importer{
     String username
     String password
     String proxyHostName='localhost'
-    int proxyPort=9050
-    Proxy proxy=new Proxy(Proxy.Type.SOCKS ,new InetSocketAddress(proxyHostName,proxyPort))
+    int proxyPort=8000
+    Proxy proxy=new Proxy(Proxy.Type.HTTP ,new InetSocketAddress(proxyHostName,proxyPort))
     def condition={TaggingManagerFactory.getTaggingManager().findTagable({obj->obj instanceof TweetTagable})}
     def sortComparator={a,b->-a.createdAt.time<=>-b.createdAt.time}
     Authenticator authenticator=null

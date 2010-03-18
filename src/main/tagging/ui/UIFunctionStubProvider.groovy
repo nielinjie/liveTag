@@ -27,6 +27,26 @@ class UIFunctionStubProvider {
 
         ),
         new FunctionStub(
+            keys:['typeIconDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for bos in detail view.
+                    function should respond to java.swing.pane getComponent()"""
+
+        ),
+        new FunctionStub(
+            keys:['iconDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for bos in detail view.
+                    function should respond to java.swing.pane getComponent()"""
+
+        ),
+        new FunctionStub(
             keys:['quickTagRequests'],
             guard:{o->o.respondsTo('getQuickTagRequests')},
             memo:"""get the quick tag requests.
