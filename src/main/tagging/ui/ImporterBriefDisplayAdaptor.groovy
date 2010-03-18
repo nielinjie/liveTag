@@ -14,9 +14,3 @@ class ImporterBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         }
     }
 }
-class ImporterMeta{
-    def static provideMeta(){
-//        def aS=AdaptorServiceFactory.getAdaptorService()
-//        aS.registerAdaptor('importer','briefDisplay',ImporterBriefDisplayAdaptor.class)
-    }
-}

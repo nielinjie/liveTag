@@ -15,9 +15,3 @@ class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         return re
     }
 }
-class SearchViewMeta{
-    def static provideMeta(){
-        //        def aS=AdaptorServiceFactory.getAdaptorService()
-        //        aS.registerAdaptor('searchView','briefDisplay',SearchViewBriefDisplayAdaptor.class)
-    }
-}

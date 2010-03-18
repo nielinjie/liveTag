@@ -96,16 +96,4 @@ class TwitterSearchViewProvides{
         )
     ]
 }
-class TwitterMeta{
-    def static provideMeta(){
-//        def aS=AdaptorServiceFactory.getAdaptorService()
-//        aS.registerAdaptor('tagable.twitter.tweet','briefDisplay',TweetBriefDisplay.class)
-//        aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
-//        aS.registerAdaptor('tagable.twitter.tweet','typeIconDisplay',TweetTypeIconDisplay.class)
-//
-//        aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
-//        aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
-//        aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
-    }
-}
 

@@ -41,30 +41,7 @@ class TodoTagDetailDisplay extends DefaultDetailDisplayAdaptor{
     }
 }
 
-class TodoTagMeta{
-    static void provideMeta(){
-//        def aS=AdaptorServiceFactory.getAdaptorService()
-//        aS.registerAdaptor('tag.todo','briefDisplay',TodoTagBriefDisplayAdaptor.class)
-//        aS.registerAdaptor('tag.todo','detailDisplay',TodoTagDetailDisplayAdaptor.class)
-//        aS.registerAdaptor('searchView.todo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'todo'))
-//        aS.registerAdaptor('searchView.unfinishedTodo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unfinishedtodo'))
-		
-        //        def mr=ServiceFactory.getService(UIMediator.class)
-        //        mr.registorMagicTextProvide('todo',new MagicTextAction(
-        //                getAppear:{text->
-        //                    return new ActionAppear(icon:'newTodo',enable:true)
-        //                },
-        //                action:{text->
-        //                    TodoTag.newTodoTag(text)
-        //                }
-        //            ))
-        //        mr.registorSearchView(new SearchViewItem(order:10,group:'Default',searchView:new  NotFinishedTodoSearchView()
-        //            ))
-        //        mr.registorSearchView(new SearchViewItem(order:100,group:'Category',searchView:new  TodoSearchView()
-        //            ))
-				
-    }
-}
+
 class NotFinishedTodoSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{
     def icon='unfinishedtodo'
 }

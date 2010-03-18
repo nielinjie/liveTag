@@ -8,18 +8,6 @@ import net.miginfocom.swing.MigLayout
 import tagging.*
 
 
-class SystemTagMeta{
-    static void provideMeta(){
-//        AdaptorServiceFactory.getAdaptorService().with{
-//            it.registerAdaptor('tag.system.unread','detailDisplay',UnreadTagDetailDisplayAdaptor.class)
-//            it.registerAdaptor('tag.system.star','detailDisplay',StarTagDetailDisplayAdaptor.class)
-//        }
-//        BoServiceFactory.getBoService().with{
-//            it.registerBo('tag.system.unread','tag',UnreadTag.class)
-//            it.registerBo('tag.system.star','tag',StarTag.class)
-//        }
-    }
-}
 class UnreadSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{
     def icon='unread'
 }

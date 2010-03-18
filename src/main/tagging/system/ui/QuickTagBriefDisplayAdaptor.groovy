@@ -26,10 +26,4 @@ extends DefaultBriefDisplayAdaptor{
         }
     }
 }
-class QuickTagMeta{
-    static void provideMeta(){
-//        AdaptorServiceFactory.getAdaptorService().with{
-//            it.registerAdaptor('quickTag','briefDisplay',QuickTagBriefDisplayAdaptor.class)
-//        }
-    }
-}
+
