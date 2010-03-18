@@ -20,27 +20,43 @@ class SystemTagMeta{
             it.registerBo('tag.system.unread','tag',UnreadTag.class)
             it.registerBo('tag.system.star','tag',StarTag.class)
         }
-        def tm=TaggingManagerFactory.getTaggingManager()
-        ServiceFactory.getService(UIMediator.class).with{
-            //            it.quickTagActions['tag.system.unread']=new QuickTagAction(
-            //                getAppear:{new QuickTagActionAppear(text:'toggle read or not',icon:tm.hasTagOnTagable(it,'tag.system.unread')?'unread_s':'read_s')},
-            //                action:{UnreadTag.toggle(it)}
-            //            )
-            //            it.quickTagActions['tag.system.star']=new QuickTagAction(
-            //                getAppear:{
-            //                    new QuickTagActionAppear(text:'toggle star',icon:tm.hasTagOnTagable(it,'tag.system.star')?'star_s':'nostar_s')},
-            //                action:{StarTag.toggle(it)}
-            //            )
-            it.registorSearchView(new SearchViewItem(order:100,group:'System',searchView:
-                    new SearchView(name:'All',description:'All Bos',condition:{
-                            TaggingManagerFactory.getTaggingManager().findTagable({true})
-                        },sortComparator:{
-                            a,b->0
-                        })))
-            it.registorSearchView(new SearchViewItem(order:100,group:'Default',searchView:new  UnreadSearchView()))
-            it.registorSearchView(new SearchViewItem(order:101,group:'Default',searchView:new  StarSearchView()))
-        }
+//        def tm=TaggingManagerFactory.getTaggingManager()
+//        ServiceFactory.getService(UIMediator.class).with{
+//            //            it.quickTagActions['tag.system.unread']=new QuickTagAction(
+//            //                getAppear:{new QuickTagActionAppear(text:'toggle read or not',icon:tm.hasTagOnTagable(it,'tag.system.unread')?'unread_s':'read_s')},
+//            //                action:{UnreadTag.toggle(it)}
+//            //            )
+//            //            it.quickTagActions['tag.system.star']=new QuickTagAction(
+//            //                getAppear:{
+//            //                    new QuickTagActionAppear(text:'toggle star',icon:tm.hasTagOnTagable(it,'tag.system.star')?'star_s':'nostar_s')},
+//            //                action:{StarTag.toggle(it)}
+//            //            )
+//            it.registorSearchView()
+//            it.registorSearchView()
+//            it.registorSearchView(new SearchViewItem(order:101,group:'Default',searchView:new  StarSearchView()))
+//        }
     }
+}
+class SystemSearchViewProvides{
+    def searchViewItems=[
+        new SearchViewItem(
+            order:100,
+            group:'System',
+            searchView:
+            new SearchView(
+                name:'All',
+                description:'All Bos',
+                condition:{
+                    TaggingManagerFactory.getTaggingManager().findTagable({true})
+                },
+                sortComparator:{
+                    a,b->0
+                }
+            )
+        ),
+        new SearchViewItem(order:100,group:'Default',searchView:new  UnreadSearchView()),
+        new SearchViewItem(order:101,group:'Default',searchView:new  StarSearchView())
+    ]
 }
 class UnreadTagQuickTagProvides{
     def tm=TaggingManagerFactory.getTaggingManager()

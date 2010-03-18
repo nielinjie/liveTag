@@ -18,6 +18,18 @@ class UIMediator{
                 this.registorQuickTagRequest(request)
             }
         }
+        fm.getAllFunctions('searchViewProvides').each{
+            it.getSearchViewItems().each{
+                searchViewItem->
+                this.registorSearchView(searchViewItem)
+            }
+        }
+        fm.getAllFunctions('magicTextProvides').each{
+            it.getMagicTextProvides().each{
+                provide->
+                this.registorMagicTextProvide(provide)
+            }
+        }
     }
     def quickTagActions=[:]
     def quickTagRequests=[:]
@@ -55,12 +67,12 @@ class UIMediator{
     }
 }
 class QuickTagProvide{
-    def name
-    def action
+    String name
+    QuickTagAction action
 }
 class QuickTagRequest {
-    def type
-    def tagNames
+    String type
+    List<String> tagNames
 }
 class Action{
     Closure getAppear
@@ -75,9 +87,13 @@ class ActionAppear{
     Boolean enable
     Boolean display
 }
+
 class QuickTagActionAppear extends ActionAppear{
 }
-
+class MagicTextProvide{
+    String name
+    MagicTextAction action
+}
 class MagicTextAction extends Action{
 }
 class MagicTextActionAppear extends ActionAppear{
@@ -85,8 +101,8 @@ class MagicTextActionAppear extends ActionAppear{
 
 class MagicTextRegistor{
     private entries=[:]
-    void registorMagicTextProvide(String name,MagicTextAction entry){
-        this.entries[name]=entry
+    void registorMagicTextProvide(MagicTextProvide magicTextProvide){
+        this.entries[magicTextProvide.name]=magicTextProvide.action
     }
     MagicTextAction getMagicTextProvide(String name){
         return this.entries[name]

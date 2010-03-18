@@ -49,19 +49,40 @@ class TodoTagMeta{
         aS.registerAdaptor('searchView.todo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'todo'))
         aS.registerAdaptor('searchView.unfinishedTodo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unfinishedtodo'))
 		
-        def mr=ServiceFactory.getService(UIMediator.class)
-        mr.registorMagicTextProvide('todo',new MagicTextAction(
+        //        def mr=ServiceFactory.getService(UIMediator.class)
+        //        mr.registorMagicTextProvide('todo',new MagicTextAction(
+        //                getAppear:{text->
+        //                    return new ActionAppear(icon:'newTodo',enable:true)
+        //                },
+        //                action:{text->
+        //                    TodoTag.newTodoTag(text)
+        //                }
+        //            ))
+        //        mr.registorSearchView(new SearchViewItem(order:10,group:'Default',searchView:new  NotFinishedTodoSearchView()
+        //            ))
+        //        mr.registorSearchView(new SearchViewItem(order:100,group:'Category',searchView:new  TodoSearchView()
+        //            ))
+				
+    }
+}
+class TodoSearchViewProvides{
+    def searchViewItems=[
+        new SearchViewItem(order:10,group:'Default',searchView:new  NotFinishedTodoSearchView()),
+        new SearchViewItem(order:100,group:'Category',searchView:new  TodoSearchView())
+    ]
+}
+class TodoMagicTextProvides{
+    def magicTextProvides=[
+        new MagicTextProvide(
+            name:'todo',
+            action:new MagicTextAction(
                 getAppear:{text->
                     return new ActionAppear(icon:'newTodo',enable:true)
                 },
                 action:{text->
                     TodoTag.newTodoTag(text)
                 }
-            ))
-        mr.registorSearchView(new SearchViewItem(order:10,group:'Default',searchView:new  NotFinishedTodoSearchView()
-            ))
-        mr.registorSearchView(new SearchViewItem(order:100,group:'Category',searchView:new  TodoSearchView()
-            ))
-				
-    }
+            )
+        )
+    ]
 }
