@@ -8,7 +8,10 @@ class LiveTaggedController {
     private def sb=new SwingBuilder()
     def model
     def view
-    FunctionMatrix functionMatrix=new AutoFunctionMatrix()
+    FunctionMatrix functionMatrix=new AutoFunctionMatrix().with{
+        ServiceFactory.setService(FunctionMatrix.class, it)
+        it
+    }
     def aS=AdaptorServiceFactory.getAdaptorService(this)
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup

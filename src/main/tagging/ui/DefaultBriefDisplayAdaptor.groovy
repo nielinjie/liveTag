@@ -1,5 +1,6 @@
 package tagging.ui
 import tagging.*
+import tagging.util.*
 import groovy.swing.SwingBuilder
 import java.awt.SystemColor
 import javax.swing.*
@@ -28,7 +29,10 @@ abstract class DefaultBriefDisplayAdaptor{
             if(ad){
                 thePanel.add(sb.widget(ad.panel),'aligny top',0)
             }
-            ad=aS.getAdaptor('quickTag',value,'briefDisplay')
+            //ad=aS.getAdaptor('quickTag',value,'briefDisplay')
+            def fm=ServiceFactory.getService(FunctionMatrix.class)
+            ad=fm.getFunction('quickTag','briefDisplay')
+            ad.value=value
             if(ad){
                 thePanel.add(sb. widget(ad.panel),'aligny top',-1)
             }

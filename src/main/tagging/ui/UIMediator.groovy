@@ -4,7 +4,8 @@ import tagging.util.*
 import org.apache.commons.collections.MultiMap
 import org.apache.commons.collections.MultiHashMap
 class UIMediator{
-    def init(FunctionMatrix fm){
+    def onInit(){
+        def fm=ServiceFactory.getService(FunctionMatrix.class)
         fm.getAllFunctions('quickTagProvides').each{
             it.getQuickTagProvides().each{
                 provide->

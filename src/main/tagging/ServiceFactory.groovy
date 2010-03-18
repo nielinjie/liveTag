@@ -20,4 +20,7 @@ class ServiceFactory{
         }
         return instances[clazz]
     }
+    static setService(Class clazz, Object instance){
+        instances[clazz]=instance
+    }
 }

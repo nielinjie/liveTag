@@ -2,7 +2,7 @@ package tagging.system.ui
 import tagging.ui.*
 import tagging.*
 import net.miginfocom.swing.MigLayout
-class QuickTagBriefDisplayAdaptor
+class QuickTagBriefDisplay
 extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         def tm=TaggingManagerFactory.getTaggingManager()
