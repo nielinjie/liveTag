@@ -19,12 +19,6 @@ class LiveTaggedController {
     def	detailItemLayoutConstraints='w :100%:, h :100%:'
     private processingViewFrame
     void mvcGroupInit(Map args) {
-        String[] arg={}
-        def prop=new ExtendedProperties()
-        prop.put('applicationRoot',new File('..').canonicalPath)
-        prop.put('org.java.plugin.boot.pluginsRepositories',new File('../plugins').canonicalPath)
-        prop.put('org.java.plugin.boot.applicationPlugin','tagging.taggingManager')
-        def app=Boot.boot( prop,false,Boot.BOOT_MODE_SHELL ,new BootErrorHandlerConsole(),arg)
     }
     void selectBo(bo){
         view.detailPanel.removeAll()

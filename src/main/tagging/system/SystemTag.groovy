@@ -29,7 +29,7 @@ class UpdatedTag extends SystemTag{
 class UnreadTag extends SystemTag{
     static toggle(Tagable tagable){
         def tm=TaggingManagerFactory.getTaggingManager()
-        def tag=tm.getSingletonTag('tag.system.unread')
+        def tag=tm.getSingletonTag(UnreadTag.class)
         if(!tm.hasTagOnTagable(tagable,'tag.system.unread')){
             tm.tagging(tagable,[tag])
         }else{
@@ -41,7 +41,7 @@ class UnreadTag extends SystemTag{
 class StarTag extends SystemTag{
     static toggle(Tagable tagable){
         def tm=TaggingManagerFactory.getTaggingManager()
-        def tag=tm.getSingletonTag('tag.system.star')
+        def tag=tm.getSingletonTag(StarTag.class)
         if(!tm.hasTagOnTagable(tagable,'tag.system.star')){
             tm.tagging(tagable,[tag])
         }else{

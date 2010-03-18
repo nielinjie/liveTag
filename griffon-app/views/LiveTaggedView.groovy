@@ -53,7 +53,6 @@ application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], loc
     	def searchViews=mr.getSearchViews(it)
         def outlookPanel=panel(layout:new MigLayout()){
             searchViews.each{
-                println it.class.simpleName
                 def a=fm.getFunction(it.class.simpleName,'briefDisplay')
                 a.group=viewGroup
                 a.value=it

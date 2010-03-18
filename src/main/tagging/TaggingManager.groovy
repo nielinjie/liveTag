@@ -3,14 +3,14 @@ import tagging.contact.*
 import tagging.util.*
 //@Singleton
 class TaggingManager{
-	ObjectKeeper ok
-	private singletonTagCache=[:]
-	static Class objectKeeperClass
+    ObjectKeeper ok
+    private singletonTagCache=[:]
+    static Class objectKeeperClass
     @Lazy def sync={
         new Sync(tm:this).with{
-        	//taggingManager is used as singleten, so contactManager not.
+            //taggingManager is used as singleten, so contactManager not.
             cm=ContactManagerFactory.getNewContactManager()
-			it
+            it
         }
     }()
     void clear(){
@@ -21,18 +21,18 @@ class TaggingManager{
     }
     Tag getTag(UUID id){
         def re= this.ok.get(id)
-		assert re==null || re instanceof Tag
-		return re
+        assert re==null || re instanceof Tag
+        return re
     }
     Tagable getTagable(UUID id){
         def re= this.ok.get(id)
-		assert re==null || re instanceof Tagable
-		return re
+        assert re==null || re instanceof Tagable
+        return re
     }
     //TODO opnizaion
     boolean hasTagOnTagable(Tagable tagable,String tagType){
     	this.getTagsForTagable(tagable.id).any{
-    		it.type==tagType
+            it.type==tagType
     	}
     }
     List<Tagable> getTagableForTag(Tag tag){
@@ -40,35 +40,35 @@ class TaggingManager{
     }
     List<Tag> getTagsForTagable(UUID tagableId){
     	return this.findTag{
-    		tagableId in it.tagables
+            tagableId in it.tagables
     	}
     }
     
     List<Tag> findTag(Closure filter){
     	return this.ok.search{
-    		it instanceof Tag && filter(it)
+            it instanceof Tag && filter(it)
     	}
     }
     void tagging(Tagable tagable, List<Tag> tags){
 
     	if(!(this.getTagable(tagable.id)) ){
 
-    		this.addTagable(tagable)
+            this.addTagable(tagable)
     	}
     	tags.each{
-    		if(!(this.getTag(it.id))){
-    			this.saveTag(it)
-    		}
-    		it.tagables<<tagable.id
-			it.onTagging(tagable)
+            if(!(this.getTag(it.id))){
+                this.saveTag(it)
+            }
+            it.tagables<<tagable.id
+            it.onTagging(tagable)
     	}
     	
     }
     void unTagging(Tagable tagable, Tag tag){
     	tag.tagables.remove(tagable.id)
-		if(tag.tagables.empty){
-			this.removeTag(tag)
-		}
+        if(tag.tagables.empty){
+            this.removeTag(tag)
+        }
     }
     void removeTag(Tag tag){
     	this.ok.remove(tag.id)
@@ -87,42 +87,40 @@ class TaggingManager{
     }
     void fromOther(List<BO> bos){
     	bos.each{
-    		if(it instanceof Tagable){
-    			this.addTagable(it)
-    		}
+            if(it instanceof Tagable){
+                this.addTagable(it)
+            }
     	}
     }
     void onInit(){
-    	println 'I am on init'
-    	 if(this.ok==null){
-    		 if(this.objectKeeperClass==null)
-    			 this.ok=new StupidOK()//this is for test only
-    		 else
-    			 this.ok=this.objectKeeperClass.newInstance()
-         }
-    	 this.ok.start()
+    	println 'tagging manager in oninit method'
+        if(this.ok==null){
+            if(this.objectKeeperClass==null)
+            this.ok=new StupidOK()//this is for test only
+            else
+            this.ok=this.objectKeeperClass.newInstance()
+        }
+        this.ok.start()
     }
     void close(){
     	this.ok.close()
     }
-    Tag getSingletonTag(type){
-        if(this.singletonTagCache[type])
-        	return this.singletonTagCache[type]
+    Tag getSingletonTag(Class clazz){
+        if(this.singletonTagCache[clazz])
+        return this.singletonTagCache[clazz]
         else{
             def findTag=TaggingManagerFactory.getTaggingManager().findTag{
-                it.type==type
+                it.class==clazz
             }
             if(!findTag){
-            	Class clazz=BoServiceFactory.getBoService().getBoClass(type)
-			    if(clazz==null)
-			    	throw new RuntimeException()
+            	
                 def tag=clazz.newInstance()
                 TaggingManagerFactory.getTaggingManager().saveTag(tag)
-                this.singletonTagCache[type]=tag
+                this.singletonTagCache[clazz]=tag
             }else{
-            	this.singletonTagCache[type]=findTag[0]
+            	this.singletonTagCache[clazz]=findTag[0]
             }
-            return this.singletonTagCache[type]  
+            return this.singletonTagCache[clazz]
         }
     }
 }
@@ -135,11 +133,11 @@ class TaggingManagerFactory{
     }
 }
 class StupidOK implements ObjectKeeper{
-	def file='./savedObjs'
-	def objs=[:]
-	Object get(def id){
-		return objs[id]
-	}
+    def file='./savedObjs'
+    def objs=[:]
+    Object get(def id){
+        return objs[id]
+    }
     List search(def filter){
     	return objs.values().findAll(filter)
     }
@@ -154,19 +152,19 @@ class StupidOK implements ObjectKeeper{
     }
     void close(){
     	def s=XML.toXML(this.objs)
-		File f=new File(this.file)
+        File f=new File(this.file)
     	f.text=s
     }
     void start(){
     	def s=null
-		try{
-	    	File f=new File(this.file)
-	    	s=f.text
-		}catch(Exception e){
-			e.printStackTrace()
-		}
-		if(s){
-			this.objs=XML.fromXML(s)
-		}
+        try{
+            File f=new File(this.file)
+            s=f.text
+        }catch(Exception e){
+            e.printStackTrace()
+        }
+        if(s){
+            this.objs=XML.fromXML(s)
+        }
     }
 }
