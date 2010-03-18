@@ -8,7 +8,7 @@ import java.awt.SystemColor
 import com.michaelbaranov.microba.calendar.DatePicker
 
 
-class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
+class TodoTagBriefDisplay extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
             etchedBorder(parent:true)
@@ -16,7 +16,7 @@ class TodoTagBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         }
     }
 }
-class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
+class TodoTagDetailDisplay extends DefaultDetailDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout()){
             label(icon:IconManager.getIcon('todo'),'Todo - ')
@@ -43,11 +43,11 @@ class TodoTagDetailDisplayAdaptor extends DefaultDetailDisplayAdaptor{
 
 class TodoTagMeta{
     static void provideMeta(){
-        def aS=AdaptorServiceFactory.getAdaptorService()
-        aS.registerAdaptor('tag.todo','briefDisplay',TodoTagBriefDisplayAdaptor.class)
-        aS.registerAdaptor('tag.todo','detailDisplay',TodoTagDetailDisplayAdaptor.class)
-        aS.registerAdaptor('searchView.todo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'todo'))
-        aS.registerAdaptor('searchView.unfinishedTodo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unfinishedtodo'))
+//        def aS=AdaptorServiceFactory.getAdaptorService()
+//        aS.registerAdaptor('tag.todo','briefDisplay',TodoTagBriefDisplayAdaptor.class)
+//        aS.registerAdaptor('tag.todo','detailDisplay',TodoTagDetailDisplayAdaptor.class)
+//        aS.registerAdaptor('searchView.todo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'todo'))
+//        aS.registerAdaptor('searchView.unfinishedTodo','briefDisplay',new SearchViewBriefDisplayAdaptor(icon:'unfinishedtodo'))
 		
         //        def mr=ServiceFactory.getService(UIMediator.class)
         //        mr.registorMagicTextProvide('todo',new MagicTextAction(
@@ -64,6 +64,12 @@ class TodoTagMeta{
         //            ))
 				
     }
+}
+class NotFinishedTodoSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{
+    def icon='unfinishedtodo'
+}
+class TodoSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{
+    def icon='todo'
 }
 class TodoSearchViewProvides{
     def searchViewItems=[

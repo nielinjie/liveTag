@@ -11,14 +11,14 @@ abstract class DefaultBriefDisplayAdaptor{
     def originBackground
     def thePanel
     def controller
-    def iconNames=[]
-    @Lazy def icons={
-        [:].putAll(
-            this.iconNames.collect{
-                name->
-                new MapEntry(name,new ImageIcon(getClass().getResource("/icons/${name.toLowerCase()}.png")))
-            }
-        )}()
+//    def iconNames=[]
+//    @Lazy def icons={
+//        [:].putAll(
+//            this.iconNames.collect{
+//                name->
+//                new MapEntry(name,new ImageIcon(getClass().getResource("/icons/${name.toLowerCase()}.png")))
+//            }
+//        )}()
     static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
         if (!this.thePanel){

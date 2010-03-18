@@ -10,12 +10,19 @@ import tagging.people.*
  */
 class PeopleMeta {
     static void provideMeta(){
-        def aS=AdaptorServiceFactory.getAdaptorService()
-        aS.registerAdaptor('searchView.people','briefDisplay',new SearchViewBriefDisplayAdaptor())
-        def mr=ServiceFactory.getService(UIMediator.class)
-        mr.registorSearchView(new SearchViewItem(order:10,group:'Category',
-                searchView:new  PeopleSearchView()
-            ))
+//        def aS=AdaptorServiceFactory.getAdaptorService()
+//        aS.registerAdaptor('searchView.people','briefDisplay',new SearchViewBriefDisplayAdaptor())
+//        def mr=ServiceFactory.getService(UIMediator.class)
+//        mr.registorSearchView(new SearchViewItem(order:10,group:'Category',
+//                searchView:new  PeopleSearchView()
+//            ))
     }
 }
-
+class PeopleSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{
+}
+class PeopleSearchViewProvides{
+    def searchViewItems=[
+        new SearchViewItem(order:10,group:'Category',
+            searchView:new  PeopleSearchView())
+    ]
+}

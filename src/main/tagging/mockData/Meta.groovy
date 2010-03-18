@@ -7,7 +7,7 @@ import tagging.system.*
 
 class Meta{
     static void provideMeta(){
-    	def tm=TaggingManagerFactory.getTaggingManager()
+//    	def tm=TaggingManagerFactory.getTaggingManager()
 //		def sm=SearchServiceFactory.getSearchService()
 //        def searchViews=[
 //            new SearchView(name:'All',description:'All Bos',condition:{

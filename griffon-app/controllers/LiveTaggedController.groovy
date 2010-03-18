@@ -92,9 +92,6 @@ class LiveTaggedController {
             }
         )
         bos.each{ bo->
-            //            def w=aS.getAdaptor(bo,'briefDisplay')
-            //            w.group=itemGroup
-            //            w=w.getComponent()
             def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
             w.value=bo
             w.group=itemGroup

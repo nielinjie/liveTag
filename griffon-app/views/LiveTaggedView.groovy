@@ -14,8 +14,10 @@ import ca.odell.glazedlists.*
 import groovy.swing.SwingBuilder
 import tagging.*
 import tagging.ui.*
+import tagging.util.*
 
 def aS=AdaptorServiceFactory.getAdaptorService()
+def fm=ServiceFactory.getService(FunctionMatrix.class)
 def Bos=[]
 
 
@@ -51,8 +53,10 @@ application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], loc
     	def searchViews=mr.getSearchViews(it)
         def outlookPanel=panel(layout:new MigLayout()){
             searchViews.each{
-                def a=aS.getAdaptor(it,'briefDisplay')
+                println it.class.simpleName
+                def a=fm.getFunction(it.class.simpleName,'briefDisplay')
                 a.group=viewGroup
+                a.value=it
                 def w=widget(constraints:'wrap,w :150px:',a.getComponent())
                 viewGroup.addItem(w,it)
                 w.mouseClicked={e->viewGroup.select(e.source)}

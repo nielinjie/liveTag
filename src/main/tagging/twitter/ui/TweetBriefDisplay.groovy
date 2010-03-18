@@ -83,27 +83,29 @@ class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
 
 class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
 }
-class TwitterMeta{
-    def static provideMeta(){
-        def aS=AdaptorServiceFactory.getAdaptorService()
-        aS.registerAdaptor('importer.twitter','briefDisplay',TwitterImporterBriefDisplay.class)
-        aS.registerAdaptor('tagable.twitter.tweet','briefDisplay',TweetBriefDisplay.class)
-        aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
-        aS.registerAdaptor('tagable.twitter.tweet','typeIconDisplay',TweetTypeIconDisplay.class)
-
-        aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
-        aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
-        aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
-        def mr=ServiceFactory.getService(UIMediator.class)
-        mr.registorSearchView(new SearchViewItem(
-                order:10,group:'Category',
-                searchView:new TwitterImporter(
-                    username:'nielinjie',password:'790127',
-                    name:'Twitter Importer',
-                    description:'Sample Twitter Importer',interval:300
-                )
+class TwitterSearchViewProvides{
+    def searchViewItems=[
+        new SearchViewItem(
+            order:10,
+            group:'Category',
+            searchView:new TwitterImporter(
+                username:'nielinjie',password:'790127',
+                name:'Twitter Importer',
+                description:'Sample Twitter Importer',interval:300
             )
         )
+    ]
+}
+class TwitterMeta{
+    def static provideMeta(){
+//        def aS=AdaptorServiceFactory.getAdaptorService()
+//        aS.registerAdaptor('tagable.twitter.tweet','briefDisplay',TweetBriefDisplay.class)
+//        aS.registerAdaptor('tagable.twitter.tweet','detailDisplay',TweetDetailDisplay.class)
+//        aS.registerAdaptor('tagable.twitter.tweet','typeIconDisplay',TweetTypeIconDisplay.class)
+//
+//        aS.registerAdaptor('tagable.twitter.people','briefDisplay',TwitterPeopleBriefDisplay.class)
+//        aS.registerAdaptor('tagable.twitter.people','detailDisplay',TwitterPeopleDetailDisplay.class)
+//        aS.registerAdaptor('tagable.twitter.people','iconDisplay',TwitterPeopleIconDisplay.class)
     }
 }
 
