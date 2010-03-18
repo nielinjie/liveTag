@@ -7,8 +7,8 @@ extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         def tm=TaggingManagerFactory.getTaggingManager()
         def ui=ServiceFactory.getService(UIMediator.class)
-        sb.panel(layout:new MigLayout()){
-            def requested=ui.quickTagRequests[value.type]
+        sb.panel(layout:new MigLayout('insets 0')){
+            def requested=ui.quickTagRequests[value.class.simpleName]
             if(requested)
             requested.eachWithIndex{
                 r,i->

@@ -1,22 +1,37 @@
 package tagging.ui
 import tagging.*
+import tagging.util.*
 import org.apache.commons.collections.MultiMap
 import org.apache.commons.collections.MultiHashMap
 class UIMediator{
+    def init(FunctionMatrix fm){
+        fm.getAllFunctions('quickTagProvides').each{
+            it.getQuickTagProvides().each{
+                provide->
+                this.registorQuickTagProvide(provide)
+            }
+        }
+        fm.getAllFunctions('quickTagRequests').each{
+            it.getQuickTagRequests().each{
+                request->
+                this.registorQuickTagRequest(request)
+            }
+        }
+    }
     def quickTagActions=[:]
     def quickTagRequests=[:]
     @Delegate
     MagicTextRegistor magicText=new MagicTextRegistor()
     @Delegate
     SearchViewRegistor searchViewRegistor= new SearchViewRegistor()
-    void registorQuickTagProvide(String name,QuickTagAction action){
-        this.quickTagActions[name]=action
+    void registorQuickTagProvide(QuickTagProvide quickTagProvide){
+        this.quickTagActions[quickTagProvide.name]=quickTagProvide.action
     }
     QuickTagAction getQuickTagProvide(String name){
         return this.quickTagActions[name]
     }
-    void registorQuickTagRequest(String type,String tagNames){
-        this.quickTagRequests[type]=tagNames
+    void registorQuickTagRequest(QuickTagRequest quickTagRequest){
+        this.quickTagRequests[quickTagRequest.type]=quickTagRequest.tagNames
     }
     List<String> getQuickTagRequests(String type){
         return this.quickTagRequests[name]
@@ -25,7 +40,7 @@ class UIMediator{
     String getViewElementId(obj){
         def id=viewElementIds.get(obj,null)
         if(id)
-            return id
+        return id
         else{
             id=UUID.randomUUID().toString()
             viewElementIds[obj]=id
@@ -34,9 +49,17 @@ class UIMediator{
     }
     Object getViewElement(String id){
     	return viewElementIds.find{
-    		it.value==id
+            it.value==id
     	}?.key
     }
+}
+class QuickTagProvide{
+    def name
+    def action
+}
+class QuickTagRequest {
+    def type
+    def tagNames
 }
 class Action{
     Closure getAppear

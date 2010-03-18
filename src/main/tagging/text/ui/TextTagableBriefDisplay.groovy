@@ -21,13 +21,18 @@ class TextTagableDetailDisplay extends DefaultTagableDetailDisplayAdaptor{
         }
     }
 }
+class TextTagableQuickTagRequests {
+    def quickTagRequests=[
+        new QuickTagRequest(type:'TextTagable',tagNames:['unread','star'])
+    ]
+}
 class TextTagableMeta{
     static def provideMeta(){
-        def aS=AdaptorServiceFactory.getAdaptorService()
-        //aS.registerAdaptor('tagable.text','detailDisplay',TextTagableDetailDisplayAdaptor.class)
-        //aS.registerAdaptor('tagable.text','briefDisplay',TextTagableBriefDisplayAdaptor.class)
-        ServiceFactory.getService(UIMediator.class).with{
-            it.quickTagRequests['tagable.text']=['tag.system.unread','tag.system.star']
-        }
+//        def aS=AdaptorServiceFactory.getAdaptorService()
+//        //aS.registerAdaptor('tagable.text','detailDisplay',TextTagableDetailDisplayAdaptor.class)
+//        //aS.registerAdaptor('tagable.text','briefDisplay',TextTagableBriefDisplayAdaptor.class)
+//        ServiceFactory.getService(UIMediator.class).with{
+//            it.quickTagRequests['tagable.text']=['tag.system.unread','tag.system.star']
+//        }
     }
 }
