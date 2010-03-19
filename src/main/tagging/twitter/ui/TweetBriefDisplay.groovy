@@ -19,7 +19,6 @@ class TweetTagableBriefDisplay extends DefaultBriefDisplayAdaptor{
     
     def getPanel(){
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            def aS=AdaptorServiceFactory.getAdaptorService()
             def people=CreatedByTag.findCreatedBy(value)
 
             if(people){
@@ -42,7 +41,6 @@ class TweetTagableBriefDisplay extends DefaultBriefDisplayAdaptor{
 class TweetTagableDetailDisplay extends DefaultDetailDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            etchedBorder(parent:true)
             label(text:this.value.text)
         }
     }
@@ -72,18 +70,27 @@ class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
     }
 }
 class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
+    def fm=ServiceFactory.getService(FunctionMatrix.class)
+
     def getPanel(){
         return sb.panel(layout:new MigLayout()){
             label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
-            def aS=AdaptorServiceFactory.getAdaptorService()
-            widget(aS.getAdaptor(value.searchView,'briefDisplay').getComponent())
+            //def aS=AdaptorServiceFactory.getAdaptorService()
+            //            def w=fm.getFunction(value.searchView.class.simpleName,'briefDisplay')
+            //            w.setValue(value.searchView)
+            //            widget(w.getComponent())
         }
     }
 }
 class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout('ins 0')){
-            label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)))
+            //label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)))
+            def label=new RemoteImageLabel(value.imageUrl)
+            widget(label)
+//            sb.doLater{
+//                label.url=value.imageUrl
+//            }
         }
     }
 }

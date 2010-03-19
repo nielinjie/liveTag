@@ -12,7 +12,7 @@ class LiveTaggedController {
         ServiceFactory.setService(FunctionMatrix.class, it)
         it
     }
-    def aS=AdaptorServiceFactory.getAdaptorService(this)
+    //def aS=AdaptorServiceFactory.getAdaptorService(this)
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
     def briefItemLayoutConstraints='wrap, w 400px::'
@@ -39,31 +39,32 @@ class LiveTaggedController {
         null
     }
     private void expandViewFrame(event){
-        def bos=model.currentViewFrame.getDelta()
-        assert this.itemGroup!=null
-        bos.each{ bo->
-            def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
-            w.value=bo
-            w.group=itemGroup
-            w=w.component
-            edt{
-                itemGroup.addItem(w,bo)
-                view.briefPanel.add(w)
-                view.briefPanel.layout.setComponentConstraints(w,briefItemLayoutConstraints)
-                w.mouseClicked={e->itemGroup.select(e.source)}
-                view.briefPanel.revalidate()
-                
+        sb.doOutside{
+            def bos=model.currentViewFrame.getDelta()
+            assert this.itemGroup!=null
+            bos.each{ bo->
+                def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
+                w.value=bo
+                w.group=itemGroup
+                w=w.component
+                edt{
+                    itemGroup.addItem(w,bo)
+                    view.briefPanel.add(w,briefItemLayoutConstraints)
+                    //view.briefPanel.layout.setComponentConstraints(w,)
+                    w.mouseClicked={e->itemGroup.select(e.source)}
+                    view.briefPanel.revalidate()
+                }
             }
-        }
-        if(bos.isEmpty()){
-            edt{
-                view.briefPanel.update()
+            if(bos.isEmpty()){
+                edt{
+                    view.briefPanel.update()
+                }
             }
+            setMoreButtonEnable()
         }
-        setMoreButtonEnable()
     }
     private void createViewFrame(bos,description){
-        def re=new ViewFrame(allContent:bos,description:description)
+        def re=new ViewFrame(deltaSize:80,allContent:bos,description:description)
         model.currentViewFrame=re
         model.history.add(re)
         re.getDelta()
@@ -93,8 +94,8 @@ class LiveTaggedController {
             edt{
                 itemGroup.addItem(w,bo)
                 if(viewFrame==this.processingViewFrame){
-                    view.briefPanel.add(w)
-                    view.briefPanel.layout.setComponentConstraints(w,briefItemLayoutConstraints)
+                    view.briefPanel.add(w,briefItemLayoutConstraints)
+                    //view.briefPanel.layout.setComponentConstraints(w,)
                     w.mouseClicked={e->itemGroup.select(e.source)}
                     view.briefPanel.revalidate()
                 }

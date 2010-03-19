@@ -8,11 +8,11 @@ abstract class DefaultTagableDetailDisplayAdaptor extends DefaultDetailDisplayAd
     def getComponent(){
         return sb.splitPane(orientation:JSplitPane.VERTICAL_SPLIT,constraints:'h :100%:, w :100%:',topComponent:
             sb.panel{
-                etchedBorder(parent:true)
+//                etchedBorder(parent:true)
         	widget(this.panel)
             },bottomComponent:
             sb.panel(layout:new MigLayout()){
-                etchedBorder(parent:true)
+//                etchedBorder(parent:true)
                 def fm=ServiceFactory.getService(FunctionMatrix.class)
                 TaggingManagerFactory.getTaggingManager().getTagsForTagable(value.id).sort{a,b->a.type.compareTo(b.type)}.each{
                     def w=fm.getFunction(it.class.simpleName,'detailDisplay')

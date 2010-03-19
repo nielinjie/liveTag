@@ -25,7 +25,7 @@ class ViewFrameManager{
     
 }
 class ViewFrame extends StatusObservable{
-    def deltaSize=20
+    def deltaSize=80
     private int currentMaxIndex=0
     def description='a common view frame'
     def allContent=[]

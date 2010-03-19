@@ -16,9 +16,9 @@ import tagging.*
 import tagging.ui.*
 import tagging.util.*
 
-def aS=AdaptorServiceFactory.getAdaptorService()
+//def aS=AdaptorServiceFactory.getAdaptorService()
 def fm=ServiceFactory.getService(FunctionMatrix.class)
-def Bos=[]
+//def Bos=[]
 
 
 def icons=[:].putAll(
@@ -76,7 +76,7 @@ application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], loc
             leftComponent:
             panel(layout:new MigLayout(),constraints:'w :500px:, h 600px::'){
                 panel(layout:new MigLayout(),constraints:'growx ,wrap'){
-                    etchedBorder(parent:true)
+//                    etchedBorder(parent:true)
                     label(id:'viewFrameDescription',text:'view frame description here',constraints:'growx')
                     panel(layout:new MigLayout('insets 0'),constraints:'x 1al'){
                         button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
@@ -87,23 +87,24 @@ application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], loc
                     bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
                 }
             				
-                def boScrollPane=scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
+                def boScrollPane=scrollPane(id:'boScrollPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
                     panel(id:'briefPanel',layout:new MigLayout()){
                         itemGroup=new SingleSelectedGroup(
                             selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
                         )
-                        Bos.each{
-                            def a=aS.getAdaptor(it,'briefDisplay')
-                            a.group=itemGroup
-                            def w=widget(constraints:'wrap,w 400px::',a.getComponent())
-                            itemGroup.addItem(w,it)
-                            w.mouseClicked={e->itemGroup.select(e.source)}
-                        }
+//                        Bos.each{
+//                            def a=aS.getAdaptor(it,'briefDisplay')
+//                            a.group=itemGroup
+//                            def w=widget(constraints:'wrap,w 400px::',a.getComponent())
+//                            itemGroup.addItem(w,it)
+//                            w.mouseClicked={e->itemGroup.select(e.source)}
+//                        }
                     }
                 }
                 boScrollPane.getVerticalScrollBar().setUnitIncrement(50);
                 panel(){
-                    button(id:'moreButton',icon:icons['more'],text:'More',enabled:false,actionPerformed:controller.&expandViewFrame)
+                    button(id:'moreButton',icon:icons['more'],text:'More',enabled:false,
+                        actionPerformed:controller.&expandViewFrame)
                     //bind(source:model.currentViewFrame,sourceEvent:'statusChanged',sourceValue:{model.currentViewFrame.hasMore()},target:moreButton,targetProperty:'enabled')
                 }
             },

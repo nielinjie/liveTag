@@ -11,7 +11,7 @@ import com.michaelbaranov.microba.calendar.DatePicker
 class TodoTagBriefDisplay extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            etchedBorder(parent:true)
+//            etchedBorder(parent:true)
             label(text:value.name)
         }
     }

@@ -8,7 +8,6 @@ import net.miginfocom.swing.MigLayout
 class TextTagableBriefDisplay extends DefaultBriefDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            etchedBorder(parent:true)
             label(text:"${value.text}")
             
         }

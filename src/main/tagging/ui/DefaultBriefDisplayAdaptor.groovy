@@ -28,6 +28,7 @@ abstract class DefaultBriefDisplayAdaptor{
             def ad=fm.getFunction(value.class.simpleName,'typeIconDisplay')
             if(ad){
                 ad.value=value
+
                 thePanel.add(sb.widget(ad.panel),'aligny top',0)
             }
             //ad=aS.getAdaptor('quickTag',value,'briefDisplay')
