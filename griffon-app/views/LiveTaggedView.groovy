@@ -30,7 +30,13 @@ def icons=[:].putAll(
 println icons
 def mr=ServiceFactory.getService(UIMediator.class)
 //mr.init(controller.functionMatrix)
-application(title:'LiveTag - Tag your life, and color it.',  size:[320,480], location:[50,50], pack:true, locationByPlatform:true,layout:new MigLayout()) {
+application(title:'LiveTag - Tag your life, and color it.',
+    size:[320,480], location:[50,50], pack:true,
+    locationByPlatform:true,layout:new MigLayout(),
+    iconImage:imageIcon('/teabag.gif').image
+) {
+
+
 	
     panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
         toolBar(constraints:'w 60%::'){
