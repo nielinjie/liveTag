@@ -1,6 +1,7 @@
 import tagging.*
 import groovy.swing.*
 import tagging.util.*
+import tagging.ui.*
 import org.java.plugin.*
 import org.java.plugin.boot.*
 import org.java.plugin.util.*
@@ -24,9 +25,8 @@ class LiveTaggedController {
     void selectBo(bo){
         view.detailPanel.removeAll()
         view.detailPanel.revalidate()
-        def w=functionMatrix.getFunction(bo.class.simpleName,'detailDisplay')
-        w.value=bo
-        w=w.component
+        def w=DisplayAdaptor.getAdaptor(bo,'detailDisplay')
+
         view.detailPanel.add(w)
         view.detailPanel.layout.setComponentConstraints(w,detailItemLayoutConstraints)
         view.detailPanel.revalidate()
@@ -44,10 +44,8 @@ class LiveTaggedController {
             def bos=model.currentViewFrame.getDelta()
             assert this.itemGroup!=null
             bos.each{ bo->
-                def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
-                w.value=bo
-                w.group=itemGroup
-                w=w.component
+                def w=DisplayAdaptor.getAdaptor(bo,'briefDisplay')
+
                 edt{
                     itemGroup.addItem(w,bo)
                     view.briefPanel.add(w,briefItemLayoutConstraints)
@@ -88,10 +86,7 @@ class LiveTaggedController {
             }
         )
         bos.each{ bo->
-            def w=functionMatrix.getFunction(bo.class.simpleName,'briefDisplay')
-            w.value=bo
-            w.group=itemGroup
-            w=w.component
+            def w=DisplayAdaptor.getAdaptor(bo,'briefDisplay')
             edt{
                 itemGroup.addItem(w,bo)
                 if(viewFrame==this.processingViewFrame){

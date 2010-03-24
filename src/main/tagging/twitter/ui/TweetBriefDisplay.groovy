@@ -22,10 +22,7 @@ class TweetTagableBriefDisplay extends DefaultBriefDisplayAdaptor{
             def people=CreatedByTag.findCreatedBy(value)
 
             if(people){
-                def fm=ServiceFactory.getService(FunctionMatrix.class)
-                def w=fm.getFunction(people.class.simpleName,'iconDisplay')
-                w.setValue(people)
-                widget(w.getComponent(),constraints:'aligny top')
+                widget(DisplayAdaptor.getAdaptor(people,'iconDisplay'),constraints:'aligny top')
             }
             editorPane(text:this.value.text,constraints:'w 300px::,h 48px::',editable:false,opaque: false
                 ,mouseClicked:{
@@ -47,12 +44,7 @@ class TweetTagableDetailDisplay extends DefaultDetailDisplayAdaptor{
             def people=CreatedByTag.findCreatedBy(value)
 
             if(people){
-                //def createdBySearchView=new CreatedBySearchView(people:people)
-                def fm=ServiceFactory.getService(FunctionMatrix.class)
-                def w=fm.getFunction(people.class.simpleName,'cardDisplay')
-                w.setValue(people)
-                def com=w.component
-                widget(com)//,mouseClicked:{ServiceFactory.getService('controller').selectSearchView(createdBySearchView)})
+                widget(DisplayAdaptor.getAdaptor(people,'cardDisplay'))//,mouseClicked:{ServiceFactory.getService('controller').selectSearchView(createdBySearchView)})
             }
         }
     }
@@ -70,9 +62,7 @@ class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
         def fm=ServiceFactory.getService(FunctionMatrix.class)
 
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            def w=fm.getFunction(value.class.simpleName,'iconDisplay')
-            w.setValue(value)
-            widget(w.getComponent())
+            widget(DisplayAdaptor.getAdaptor(value,'iconDisplay'))
             editorPane(text:"${this.value.screenName} - ${this.value.userName}@twitter",constraints:'w 300px::,h 48px::',editable:false,opaque: false,mouseClicked:{
                     event->
                     event.source=event.source.parent
@@ -91,10 +81,7 @@ class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
         return sb.panel(layout:new MigLayout()){
             label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
             def createdBySearchView=new CreatedBySearchView(people:value)
-            def w=fm.getFunction(createdBySearchView.class.simpleName,'buttonDisplay')
-            w.setValue(createdBySearchView)
-            def com=w.component
-            widget(com)
+            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
         }
     }
 }
@@ -102,12 +89,7 @@ class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
     def getPanel(){
         return sb.panel(layout:new MigLayout('ins 0')){
             label(icon:new DelayedImageIcon(48,48,new URL(value.imageUrl)))
-            //label(icon:new FixedSizeImageIcon(48, 48, new URL(value.imageUrl)))
-            //            def label=new RemoteImageLabel(value.imageUrl)
-            //            widget(label)
-            //            sb.doLater{
-            //                label.url=value.imageUrl
-            //            }
+          
         }
     }
 }
