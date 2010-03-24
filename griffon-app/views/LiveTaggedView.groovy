@@ -31,13 +31,17 @@ println icons
 def mr=ServiceFactory.getService(UIMediator.class)
 //mr.init(controller.functionMatrix)
 application(title:'LiveTag - Tag your life, and color it.',
-    size:[320,480], location:[50,50], pack:true,
-    locationByPlatform:true,layout:new MigLayout(),
-    iconImage:imageIcon('/teabag.gif').image
-) {
+    //size:[320,480],
+    pack:true,
+    layout:new MigLayout(),
+    //location:[50,50],
+    locationByPlatform:true,
+    iconImage: imageIcon('/teabag.gif').image,
+)
+{
 
 
-	
+
     panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
         toolBar(constraints:'w 60%::'){
             textField(id:'magicText',columns:50)
@@ -71,10 +75,7 @@ application(title:'LiveTag - Tag your life, and color it.',
     }
     splitPane(constraints:'h 600px::, w 1200px::',
         leftComponent:
-        //            scrollPane(id:'searchViewPanel',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w 200px::, h 600px::'){
-        //
-        //            }
-    	
+
     	widget(outlook)
         ,
         rightComponent:
@@ -82,7 +83,6 @@ application(title:'LiveTag - Tag your life, and color it.',
             leftComponent:
             panel(layout:new MigLayout(),constraints:'w :500px:, h 600px::'){
                 panel(layout:new MigLayout(),constraints:'growx ,wrap'){
-//                    etchedBorder(parent:true)
                     label(id:'viewFrameDescription',text:'view frame description here',constraints:'growx')
                     panel(layout:new MigLayout('insets 0'),constraints:'x 1al'){
                         button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
@@ -92,42 +92,27 @@ application(title:'LiveTag - Tag your life, and color it.',
                     bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasForward()},target:viewFrameForward,targetProperty:'enabled')
                     bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
                 }
-            				
+
                 def boScrollPane=scrollPane(id:'boScrollPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
                     panel(id:'briefPanel',layout:new MigLayout()){
                         itemGroup=new SingleSelectedGroup(
                             selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
                         )
-//                        Bos.each{
-//                            def a=aS.getAdaptor(it,'briefDisplay')
-//                            a.group=itemGroup
-//                            def w=widget(constraints:'wrap,w 400px::',a.getComponent())
-//                            itemGroup.addItem(w,it)
-//                            w.mouseClicked={e->itemGroup.select(e.source)}
-//                        }
                     }
                 }
                 boScrollPane.getVerticalScrollBar().setUnitIncrement(50);
                 panel(){
                     button(id:'moreButton',icon:icons['more'],text:'More',enabled:false,
                         actionPerformed:controller.&expandViewFrame)
-                    //bind(source:model.currentViewFrame,sourceEvent:'statusChanged',sourceValue:{model.currentViewFrame.hasMore()},target:moreButton,targetProperty:'enabled')
                 }
             },
             rightComponent:
-            //panel{
-            //                            		panel(id:'navigate',layout:new MigLayout(),constraints:'wrap'){
-            //
-            //                            		}
-            //scrollPane(horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_AS_NEEDED,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED,constraints:'w ::'){
             panel(id:'detailPanel',constraints:'w :100%:, h :100%:',layout:new MigLayout()){
                 //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
             }
-            //}
-            //}
             ,/*resizeWeight:0.5f,*/oneTouchExpandable:true)
         ,/*resizeWeight:0.25f,*/oneTouchExpandable:true)
-    
+
 }
 class SingleSelectedGroup{
     def selectedColor=new Color(121,168,219)

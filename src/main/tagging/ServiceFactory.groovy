@@ -23,4 +23,10 @@ class ServiceFactory{
     static setService(Class clazz, Object instance){
         instances[clazz]=instance
     }
+    static setService(String key,Object instance){
+        instances[key]=instance
+    }
+    static getService(String key){
+        return instances[key]
+    }
 }

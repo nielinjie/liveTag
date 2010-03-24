@@ -3,7 +3,6 @@ import groovy.swing.SwingBuilder
 import javax.swing.*
 abstract class DefaultDetailDisplayAdaptor{
     def value
-    def controller
     static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
         return getPanel().with{
@@ -20,7 +19,6 @@ abstract class DefaultDetailDisplayAdaptor{
 }
 abstract class DefaultIconDisplayAdaptor{
     def value
-    def controller
     static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
         return getPanel().with{

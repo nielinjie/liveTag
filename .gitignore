@@ -13,3 +13,5 @@ nbproject
 /LiveTagged.ipr
 /LiveTagged.iws
 /nb-build.xml
+.classpath
+.project

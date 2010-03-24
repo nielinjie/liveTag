@@ -10,6 +10,7 @@ class LiveTaggedController {
     def view
     FunctionMatrix functionMatrix=new AutoFunctionMatrix().with{
         ServiceFactory.setService(FunctionMatrix.class, it)
+        ServiceFactory.setService('controller',this)
         it
     }
     //def aS=AdaptorServiceFactory.getAdaptorService(this)

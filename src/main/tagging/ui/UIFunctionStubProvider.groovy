@@ -17,12 +17,31 @@ class UIFunctionStubProvider {
                     function should respond to java.swing.pane getComponent()"""
         ),
         new FunctionStub(
+            keys:['buttonDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for bos in button style.
+                    function should respond to java.swing.pane getComponent()"""
+        ),
+        new FunctionStub(
             keys:['detailDisplay'],
             guard:{o->
                 o.respondsTo('getComponent') \
                 && o.respondsTo('setValue')
             },
             memo:"""get the render for bos in detail view.
+                    function should respond to java.swing.pane getComponent()"""
+
+        ),
+        new FunctionStub(
+            keys:['cardDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for bos in detail view, to display a assiciate.
                     function should respond to java.swing.pane getComponent()"""
 
         ),

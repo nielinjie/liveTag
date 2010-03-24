@@ -11,6 +11,7 @@ import tagging.people.*
 
 class PeopleSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{
 }
+class CreatedBySearchViewButtonDisplay extends SearchViewButtonDisplayAdaptor{}
 class PeopleSearchViewProvides{
     def searchViewItems=[
         new SearchViewItem(order:10,group:'Category',

@@ -17,7 +17,8 @@
  * - SwingUtilities.invokeLater { // your code }
  */
  import tagging.*
- import groovy.swing.SwingBuilder
+ //import groovy.swing.SwingBuilder
 // Thread.start {
 	 TaggingManagerFactory.getTaggingManager().close()
+         //ServiceFactory.getService(ConfigService.class).close()
 // }
