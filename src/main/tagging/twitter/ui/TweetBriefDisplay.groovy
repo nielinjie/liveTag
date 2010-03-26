@@ -39,8 +39,8 @@ class TweetTagableBriefDisplay extends DefaultBriefDisplayAdaptor{
 
 class TweetTagableDetailDisplay extends DefaultDetailDisplayAdaptor{
     def getPanel(){
-        return sb.panel(layout:new MigLayout(),constraints:'wrap'){
-            editorPane(text:this.value.text,editable:false)
+        return sb.panel(layout:new MigLayout('fillx'),constraints:'growx,wrap'){
+            editorPane(text:this.value.text,editable:false,constraints:'growx, wrap')
             def people=CreatedByTag.findCreatedBy(value)
 
             if(people){
@@ -59,7 +59,6 @@ class TweetTagableTypeIconDisplay extends DefaultIconDisplayAdaptor{
 }
 class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
     def getPanel(){
-        def fm=ServiceFactory.getService(FunctionMatrix.class)
 
         return sb.panel(layout:new MigLayout(),constraints:'wrap'){
             widget(DisplayAdaptor.getAdaptor(value,'iconDisplay'))
@@ -71,11 +70,16 @@ class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
         }
     }
 }
-class TwitterPeopleCardDisplay extends TwitterPeopleDetailDisplay{
-
+class TwitterPeopleCardDisplay extends DisplayAdaptor{
+    def getPanel(){
+        return sb.panel(layout:new MigLayout()){
+            label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)))
+            def createdBySearchView=new CreatedBySearchView(people:value)
+            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
+        }
+    }
 }
 class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
-    def fm=ServiceFactory.getService(FunctionMatrix.class)
 
     def getPanel(){
         return sb.panel(layout:new MigLayout()){

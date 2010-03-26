@@ -6,6 +6,7 @@ class TaggingManager{
     ObjectKeeper ok
     private singletonTagCache=[:]
     static Class objectKeeperClass
+    private def listeners=[]
     @Lazy def sync={
         new Sync(tm:this).with{
             //taggingManager is used as singleten, so contactManager not.
@@ -49,6 +50,9 @@ class TaggingManager{
             it instanceof Tag && filter(it)
     	}
     }
+    void tagging(Tagable tagable, Tag tag){
+        tagging(tagable,[tag])
+    }
     void tagging(Tagable tagable, List<Tag> tags){
 
     	if(!(this.getTagable(tagable.id)) ){
@@ -84,6 +88,13 @@ class TaggingManager{
     void addTagable(Tagable tagable){
     	println "tagable added, ${tagable.dump()}"
     	this.ok.put(tagable)
+        if(tagable.respondsTo('onAdded')){
+            tagable.onAdded()
+        }
+        this.listeners.each{
+            if(it.respondsTo('onTagableAdded',Tagable.class))
+            it.onTagableAdded(tagable)
+        }
     }
     void fromOther(List<BO> bos){
     	bos.each{
@@ -94,6 +105,11 @@ class TaggingManager{
     }
     void onInit(){
     	println 'tagging manager in oninit method'
+        def l=ServiceFactory.getService(FunctionMatrix.class).getAllFunctions('taggingManagerListener')
+        l.each{
+            println l
+        }
+        this.listeners.addAll(l)
         if(this.ok==null){
             if(this.objectKeeperClass==null)
             this.ok=new StupidOK()//this is for test only
@@ -101,6 +117,9 @@ class TaggingManager{
             this.ok=this.objectKeeperClass.newInstance()
         }
         this.ok.start()
+        this.listeners.each{
+            if(it.respondsTo('onTaggingManagerStart',TaggingManager.class)) it.onTaggingManagerStart(this)
+        }
     }
     void close(){
     	this.ok.close()
@@ -113,7 +132,6 @@ class TaggingManager{
                 it.class==clazz
             }
             if(!findTag){
-            	
                 def tag=clazz.newInstance()
                 TaggingManagerFactory.getTaggingManager().saveTag(tag)
                 this.singletonTagCache[clazz]=tag
@@ -167,4 +185,21 @@ class StupidOK implements ObjectKeeper{
             this.objs=XML.fromXML(s)
         }
     }
+}
+class TaggingManagerListenerFunctionStubProvider{
+    def functionStubs=[
+        new FunctionStub(
+            keys:['taggingManagerListener'],
+            guard:{o->
+                o.respondsTo('onTagableAdded',Tagable.class) ||
+                o.respondsTo('onTaggingManagerStart',TaggingManager.class) 
+
+            },
+            memo:"""get the listeners to taggingManager's tagable added.
+                    function should respond to one or more following
+                        onTagableAdded(Tagable)
+                        onTaggingManagerStart(TaggingManager)
+                    """
+        ),
+    ]
 }

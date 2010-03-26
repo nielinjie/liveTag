@@ -83,6 +83,7 @@ public class TwitterImporter extends Importer{
             //unread
         }  
     }
+
     
 }
 
@@ -91,6 +92,10 @@ class TweetTagable extends Tagable{
     def text
     def author
     Date createdAt
+    def getKeywords(){
+        //TODO parse keywords here
+    }
+        //TODO parse metioned peoples.
 }
 class DMTagable extends Tagable{
     def type='tagable.twitter.DM'
@@ -100,6 +105,7 @@ class TwitterPeople extends PeopleTagable{
     def type='tagable.twitter.people'
     def userName
     def screenName
+    def comfirmed=false// is this people found on twitter site?
     def imageUrl
     @Lazy def searchView={
         //    		def name

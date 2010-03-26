@@ -64,7 +64,7 @@ application(title:'LiveTag - Tag your life, and color it.',
         def outlookPanel=panel(layout:new MigLayout()){
             searchViews.each{
                 def a=DisplayAdaptor.getAdaptor(it,'briefDisplay')
-                def w=widget(constraints:'wrap,w :150px:',a)
+                def w=widget(a,constraints:'wrap,w :150px:')
                 viewGroup.addItem(w,it)
                 w.mouseClicked={e->viewGroup.select(e.source)}
             }

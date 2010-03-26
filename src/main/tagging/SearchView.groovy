@@ -7,7 +7,7 @@ class SearchView{
     def name
     def description
     def condition
-    def sortComparator
+    def sortComparator={a,b->0}
     def type='searchView'
 }
 class SearchService{
