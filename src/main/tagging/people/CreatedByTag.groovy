@@ -10,7 +10,6 @@ import tagging.system.*
  *
  */
 class CreatedByTag extends LinkTag{
-    def type='tag.people.createdBy'
     static PeopleTagable findCreatedBy(Tagable tagable){
         def linkeds=LinkTag.findLinked(tagable,{it instanceof CreatedByTag})
         if (linkeds)return linkeds[0]
@@ -22,10 +21,10 @@ class CreatedByTag extends LinkTag{
 }
 
 class  MentionedInTag extends LinkTag{
-    static PeopleTagable findMetionded(Tagable tagable){
+    static List<PeopleTagable> findMetionded(Tagable tagable){
         def linkeds=LinkTag.findLinked(tagable,{it instanceof MentionedInTag})
-        if (linkeds)return linkeds[0]
-        return null
+        //if (linkeds)return linkeds[0]
+        return linkeds
     }
     static List<Tagable> findMetiondedIn(PeopleTagable people){
     	return LinkTag.findReversesLinked(people,{it instanceof MentionedInTag})
@@ -40,3 +39,24 @@ class CreatedBySearchView extends SearchView{
         CreatedByTag.findCreate(people)
     }
 }
+//class MentionedInManagerListener{
+//    def onTaggingManagerStart(TaggingManager tm){
+//        //TODO add clean logic
+//    }
+////        def emptyKeywordTags=[]
+////        tm.findTag{
+////            it instanceof KeywordTag
+////        }.each{
+////            if(!(tm.getTagableForTag(it)))emptyKeywordTags<<it
+////        }
+////        emptyKeywordTags.each{
+////            tm.removeTag(it)
+////        }
+//    def onTagableAdded(Tagable tagable){
+//        if(tagable.respondsTo('getMentions')){
+//            tagable.Mentions.each{
+//                KeywordTag.addKeywordTag(tagable,it)
+//            }
+//        }
+//    }
+//}

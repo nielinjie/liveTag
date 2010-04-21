@@ -47,11 +47,14 @@ class TweetTagableDetailDisplay extends DefaultTagableDetailDisplayAdaptor{
                 widget(new TimeLabel(value.createdAt.time),constraints:'')
             }
             editorPane(text:this.value.text,editable:false,constraints:'top, growx, wrap')
-            def people=CreatedByTag.findCreatedBy(value)
             //sb.panel(layout:new MigLayout('debug,insets 0'),constraints:'wrap,growx'){
             sb.menuBar(constraints:'wrap,growx'){
+                def people=CreatedByTag.findCreatedBy(value)
                 if(people){
                     widget(DisplayAdaptor.getAdaptor(people,'cardDisplay'))//,mouseClicked:{ServiceFactory.getService('controller').selectSearchView(createdBySearchView)})
+                }
+                MentionedInTag.findMetionded(value).each{
+                    widget(DisplayAdaptor.getAdaptor(it,'cardDisplay'))
                 }
                 def kws=value.keywords
                 if(kws){
@@ -98,50 +101,60 @@ class TwitterPeopleCardDisplay extends DisplayAdaptor{
         //                },actionPerformed:{e->println e.dump()})
         // sb.menuBar{
         def createdBySearchView=new CreatedBySearchView(people:value)
-        return sb.menu(icon:new DelayedImageIcon(32, 32, new URL(value.imageUrl)),text:value.userName){
-            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
-            sb.menuItem('1')
+        def re
+        if(value.confirmed){
+            re=sb.menu(icon:new DelayedImageIcon(32, 32, new URL(value.imageUrl)),text:value.userName){
+                widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
+                sb.menuItem('1')
+            }
         }
+        else{
+            re=sb.menu(icon:IconManager.getIcon('twitter'),text:value.screenName){
+                //widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
+                sb.menuItem('1')
+            }
+        }
+        re
         //}
 
         // widget(drop,constraints:'wrap')
         //            label(icon:new DelayedImageIcon(32, 32, new URL(value.imageUrl)),text:value.userName)
         //            def createdBySearchView=new CreatedBySearchView(people:value)
         //            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
-        }
-        }
-        class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
+    }
+}
+class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
 
-            def getPanel(){
-                return sb.panel(layout:new MigLayout()){
-                    label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
-                    def createdBySearchView=new CreatedBySearchView(people:value)
-                    widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
-                }
-            }
+    def getPanel(){
+        return sb.panel(layout:new MigLayout()){
+            label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
+            def createdBySearchView=new CreatedBySearchView(people:value)
+            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
         }
-        class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
-            def getPanel(){
-                return sb.panel(layout:new MigLayout('ins 0')){
-                    label(icon:new DelayedImageIcon(48,48,new URL(value.imageUrl)))
+    }
+}
+class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
+    def getPanel(){
+        return sb.panel(layout:new MigLayout('ins 0')){
+            label(icon:new DelayedImageIcon(48,48,new URL(value.imageUrl)))
           
-                }
-            }
         }
+    }
+}
 
-        class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
-        }
-        class TwitterSearchViewProvides{
-            def searchViewItems=[
-                new SearchViewItem(
-                    order:10,
-                    group:'Category',
-                    searchView:new TwitterImporter(
-                        username:'nielinjie',password:'790127',
-                        name:'Twitter Importer',
-                        description:'Sample Twitter Importer',interval:300
-                    )
-                )
-            ]
-        }
+class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
+}
+class TwitterSearchViewProvides{
+    def searchViewItems=[
+        new SearchViewItem(
+            order:10,
+            group:'Category',
+            searchView:new TwitterImporter(
+                username:'nielinjie',password:'790127',
+                name:'Twitter Importer',
+                description:'Sample Twitter Importer',interval:300
+            )
+        )
+    ]
+}
 

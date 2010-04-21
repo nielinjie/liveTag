@@ -72,12 +72,35 @@ public class TwitterImporter extends Importer{
             tm.addTagable(tweet)
             //add keyword tags
             //add person tagable and createdby tag
-            def createdBy=new CreatedByTag(from:tweet,fromPropertyName:'author',toType:'tagable.twitter.people')
-            createdBy.link({
-                    new TwitterPeople(bid:tw['userid'],confirmed:true,
-                        userName:tw['username'],screenName:tw['userScreenName'],
-                        imageUrl:tw['userImage'])
-                })
+            def createPeople=tm.findTagable{
+                it instanceof TwitterPeople && (it.bid==tw['userid'] || it.screenName==tw['userScreenName'])
+            }?.with{
+                it.size()>0?it[0]:null
+            }
+            if(createPeople && !createPeople.confirmed){
+                createPeople.with{
+                    it.bid=tw['userid']
+                    it.confirmed=true
+                    it.userName=tw['username']
+                    it.imageUrl=tw['userImage']
+                }
+            }
+            createPeople=createPeople?:new TwitterPeople(bid:tw['userid'],confirmed:true,
+                userName:tw['username'],screenName:tw['userScreenName'],
+                imageUrl:tw['userImage'])
+            def createdBy=new CreatedByTag()
+            createdBy.link(tweet,createPeople)
+            tweet.mentions.unique().each{
+                mentionName->
+                println "mentioned - $mentionName"
+                def mentionedPeople=tm.findTagable{
+                    it instanceof TwitterPeople && it.screenName==mentionName
+                }?.with{
+                    it.size()>0?it[0]:null
+                }
+                mentionedPeople=mentionedPeople?:new TwitterPeople(confirmed:false, screenName:mentionName)
+                new MentionedInTag().link(tweet,mentionedPeople)
+            }
             //add system tags
             //updated
             //unread
@@ -97,6 +120,11 @@ class TweetTagable extends Tagable{
             it[1]
         }
     }
+    def getMentions(){
+        (text=~/@(\w*+)/).collect{
+            it[1]
+        }
+    }
     //TODO parse metioned peoples.
 }
 class DMTagable extends Tagable{
@@ -110,10 +138,6 @@ class TwitterPeople extends PeopleTagable{
     def confirmed=false// is this people found on twitter site?
     def imageUrl
     @Lazy def searchView={
-        //    		def name
-        //		    def description
-        //		    def condition
-        //		    def sortComparator
     	new SearchView(name:'Tweeted',description:'Tweeted by this people',condition:{CreatedByTag.findCreate(this)},sortComparator:{a,b->0
             })
     }()

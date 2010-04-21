@@ -84,29 +84,29 @@ class StarSearchView extends SearchView{
 }
 abstract class LinkTag extends Tag{
     UUID toId
-    String fromPropertyName
-    Tagable from
-    String toType
-    def link(Closure newToTagable){
+    def link(Tagable fromTagable,Tagable toTagable){
         def tm=TaggingManagerFactory.getTaggingManager()
-        def toTagable=tm.findTagable({obj->
-                obj.type==toType && obj.bid==from."${this.fromPropertyName}"})
-        if(!toTagable){
-            toTagable=newToTagable(from)
-            if(toTagable.bid==null)
-                toTagable.bid=from."${this.fromPropertyName}"
-            tm.addTagable(toTagable)
-        }else{
-            toTagable=toTagable[0]
-        }
+        tm.ensureTagableExist(fromTagable)
+        tm.ensureTagableExist(toTagable)
+//        def toTagable=tm.findTagable({obj->
+//                obj.type==toType && obj.bid==from."${this.fromPropertyName}"})
+//        if(!toTagable){
+//            toTagable=newToTagable(from)
+//            if(toTagable.bid==null)
+//                toTagable.bid=from."${this.fromPropertyName}"
+//            tm.addTagable(toTagable)
+//        }else{
+//            toTagable=toTagable[0]
+//        }
+        //this.toId=toTagable.id
         this.toId=toTagable.id
-        tm.tagging(from,[this])
+        tm.tagging(fromTagable,[this])
     }
     static List<Tagable> findLinked(Tagable from,Closure tagFilter=null){
         def re=[]
         def tm=TaggingManagerFactory.getTaggingManager()
         def tagings=tm.getTagsForTagable(from.id)
-        def linkeds= tagings.find{
+        def linkeds= tagings.findAll{
             (it instanceof LinkTag && (tagFilter?tagFilter(it):true)) 
         }
         re.addAll(linkeds.collect{linked->tm.getTagable(linked.toId)})
@@ -115,7 +115,9 @@ abstract class LinkTag extends Tag{
     static List<Tagable> findReversesLinked(Tagable to, Closure tagFilter=null){
         def re=[]
         def tm=TaggingManagerFactory.getTaggingManager()
+        println tm.findTag({it instanceof LinkTag  && it.toId==to.id}).collect{it.dump()}
         def tags=tm.findTag({it instanceof LinkTag && it.toId==to.id && (tagFilter?tagFilter(it):true)})
+        println tags
         tags.each{
             tag->
             re.addAll(tm.getTagableForTag(tag))

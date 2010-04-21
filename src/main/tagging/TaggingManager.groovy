@@ -122,6 +122,11 @@ class TaggingManager{
             if(it.respondsTo('onTaggingManagerStart',TaggingManager.class)) it.onTaggingManagerStart(this)
         }
     }
+    def ensureTagableExist(Tagable tagable){
+        if(!this.getTagable(tagable.id)){
+            this.addTagable(tagable)
+        }
+    }
     void close(){
     	this.ok.close()
     }

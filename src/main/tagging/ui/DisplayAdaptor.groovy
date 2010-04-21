@@ -19,7 +19,7 @@ abstract class DisplayAdaptor {
     static SwingBuilder sb=new SwingBuilder()
     def getComponent(){
         return getPanel().with{
-            it.opaque=true
+            //it.opaque=true
             it
         }
     }
