@@ -17,26 +17,28 @@ class TodoTagBriefDisplay extends DefaultBriefDisplayAdaptor{
     }
 }
 class TodoTagDetailDisplay extends DefaultDetailDisplayAdaptor{
+    def xb=new groovy.swing.SwingXBuilder()
     def getPanel(){
         return sb.panel(layout:new MigLayout()){
             label(icon:IconManager.getIcon('todo'),'Todo - ')
             checkBox(id:'doneCheckBox',selected:value.done,text:'Done',mouseClicked:{value.done=doneCheckBox.selected})
             checkBox(id:'deadLineCheckBox',selected:(value.deadline!=null),text:'DeadLine',mouseClicked:{
                     if(deadLineCheckBox.selected){
-            		picker1.enabled=true
+            		dataPicker.enabled=true
                     }else{
-            		picker1.enabled=false
+            		dataPicker.enabled=false
             		value.deadline=null
                     }
                 })
-            def picker1 = new DatePicker(value.deadline, new java.text.SimpleDateFormat("dd-MMM-yyyy HH:mm"))
-            picker1.actionPerformed={
+            //def picker1 = new DatePicker(value.deadline, new java.text.SimpleDateFormat("dd-MMM-yyyy HH:mm"))
+            def dataPicker=xb.datePicker(date:value.deadline?:new Date(),id:'dataPicker')
+            dataPicker.actionPerformed={
             	event->
             	if(deadLineCheckBox.selected) 
                 value.deadline=event.source.date
             }
-            picker1.enabled=deadLineCheckBox.selected
-            widget(picker1,id:'picker1')
+            dataPicker.enabled=deadLineCheckBox.selected
+            widget(dataPicker,id:'dataPicker')
         }
     }
 }

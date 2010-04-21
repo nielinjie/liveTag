@@ -32,8 +32,8 @@ public class KeywordTag extends Tag{
 }
 class KeywordTagSearchView extends SearchView{
     def keywordTag
-    @Lazy def name={"Keyword - ${keywordTag.keyword}"}()
-    @Lazy def description={"Keyword - ${keywordTag.keyword}"}()
+    @Lazy def name={"Search keyword - ${keywordTag.keyword}"}()
+    @Lazy def description={"keyword - ${keywordTag.keyword}"}()
     def condition={
         TaggingManager tm=TaggingManagerFactory.getTaggingManager()
         def re=tm.getTagableForTag(keywordTag)

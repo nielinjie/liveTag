@@ -6,6 +6,7 @@ import tagging.ui.*
  *
  * @author nielinjie
  */
+
 class KeywordTagSearchViewProvides {
     def getSearchViewItems(){
         TaggingManager tm=TaggingManagerFactory.getTaggingManager()
@@ -16,5 +17,23 @@ class KeywordTagSearchViewProvides {
         }
     }
 }
+class KeywordTagCardDisplay extends DisplayAdaptor{
+    def getPanel(){
+        return sb.menu(text:value.keyword){
+            widget(DisplayAdaptor.getAdaptor(new KeywordTagSearchView(keywordTag:value),'buttonDisplay'))
+        }
+    }
+}
+class KeywordTagDetailDisplay extends DefaultDetailDisplayAdaptor{
+    def getPanel(){
+        sb.panel(){
+            label(text:value.keyword)
+            widget(DisplayAdaptor.getAdaptor(new KeywordTagSearchView(keywordTag:value),'buttonDisplay'))
+        }
+    }
+}
 class KeywordTagSearchViewBriefDisplay extends SearchViewBriefDisplayAdaptor{}
+class KeywordTagSearchViewButtonDisplay extends SearchViewButtonDisplayAdaptor{}
+
+
 

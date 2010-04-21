@@ -1,4 +1,4 @@
-package tagging
+package tagging.ok
 interface ObjectKeeper{
 	Object get(def id)
 	List search(def filter)

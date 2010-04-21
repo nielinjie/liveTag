@@ -2,9 +2,7 @@ import tagging.*
 import groovy.swing.*
 import tagging.util.*
 import tagging.ui.*
-import org.java.plugin.*
-import org.java.plugin.boot.*
-import org.java.plugin.util.*
+
 class LiveTaggedController {
     private def sb=new SwingBuilder()
     def model

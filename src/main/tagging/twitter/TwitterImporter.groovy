@@ -74,7 +74,7 @@ public class TwitterImporter extends Importer{
             //add person tagable and createdby tag
             def createdBy=new CreatedByTag(from:tweet,fromPropertyName:'author',toType:'tagable.twitter.people')
             createdBy.link({
-                    new TwitterPeople(bid:tw['userid'],
+                    new TwitterPeople(bid:tw['userid'],confirmed:true,
                         userName:tw['username'],screenName:tw['userScreenName'],
                         imageUrl:tw['userImage'])
                 })
@@ -93,9 +93,11 @@ class TweetTagable extends Tagable{
     def author
     Date createdAt
     def getKeywords(){
-        //TODO parse keywords here
+        (text=~/#(\w*+)/).collect{
+            it[1]
+        }
     }
-        //TODO parse metioned peoples.
+    //TODO parse metioned peoples.
 }
 class DMTagable extends Tagable{
     def type='tagable.twitter.DM'
@@ -105,7 +107,7 @@ class TwitterPeople extends PeopleTagable{
     def type='tagable.twitter.people'
     def userName
     def screenName
-    def comfirmed=false// is this people found on twitter site?
+    def confirmed=false// is this people found on twitter site?
     def imageUrl
     @Lazy def searchView={
         //    		def name

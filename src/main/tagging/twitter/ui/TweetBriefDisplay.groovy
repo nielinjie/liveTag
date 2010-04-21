@@ -10,6 +10,8 @@ import tagging.twitter.*
 import tagging.util.*
 import groovy.swing.*
 import tagging.people.*
+import tagging.keyword.*
+import tagging.keyword.ui.*
 import net.miginfocom.swing.MigLayout
 /**
  * @author nielinjie
@@ -37,14 +39,30 @@ class TweetTagableBriefDisplay extends DefaultBriefDisplayAdaptor{
     }
 }
 
-class TweetTagableDetailDisplay extends DefaultDetailDisplayAdaptor{
+class TweetTagableDetailDisplay extends DefaultTagableDetailDisplayAdaptor{
     def getPanel(){
-        return sb.panel(layout:new MigLayout('fillx'),constraints:'growx,wrap'){
-            editorPane(text:this.value.text,editable:false,constraints:'growx, wrap')
+        return sb.panel(layout:new MigLayout('fill','[fill,grow]','[fill][grow,fill][fill]'),constraints:'growx,wrap'){
+            sb.panel(constraints:'wrap'){
+                widget(DisplayAdaptor.getAdaptor(value,'typeIconDisplay'),constraints:'')
+                widget(new TimeLabel(value.createdAt.time),constraints:'')
+            }
+            editorPane(text:this.value.text,editable:false,constraints:'top, growx, wrap')
             def people=CreatedByTag.findCreatedBy(value)
-
-            if(people){
-                widget(DisplayAdaptor.getAdaptor(people,'cardDisplay'))//,mouseClicked:{ServiceFactory.getService('controller').selectSearchView(createdBySearchView)})
+            //sb.panel(layout:new MigLayout('debug,insets 0'),constraints:'wrap,growx'){
+            sb.menuBar(constraints:'wrap,growx'){
+                if(people){
+                    widget(DisplayAdaptor.getAdaptor(people,'cardDisplay'))//,mouseClicked:{ServiceFactory.getService('controller').selectSearchView(createdBySearchView)})
+                }
+                def kws=value.keywords
+                if(kws){
+                    kws.each{
+                        kw->
+                        //println kw.dump()
+                        //widget(DisplayAdaptor.getAdaptor(new KeywordTagSearchView(keywordTag:KeywordTag.getKeywordTag(kw)),'cardDisplay'))
+                        //println DisplayAdaptor.getAdaptor(KeywordTag.getKeywordTag(kw),'cardDisplay')
+                        widget(DisplayAdaptor.getAdaptor(KeywordTag.getKeywordTag(kw),'cardDisplay'))
+                    }
+                }
             }
         }
     }
@@ -72,45 +90,58 @@ class TwitterPeopleBriefDisplay extends DefaultBriefDisplayAdaptor{
 }
 class TwitterPeopleCardDisplay extends DisplayAdaptor{
     def getPanel(){
-        return sb.panel(layout:new MigLayout()){
-            label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)))
-            def createdBySearchView=new CreatedBySearchView(people:value)
+        //return sb.panel(layout:new MigLayout('debug,fill,insets 0','[fill,left]')){
+        //            def drop=jb.jideSplitButton(icon:new DelayedImageIcon(32, 32, new URL(value.imageUrl)),text:value.userName,
+        //                customize: { m ->
+        //                    m.removeAll()
+        //                    (1..5).each{ m.add "Option $it" }
+        //                },actionPerformed:{e->println e.dump()})
+        // sb.menuBar{
+        def createdBySearchView=new CreatedBySearchView(people:value)
+        return sb.menu(icon:new DelayedImageIcon(32, 32, new URL(value.imageUrl)),text:value.userName){
             widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
+            sb.menuItem('1')
         }
-    }
-}
-class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
+        //}
 
-    def getPanel(){
-        return sb.panel(layout:new MigLayout()){
-            label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
-            def createdBySearchView=new CreatedBySearchView(people:value)
-            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
+        // widget(drop,constraints:'wrap')
+        //            label(icon:new DelayedImageIcon(32, 32, new URL(value.imageUrl)),text:value.userName)
+        //            def createdBySearchView=new CreatedBySearchView(people:value)
+        //            widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
         }
-    }
-}
-class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
-    def getPanel(){
-        return sb.panel(layout:new MigLayout('ins 0')){
-            label(icon:new DelayedImageIcon(48,48,new URL(value.imageUrl)))
+        }
+        class TwitterPeopleDetailDisplay extends DefaultDetailDisplayAdaptor{
+
+            def getPanel(){
+                return sb.panel(layout:new MigLayout()){
+                    label(icon:new DelayedImageIcon(48, 48, new URL(value.imageUrl)), constraints:'wrap')
+                    def createdBySearchView=new CreatedBySearchView(people:value)
+                    widget(DisplayAdaptor.getAdaptor(createdBySearchView,'buttonDisplay'))
+                }
+            }
+        }
+        class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
+            def getPanel(){
+                return sb.panel(layout:new MigLayout('ins 0')){
+                    label(icon:new DelayedImageIcon(48,48,new URL(value.imageUrl)))
           
+                }
+            }
         }
-    }
-}
 
-class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
-}
-class TwitterSearchViewProvides{
-    def searchViewItems=[
-        new SearchViewItem(
-            order:10,
-            group:'Category',
-            searchView:new TwitterImporter(
-                username:'nielinjie',password:'790127',
-                name:'Twitter Importer',
-                description:'Sample Twitter Importer',interval:300
-            )
-        )
-    ]
-}
+        class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
+        }
+        class TwitterSearchViewProvides{
+            def searchViewItems=[
+                new SearchViewItem(
+                    order:10,
+                    group:'Category',
+                    searchView:new TwitterImporter(
+                        username:'nielinjie',password:'790127',
+                        name:'Twitter Importer',
+                        description:'Sample Twitter Importer',interval:300
+                    )
+                )
+            ]
+        }
 

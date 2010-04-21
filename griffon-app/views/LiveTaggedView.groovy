@@ -2,8 +2,7 @@ import net.miginfocom.swing.MigLayout
 import static javax.swing.ScrollPaneConstants.*
 import javax.swing.event.*
 import javax.swing.*
-import java.awt.SystemColor
-import java.awt.Color
+import java.awt.*
 import javax.swing.table.*
 
 import com.l2fprod.common.swing.JOutlookBar;
@@ -30,10 +29,10 @@ def icons=[:].putAll(
 println icons
 def mr=ServiceFactory.getService(UIMediator.class)
 //mr.init(controller.functionMatrix)
-application(title:'LiveTag - Tag your life, and color it.',
+def rootFrame=application(title:'LiveTag - Tag your life, and color it.',id:'rootFrame',
     //size:[320,480],
     pack:true,
-    layout:new MigLayout(),
+    layout:new MigLayout('fill','[fill]','[][fill,:100%:]'),
     //location:[50,50],
     locationByPlatform:true,
     iconImage: imageIcon('/teabag.gif').image,
@@ -42,8 +41,8 @@ application(title:'LiveTag - Tag your life, and color it.',
 
 
 
-    panel(constraints:'wrap, h :100%:',layout:new MigLayout() ){
-        toolBar(constraints:'w 60%::'){
+    panel(constraints:'wrap',layout:new MigLayout('fill','[fill,:60%:][fill]') ){
+        toolBar(constraints:''){
             textField(id:'magicText',columns:50)
             mr.getMagicTextProvides().each{
                 me->
@@ -64,14 +63,14 @@ application(title:'LiveTag - Tag your life, and color it.',
         def outlookPanel=panel(layout:new MigLayout()){
             searchViews.each{
                 def a=DisplayAdaptor.getAdaptor(it,'briefDisplay')
-                def w=widget(a,constraints:'wrap,w :150px:')
+                def w=widget(a,constraints:'wrap')
                 viewGroup.addItem(w,it)
                 w.mouseClicked={e->viewGroup.select(e.source)}
             }
         }
         outlook.addTab(it, outlook.makeScrollPane(outlookPanel));
     }
-    splitPane(constraints:'h 600px::, w 1200px::',
+    splitPane(constraints:'',
         leftComponent:
 
     	widget(outlook)
@@ -79,20 +78,41 @@ application(title:'LiveTag - Tag your life, and color it.',
         rightComponent:
         splitPane(
             leftComponent:
-            panel(layout:new MigLayout(),constraints:'w :500px:, h 600px::'){
-                panel(layout:new MigLayout(),constraints:'growx ,wrap'){
+            panel(layout:new MigLayout('fill','[fill]','[][fill,grow][]'),constraints:''){
+                panel(layout:new MigLayout('fill,ins 0'),constraints:'growx ,wrap'){
                     label(id:'viewFrameDescription',text:'view frame description here',constraints:'growx')
                     panel(layout:new MigLayout('insets 0'),constraints:'x 1al'){
-                        button(icon:icons['back'],id:'viewFrameBack',text:'back',actionPerformed:{model.currentViewFrame=model.history.back();controller.renderViewFrame(model.currentViewFrame)})
-                        button(icon:icons['forward'],id:'viewFrameForward',text:'forward',actionPerformed:{model.currentViewFrame=model.history.forward();controller.renderViewFrame(model.currentViewFrame)})
+                        button(icon:icons['back'],id:'viewFrameBack',text:'back',
+                            enabled:false,
+                            actionPerformed:{
+                                doOutside{
+                                    model.currentViewFrame=model.history.back()
+                                    controller.renderViewFrame(model.currentViewFrame)
+                                }
+                            })
+                        button(icon:icons['forward'],id:'viewFrameForward',text:'forward',
+                            enabled:false,
+                            actionPerformed:{
+                                doOutside{
+                                    model.currentViewFrame=model.history.forward()
+                                    controller.renderViewFrame(model.currentViewFrame)
+                                }
+                            })
                     }
-                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasBack()},target:viewFrameBack,targetProperty:'enabled')
-                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasForward()},target:viewFrameForward,targetProperty:'enabled')
-                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
+                    model.history.addStatusChangedListener([
+                            statusChanged:{
+                                viewFrameBack.enabled=model.history.hasBack()
+                                viewFrameForward.enabled=model.history.hasForward()
+                                viewFrameDescription.text=model.history.current?.description
+                            }
+                        ] as StatusChangedListener)
+                    //                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasBack()},target:viewFrameBack,targetProperty:'enabled')
+                    //                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.hasForward()},target:viewFrameForward,targetProperty:'enabled')
+                    //                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
                 }
 
-                def boScrollPane=scrollPane(id:'boScrollPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:'w :420px:,h :90%:, wrap'){
-                    panel(id:'briefPanel',layout:new MigLayout()){
+                def boScrollPane=scrollPane(id:'boScrollPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:' wrap'){
+                    panel(id:'briefPanel',layout:new MigLayout('','[fill]')){
                         itemGroup=new SingleSelectedGroup(
                             selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
                         )
@@ -105,13 +125,14 @@ application(title:'LiveTag - Tag your life, and color it.',
                 }
             },
             rightComponent:
-            panel(id:'detailPanel',constraints:'w :100%:, h :100%:',layout:new MigLayout()){
+            panel(id:'detailPanel',layout:new MigLayout('fill')){
                 //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
             }
-            ,/*resizeWeight:0.5f,*/oneTouchExpandable:true)
-        ,/*resizeWeight:0.25f,*/oneTouchExpandable:true)
+            ,dividerLocation:460 as Integer,resizeWeight:0.3f,oneTouchExpandable:true)
+        ,dividerLocation:200 as Integer,resizeWeight:0.15f,oneTouchExpandable:true)
 
 }
+rootFrame.setExtendedState(rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 class SingleSelectedGroup{
     def selectedColor=new Color(121,168,219)
     def items=[]

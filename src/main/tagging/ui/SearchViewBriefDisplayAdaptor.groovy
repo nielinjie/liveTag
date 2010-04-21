@@ -14,14 +14,9 @@ class SearchViewBriefDisplayAdaptor extends DefaultBriefDisplayAdaptor{
         return re
     }
 }
-class SearchViewButtonDisplayAdaptor extends DefaultBriefDisplayAdaptor{
-    def iconLabel
+class SearchViewButtonDisplayAdaptor extends DisplayAdaptor{
     def getPanel(){
-        def re= sb.panel(layout:new MigLayout()){
-            def iconString=this.hasProperty('icon')?this.icon:'search'
-            button(label:value.name,icon:IconManager.getIcon(iconString),mouseClicked:{ ServiceFactory.getService('controller')?.selectSearchView(value)})
+            return sb.menuItem(text:value.name,icon:IconManager.getIcon('search'),actionPerformed:{ ServiceFactory.getService('controller')?.selectSearchView(value)})
             //label(text:value.name)
-        }
-        return re
     }
 }
