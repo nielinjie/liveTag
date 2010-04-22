@@ -46,7 +46,9 @@ class TweetTagableDetailDisplay extends DefaultTagableDetailDisplayAdaptor{
                 widget(DisplayAdaptor.getAdaptor(value,'typeIconDisplay'),constraints:'')
                 widget(new TimeLabel(value.createdAt.time),constraints:'')
             }
-            editorPane(text:this.value.text,editable:false,constraints:'top, growx, wrap')
+            scrollPane(constraints:'top, growx, wrap'){
+                editorPane(text:this.value.text,editable:false)
+            }
             //sb.panel(layout:new MigLayout('debug,insets 0'),constraints:'wrap,growx'){
             sb.menuBar(constraints:'wrap,growx'){
                 def people=CreatedByTag.findCreatedBy(value)

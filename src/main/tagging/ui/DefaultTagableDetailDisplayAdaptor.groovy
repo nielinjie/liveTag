@@ -28,11 +28,16 @@ abstract class DefaultTagableDetailDisplayAdaptor extends DefaultDetailDisplayAd
             ,resizeWeight:0.6,continuousLayout:true,oneTouchExpandable:true)
     }
     Boolean skip(Tag tag){
-        return [tagging.keyword.KeywordTag.class,tagging.system.SystemTag.class,tagging.people.CreatedByTag.class].any{it.isAssignableFrom(tag.class)}
+        return [
+            tagging.keyword.KeywordTag.class,
+            tagging.system.SystemTag.class,
+            tagging.people.CreatedByTag.class,
+            tagging.people.MentionedInTag.class
+        ].any{it.isAssignableFrom(tag.class)}
     }
     def getUnknowPanel(Tag tag){
-        sb.panel{
-            label("I am a placeholder for unknow tag- ${tag.dump()}")
+        sb.panel(){
+            editorPane("I am a placeholder for unknow tag- ${tag.dump()}")
         }
     }
     def abstract getPanel()

@@ -111,7 +111,7 @@ def rootFrame=application(title:'LiveTag - Tag your life, and color it.',id:'roo
                     //                    bind(source:model.history,sourceEvent:'statusChanged',sourceValue:{model.history.current?.description},target:viewFrameDescription,targetProperty:'text')
                 }
 
-                def boScrollPane=scrollPane(id:'boScrollPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:' wrap'){
+                def boScrollPane=scrollPane(id:'boScrollPane',horizontalScrollBarPolicy:HORIZONTAL_SCROLLBAR_NEVER,verticalScrollBarPolicy:VERTICAL_SCROLLBAR_AS_NEEDED ,constraints:' wrap, w :480px:'){
                     panel(id:'briefPanel',layout:new MigLayout('','[fill]')){
                         itemGroup=new SingleSelectedGroup(
                             selectionChanged:{controller.selectBo(itemGroup.selectedValue)}
@@ -128,8 +128,8 @@ def rootFrame=application(title:'LiveTag - Tag your life, and color it.',id:'roo
             panel(id:'detailPanel',layout:new MigLayout('fill')){
                 //widget(constraints:'w :400px:', aS.getAdaptor(Bos[1],'detailDisplay').getComponent())
             }
-            ,dividerLocation:460 as Integer,resizeWeight:0.3f,oneTouchExpandable:true)
-        ,dividerLocation:200 as Integer,resizeWeight:0.15f,oneTouchExpandable:true)
+            ,dividerLocation:500 as Integer,/*resizeWeight:0.3f,*/oneTouchExpandable:true)
+        ,dividerLocation:200 as Integer,/*resizeWeight:0.15f,*/oneTouchExpandable:true)
 
 }
 rootFrame.setExtendedState(rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);

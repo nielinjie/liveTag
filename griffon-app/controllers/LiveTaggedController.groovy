@@ -16,7 +16,7 @@ class LiveTaggedController {
     def tm=TaggingManagerFactory.getTaggingManager()
     def itemGroup
     def briefItemLayoutConstraints='wrap, w 400px::'
-    def	detailItemLayoutConstraints='w :100%:, h :100%:'
+    def	detailItemLayoutConstraints='grow'
     private processingViewFrame
     void mvcGroupInit(Map args) {
     }
@@ -25,10 +25,10 @@ class LiveTaggedController {
         view.detailPanel.revalidate()
         def w=DisplayAdaptor.getAdaptor(bo,'detailDisplay')
 
-        view.detailPanel.add(w)
-        view.detailPanel.layout.setComponentConstraints(w,detailItemLayoutConstraints)
-        view.detailPanel.revalidate()
-        view.detailPanel.repaint()
+        view.detailPanel.add(w,detailItemLayoutConstraints)
+        //view.detailPanel.layout.setComponentConstraints(w,)
+        view.detailPanel.validate()
+       // view.detailPanel.repaint()
     }
     void selectSearchView(searchView){
         sb.doOutside{

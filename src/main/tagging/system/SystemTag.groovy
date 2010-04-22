@@ -115,9 +115,9 @@ abstract class LinkTag extends Tag{
     static List<Tagable> findReversesLinked(Tagable to, Closure tagFilter=null){
         def re=[]
         def tm=TaggingManagerFactory.getTaggingManager()
-        println tm.findTag({it instanceof LinkTag  && it.toId==to.id}).collect{it.dump()}
+//        println tm.findTag({it instanceof LinkTag  && it.toId==to.id}).collect{it.dump()}
         def tags=tm.findTag({it instanceof LinkTag && it.toId==to.id && (tagFilter?tagFilter(it):true)})
-        println tags
+//        println tags
         tags.each{
             tag->
             re.addAll(tm.getTagableForTag(tag))

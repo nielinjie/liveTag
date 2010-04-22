@@ -19,7 +19,7 @@ class KeywordTagSearchViewProvides {
 }
 class KeywordTagCardDisplay extends DisplayAdaptor{
     def getPanel(){
-        return sb.menu(text:value.keyword){
+        return sb.menu(icon:IconManager.getIcon('sharp'),text:value.keyword){
             widget(DisplayAdaptor.getAdaptor(new KeywordTagSearchView(keywordTag:value),'buttonDisplay'))
         }
     }

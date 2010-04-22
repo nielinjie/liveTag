@@ -92,7 +92,6 @@ public class TwitterImporter extends Importer{
             createdBy.link(tweet,createPeople)
             tweet.mentions.unique().each{
                 mentionName->
-                println "mentioned - $mentionName"
                 def mentionedPeople=tm.findTagable{
                     it instanceof TwitterPeople && it.screenName==mentionName
                 }?.with{
