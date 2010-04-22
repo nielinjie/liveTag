@@ -2,6 +2,8 @@ import tagging.*
 import groovy.swing.*
 import tagging.util.*
 import tagging.ui.*
+import net.miginfocom.swing.MigLayout
+
 
 class LiveTaggedController {
     private def sb=new SwingBuilder()
@@ -28,7 +30,7 @@ class LiveTaggedController {
         view.detailPanel.add(w,detailItemLayoutConstraints)
         //view.detailPanel.layout.setComponentConstraints(w,)
         view.detailPanel.validate()
-       // view.detailPanel.repaint()
+        // view.detailPanel.repaint()
     }
     void selectSearchView(searchView){
         sb.doOutside{
@@ -102,5 +104,18 @@ class LiveTaggedController {
         }
         setMoreButtonEnable()
         this.processingViewFrame=null
+    }
+    void configDialog(Object object){
+        def dialog=
+        new SwingBuilder().dialog(
+            modal:true,
+            owner:view.rootFrame,
+            title:'Config',
+            size:[600,400],
+            layout:new MigLayout('debug,fill')
+        ){
+            widget(DisplayAdaptor.getAdaptor(object,'configDisplay'),constraints:'grow')
+        }
+        dialog.visible=true
     }
 }

@@ -23,7 +23,7 @@ class UIFunctionStubProvider {
                 && o.respondsTo('setValue')
             },
             memo:"""get the render for bos in button style.
-                    function should respond to java.swing.pane getComponent()"""
+                    function should respond to java.swing.menuItem getComponent()"""
         ),
         new FunctionStub(
             keys:['detailDisplay'],
@@ -42,7 +42,7 @@ class UIFunctionStubProvider {
                 && o.respondsTo('setValue')
             },
             memo:"""get the render for bos in detail view, to display a assiciate.
-                    function should respond to java.swing.pane getComponent()"""
+                    function should respond to java.swing.memu getComponent()"""
 
         ),
         new FunctionStub(
@@ -93,6 +93,15 @@ class UIFunctionStubProvider {
                     function should respond to List<MagicTextProvide> getMagicTextProvides()"""
 
         ),
+       new FunctionStub(
+            keys:['configDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for object in config dialog.
+                    function should respond to java.swing.panel getComponent()"""
+        )
     ]
 }
 

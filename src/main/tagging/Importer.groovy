@@ -9,14 +9,16 @@ import groovy.beans.Bindable
  *
  */
 public  class Importer extends SearchView{
-    def interval=1
-    String type='importer'
+    def interval
     @Bindable boolean stop=false
     Importer(){
-        this([:])
+        start()
     }
-    Importer(Map att){
-        new Thread({
+//    Importer(Map att){
+//       start()
+//    }
+    def start(){
+         new Thread({
                 while(!stop){
                     onTimer()
                     Thread.sleep(this.interval*1000)

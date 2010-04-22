@@ -6,7 +6,7 @@ import tagging.ok.*
  * @author nielinjie
  */
 class ConfigService {
-    ObjectKeeper ok=new StupidOK(file:'./configs')
+    ObjectKeeper ok=new StupidOK(file:'/home/nielinjie/configs')
     def onInit(){
         ok.start()
     }

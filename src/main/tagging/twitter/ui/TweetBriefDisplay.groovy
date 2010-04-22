@@ -146,6 +146,26 @@ class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
 
 class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
 }
+class TwitterImporterConfigDisplay extends DisplayAdaptor{
+    def dialog
+    def getPanel(){
+        sb.panel(layout:new MigLayout('debug,fill','[fill]','[fill,:100%:][]')){
+            sb.panel(constraints:'grow,wrap',layout:new MigLayout('debug,fill','[fill][fill]')){
+                label('UserName')
+                textField(text:value.username,constraints:'wrap')
+                label('Password')
+                textField(text:value.password,constraints:'wrap')
+                label('Interval')
+                textField(text:value.interval)
+
+            }
+            sb.panel(constraints:'grow'){
+                button('OK')
+                button('Cancel',actionPerformed:{dialog.visible=false})
+            }
+        }
+    }
+}
 class TwitterSearchViewProvides{
     def searchViewItems=[
         new SearchViewItem(
