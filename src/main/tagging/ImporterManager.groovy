@@ -4,9 +4,10 @@ class ImporterManager{
     def importers=[]
 
 }
+
 class ImporterManagerConfigSaveRequets{
     Map<String,Object> getConfigs(){
-        ['Importers':ServiceFactory.getService(ImporterManager.class).importers]
+        return ['Importers':ServiceFactory.getService(ImporterManager.class).importers]
     }
 }
 class ImporterManagerTaggingManagerListener{

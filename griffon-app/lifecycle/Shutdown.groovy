@@ -19,6 +19,7 @@
  import tagging.*
  //import groovy.swing.SwingBuilder
 // Thread.start {
+         ServiceFactory.getService(ConfigService.class).close()
 	 TaggingManagerFactory.getTaggingManager().close()
          //ServiceFactory.getService(ConfigService.class).close()
 // }

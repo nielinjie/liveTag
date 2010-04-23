@@ -10,10 +10,11 @@ import groovy.beans.Bindable
  */
 public  class Importer extends SearchView{
     def interval
+    def name
     @Bindable boolean stop=false
-    Importer(){
-        start()
-    }
+//    Importer(){
+//        //start()
+//    }
 //    Importer(Map att){
 //       start()
 //    }

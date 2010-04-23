@@ -144,8 +144,8 @@ class TwitterPeopleIconDisplay extends DefaultIconDisplayAdaptor{
     }
 }
 
-class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{
-}
+class TwitterImporterBriefDisplay extends ImporterBriefDisplayAdaptor{}
+class TwitterImporterPrototypeDisplay extends ImporterPrototypeDisplayAdaptor{}
 class TwitterImporterConfigDisplay extends DisplayAdaptor{
     def dialog
     def getPanel(){
@@ -168,15 +168,20 @@ class TwitterImporterConfigDisplay extends DisplayAdaptor{
 }
 class TwitterSearchViewProvides{
     def searchViewItems=[
-        new SearchViewItem(
-            order:10,
-            group:'Category',
-            searchView:new TwitterImporter(
-                username:'nielinjie',password:'790127',
-                name:'Twitter Importer',
-                description:'Sample Twitter Importer',interval:300
-            )
-        )
+//        new SearchViewItem(
+//            order:10,
+//            group:'Category',
+//            searchView:new TwitterImporter(
+//                username:'nielinjie',password:'790127',
+//                name:'Twitter Importer',
+//                description:'Sample Twitter Importer',interval:300
+//            )
+//        )
+    ]
+}
+class TwitterImporterPrototypeProvides{
+    def prototypes=[
+        new TwitterImporter(interval:300,name:'Twitter Importer')
     ]
 }
 

@@ -38,11 +38,11 @@ def rootFrame=application(title:'LiveTag - Tag your life, and color it.',id:'roo
     iconImage: imageIcon('/teabag.gif').image,
 )
 {
-
-
+    
 
     panel(constraints:'wrap',layout:new MigLayout('fill','[fill,:60%:][fill]') ){
         toolBar(constraints:''){
+            button('New...',actionPerformed:{newDialog.visible=true})
             textField(id:'magicText',columns:50)
             mr.getMagicTextProvides().each{
                 me->
@@ -131,6 +131,28 @@ def rootFrame=application(title:'LiveTag - Tag your life, and color it.',id:'roo
             ,dividerLocation:500 as Integer,/*resizeWeight:0.3f,*/oneTouchExpandable:true)
         ,dividerLocation:200 as Integer,/*resizeWeight:0.15f,*/oneTouchExpandable:true)
 
+}
+def newDialog=dialog(
+    modal:true,
+    owner:rootFrame,
+    title:'Config',
+    size:[600,400],
+    layout:new MigLayout('debug,fill'),
+    id:'newDialog'
+){
+    newGroup=new SingleSelectedGroup(selectionChanged:{println newGroup.selectedValue})
+    panel(layout:new MigLayout()){
+        println 'prototypes - '
+        fm.getAllFunctions('prototypeProvides').each{
+            it.prototypes.each{
+                println it
+                def a=DisplayAdaptor.getAdaptor(it,'prototypeDisplay')
+                def w=widget(a,constraints:'wrap')
+                newGroup.addItem(w,it)
+                w.mouseClicked={e->newGroup.select(e.source)}
+            }
+        }
+    }
 }
 rootFrame.setExtendedState(rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 class SingleSelectedGroup{

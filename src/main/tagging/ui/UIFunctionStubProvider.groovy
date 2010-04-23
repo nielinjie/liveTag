@@ -5,7 +5,7 @@ package tagging.ui
  * @author nielinjie
  */
 import tagging.util.*
-class UIFunctionStubProvider {
+class DisplayAdaptorFunctionStubProvider{
     def functionStubs=[
         new FunctionStub(
             keys:['briefDisplay'],
@@ -14,6 +14,15 @@ class UIFunctionStubProvider {
                 && o.respondsTo('setValue')
             },
             memo:"""get the render for bos in item list view.
+                    function should respond to java.swing.pane getComponent()"""
+        ),
+        new FunctionStub(
+            keys:['prototypeDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for prototypes in new dialog.
                     function should respond to java.swing.pane getComponent()"""
         ),
         new FunctionStub(
@@ -66,6 +75,20 @@ class UIFunctionStubProvider {
 
         ),
         new FunctionStub(
+            keys:['configDisplay'],
+            guard:{o->
+                o.respondsTo('getComponent') \
+                && o.respondsTo('setValue')
+            },
+            memo:"""get the render for object in config dialog.
+                    function should respond to java.swing.panel getComponent()"""
+        )
+    ]
+}
+class UIFunctionStubProvider {
+    def functionStubs=[
+        
+        new FunctionStub(
             keys:['quickTagRequests'],
             guard:{o->o.respondsTo('getQuickTagRequests')},
             memo:"""get the quick tag requests.
@@ -93,15 +116,14 @@ class UIFunctionStubProvider {
                     function should respond to List<MagicTextProvide> getMagicTextProvides()"""
 
         ),
-       new FunctionStub(
-            keys:['configDisplay'],
-            guard:{o->
-                o.respondsTo('getComponent') \
-                && o.respondsTo('setValue')
-            },
-            memo:"""get the render for object in config dialog.
-                    function should respond to java.swing.panel getComponent()"""
-        )
+        new FunctionStub(
+            keys:['prototypeProvides'],
+            guard:{o->o.respondsTo('getPrototypes')},
+            memo:"""get prototype provided, useed to chosen when new something.
+                    function should respond to List<Object> getPrototypes()"""
+
+        ),
+      
     ]
 }
 
