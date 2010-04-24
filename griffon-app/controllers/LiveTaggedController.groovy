@@ -43,7 +43,7 @@ class LiveTaggedController {
         sb.doOutside{
             def bos=model.currentViewFrame.getDelta()
             assert this.itemGroup!=null
-            bos.each{ bo->
+            bos.eachWithIndex{ bo,index->
                 def w=DisplayAdaptor.getAdaptor(bo,'briefDisplay')
 
                 edt{
@@ -51,13 +51,11 @@ class LiveTaggedController {
                     view.briefPanel.add(w,briefItemLayoutConstraints)
                     //view.briefPanel.layout.setComponentConstraints(w,)
                     w.mouseClicked={e->itemGroup.select(e.source)}
-                    view.briefPanel.revalidate()
+                    if(index % 7 ==6)view.briefPanel.revalidate()
                 }
             }
-            if(bos.isEmpty()){
-                edt{
-                    view.briefPanel.update()
-                }
+            edt{
+                view.briefPanel.revalidate()
             }
             setMoreButtonEnable()
         }
@@ -85,7 +83,7 @@ class LiveTaggedController {
                 this.selectBo(this.itemGroup.selectedValue)
             }
         )
-        bos.each{ bo->
+        bos.eachWithIndex{ bo,index->
             def w=DisplayAdaptor.getAdaptor(bo,'briefDisplay')
             edt{
                 itemGroup.addItem(w,bo)
@@ -93,15 +91,13 @@ class LiveTaggedController {
                     view.briefPanel.add(w,briefItemLayoutConstraints)
                     //view.briefPanel.layout.setComponentConstraints(w,)
                     w.mouseClicked={e->itemGroup.select(e.source)}
-                    view.briefPanel.revalidate()
+                    if(index % 7 ==2)view.briefPanel.revalidate()
                 }
             }
         }
-        if(bos.isEmpty()){
             edt{
                 view.briefPanel.revalidate()
             }
-        }
         setMoreButtonEnable()
         this.processingViewFrame=null
     }
