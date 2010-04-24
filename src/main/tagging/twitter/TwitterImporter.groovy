@@ -14,18 +14,18 @@ import java.net.*
  *
  */
 public class TwitterImporter extends Importer{
-    static final DateFormat twitterFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss Z yyyy")
-    XmlSlurper slurper = new XmlSlurper()
+    transient static final DateFormat twitterFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss Z yyyy")
+    transient @Lazy XmlSlurper slurper = {new XmlSlurper()}()
     String type='importer.twitter'
     String urlBase='http://twitter.com'
     String username
     String password
     String proxyHostName='localhost'
     int proxyPort=8000
-    Proxy proxy=new Proxy(Proxy.Type.HTTP ,new InetSocketAddress(proxyHostName,proxyPort))
-    def condition={TaggingManagerFactory.getTaggingManager().findTagable({obj->obj instanceof TweetTagable})}
-    def sortComparator={a,b->-a.createdAt.time<=>-b.createdAt.time}
-    Authenticator authenticator=null
+    transient @Lazy Proxy proxy={new Proxy(Proxy.Type.HTTP ,new InetSocketAddress(proxyHostName,proxyPort))}()
+    transient @Lazy def condition={{n->TaggingManagerFactory.getTaggingManager().findTagable({obj->obj instanceof TweetTagable})}}()
+    transient @Lazy def sortComparator={{a,b->-a.createdAt.time<=>-b.createdAt.time}}()
+    transient Authenticator authenticator=null
     GPathResult slurpAPIStream(String url) {
         def text = ""
         try {

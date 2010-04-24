@@ -6,8 +6,8 @@ import java.beans.*
 class SearchView{
     def name
     def description
-    def condition
-    def sortComparator={a,b->0}
+    transient def condition
+    transient def sortComparator={a,b->0}
     def type='searchView'
 }
 class SearchService{

@@ -137,11 +137,11 @@ def newDialog=dialog(
     owner:rootFrame,
     title:'Config',
     size:[600,400],
-    layout:new MigLayout('debug,fill'),
+    layout:new MigLayout('debug,fill','[fill]','[][fill, grow]'),
     id:'newDialog'
 ){
     newGroup=new SingleSelectedGroup(selectionChanged:{println newGroup.selectedValue})
-    panel(layout:new MigLayout()){
+    panel(layout:new MigLayout(),constraints:'wrap'){
         println 'prototypes - '
         fm.getAllFunctions('prototypeProvides').each{
             it.prototypes.each{
@@ -152,6 +152,17 @@ def newDialog=dialog(
                 w.mouseClicked={e->newGroup.select(e.source)}
             }
         }
+    }
+    panel{
+        button('OK',actionPerformed:{
+            if(newGroup.selectedValue){
+                //TODO clone, maybe.
+                def newImporter=XML.fromXML(XML.toXML(newGroup.selectedValue))
+                ServiceFactory.getService(ImporterManager.class).importers<<newImporter
+            }
+            newDialog.visible=false
+        })
+        button('Cancel',actionPerformed:{newDialog.visible=false})
     }
 }
 rootFrame.setExtendedState(rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);
