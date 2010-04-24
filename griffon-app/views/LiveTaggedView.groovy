@@ -81,6 +81,7 @@ def rootFrame=application(title:'LiveTag - Tag your life, and color it.',id:'roo
             panel(layout:new MigLayout('fill','[fill]','[][fill,grow][]'),constraints:''){
                 panel(layout:new MigLayout('fill,ins 0'),constraints:'growx ,wrap'){
                     label(id:'viewFrameDescription',text:'view frame description here',constraints:'growx')
+                    jxbusyLabel(id:'busy', enabled:true, busy:false)
                     panel(layout:new MigLayout('insets 0'),constraints:'x 1al'){
                         button(icon:icons['back'],id:'viewFrameBack',text:'back',
                             enabled:false,
@@ -155,13 +156,13 @@ def newDialog=dialog(
     }
     panel{
         button('OK',actionPerformed:{
-            if(newGroup.selectedValue){
-                //TODO clone, maybe.
-                def newImporter=XML.fromXML(XML.toXML(newGroup.selectedValue))
-                ServiceFactory.getService(ImporterManager.class).importers<<newImporter
-            }
-            newDialog.visible=false
-        })
+                if(newGroup.selectedValue){
+                    //TODO clone, maybe.
+                    def newImporter=XML.fromXML(XML.toXML(newGroup.selectedValue))
+                    ServiceFactory.getService(ImporterManager.class).importers<<newImporter
+                }
+                newDialog.visible=false
+            })
         button('Cancel',actionPerformed:{newDialog.visible=false})
     }
 }

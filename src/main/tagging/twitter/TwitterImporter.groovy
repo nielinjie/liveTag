@@ -5,15 +5,18 @@ package tagging.twitter
 
 import tagging.*
 import tagging.people.*
+import tagging.url.*
 import groovy.util.slurpersupport.*
 import groovy.swing.*
 import java.text.*
 import java.net.*
+import org.apache.log4j.*
 /**
  * @author nielinjie
  *
  */
 public class TwitterImporter extends Importer{
+    transient static log=Logger.getLogger(TwitterImporter.class)
     transient static final DateFormat twitterFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss Z yyyy")
     transient @Lazy XmlSlurper slurper = {new XmlSlurper()}()
     String type='importer.twitter'
@@ -35,7 +38,7 @@ public class TwitterImporter extends Importer{
                 return slurper.parse(new StringReader(text))
             }
         } catch (Exception e) {
-            System.err.println text
+            log.error(e)
             throw e
         }
     }
@@ -100,6 +103,16 @@ public class TwitterImporter extends Importer{
                 mentionedPeople=mentionedPeople?:new TwitterPeople(confirmed:false, screenName:mentionName)
                 new MentionedInTag().link(tweet,mentionedPeople)
             }
+            tweet.urls.unique().each{
+                url->
+                def mentionedUrl=tm.findTagable{
+                    it instanceof URLTagable && it.url==url
+                }?.with{
+                    it.size()>0?it[0]:null
+                }
+                mentionedUrl=mentionedUrl?:new URLTagable(url:url)
+                new MentionedInTag().link(tweet,mentionedUrl)
+            }
             //add system tags
             //updated
             //unread
@@ -121,6 +134,11 @@ class TweetTagable extends Tagable{
     }
     def getMentions(){
         (text=~/@(\w*+)/).collect{
+            it[1]
+        }
+    }
+    def getUrls(){
+        (text=~/(http:\/\/[^' \t\n\r]+)/).collect{
             it[1]
         }
     }

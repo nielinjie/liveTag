@@ -2,8 +2,10 @@ package tagging
 import tagging.contact.*
 import tagging.util.*
 import tagging.ok.*
+import org.apache.log4j.*
 //@Singleton
 class TaggingManager{
+    static log=Logger.getLogger(TaggingManager.class)
     ObjectKeeper ok
     private singletonTagCache=[:]
     static Class objectKeeperClass
@@ -87,7 +89,7 @@ class TaggingManager{
         }
     }
     void addTagable(Tagable tagable){
-    	println "tagable added, ${tagable.dump()}"
+    	log.debug "tagable added, ${tagable.dump()}"
     	this.ok.put(tagable)
         if(tagable.respondsTo('onAdded')){
             tagable.onAdded()
@@ -105,10 +107,10 @@ class TaggingManager{
     	}
     }
     void onInit(){
-    	println 'tagging manager in oninit method'
+    	log.debug 'tagging manager in oninit method'
         def l=ServiceFactory.getService(FunctionMatrix.class).getAllFunctions('taggingManagerListener')
         l.each{
-            println l
+            log.debug l
         }
         this.listeners.addAll(l)
         if(this.ok==null){

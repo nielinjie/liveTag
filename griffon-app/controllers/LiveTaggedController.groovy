@@ -74,6 +74,7 @@ class LiveTaggedController {
     void renderViewFrame(viewFrame){
         this.processingViewFrame=viewFrame
         edt{
+            view.busy.busy=true
             view.briefPanel.removeAll()
             view.briefPanel.repaint()
         }
@@ -97,6 +98,7 @@ class LiveTaggedController {
         }
             edt{
                 view.briefPanel.revalidate()
+                view.busy.busy=false
             }
         setMoreButtonEnable()
         this.processingViewFrame=null
