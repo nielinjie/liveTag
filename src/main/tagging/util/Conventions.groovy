@@ -1,5 +1,5 @@
 package tagging.util
-
+import org.apache.log4j.*
 /**
  *
  * @author nielinjie
@@ -63,43 +63,29 @@ class FindByClassNameCandidate extends AbstractClassNameCandidate{
     }
 }
 abstract class AbstractClassNameCandidate extends Candidate{
+    static log=Logger.getLogger(AbstractClassNameCandidate.class)
     String basePackage=''
-//    boolean match(String className,String[] keys){
-//        List<String> nameParts=fromCamelCase(className)
-//        if (nameParts.size()!=keys.size()) return false
-//        def re=true
-//        nameParts.eachWithIndex{
-//            p,i->
-//            re=re && p==~keys[i]
-//        }
-//        return re
-//    }
-//    static private List<String> fromCamelCase(String camelCase){
-//        def re=[]
-//        def index=0
-//        def matcher=(camelCase=~/[A-Z]/)
-//        while(matcher.find()){
-//            def offset= matcher.start()
-//            re<<(camelCase[index..<offset])
-//            index=offset
-//        }
-//        re<<( camelCase[index..-1])
-//        return re.collect{
-//            it.toLowerCase()
-//        }[1..-1]
-//    }
+    Map cache=[:]
     @Lazy List<ClassName> classNameScaner={new ClasspathScanner().getResources(basePackage).toList()}()
     def List<Object> getObjects(String... keys){
-        def re=[]
+
+        def re
+        re=cache[keys.toList()]
+        if(re) {
+            log.trace('cache hit')
+            return re.collect{it.newInstance()}
+        }
+        re=[]
         try{
             classNameScaner.each{
                 if(match(it.className,keys)){
-                    re<< Class.forName(it.fullClassName).newInstance()
+                    re<< Class.forName(it.fullClassName)
                 }
             }
+            cache[keys.toList()]=re
         }catch(Exception e){
             e.printStackTrace()
         }
-        return re
+        return re.collect{it.newInstance()}
     }
 }
